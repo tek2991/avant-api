@@ -14,9 +14,8 @@ class LoginController extends Controller
         $this->validate($request, [
             'username' => 'required|alpha_num',
             'password' => 'required|string',
+            'tokenRequired' => 'string'
         ]);
-
-        // $user = User::where('username', $request['username'])->first();
 
         if (!Auth::attempt($request->only('username', 'password'), $request->remember)) {
             return response([
@@ -25,8 +24,8 @@ class LoginController extends Controller
         }
 
         $user = Auth::user();
-        
-        $token = $user->createToken('myapptoken')->plainTextToken;
+
+        $token =  $request['tokenRequired'] ? $user->createToken('myapptoken')->plainTextToken : 'Not Applicable'; 
 
         $response = [
             'user' => $user,
