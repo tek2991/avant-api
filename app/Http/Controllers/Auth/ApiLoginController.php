@@ -5,33 +5,31 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
-class LoginController extends Controller
+class ApiLoginController extends Controller
 {
     public function directorLogin(Request $request)
     {
         $this->validate($request, [
             'username' => 'required|alpha_num',
             'password' => 'required|string',
-            'tokenRequired' => 'string'
         ]);
 
-        if (!Auth::attempt($request->only('username', 'password'), $request->remember)) {
+        $user = User::where('username', $request->username)->first();
+
+        if(!$user || !Hash::check($request->password, $user->password)) {
             return response([
-                'message' => 'Bad login details'
+                'message' => 'Bad creds'
             ], 401);
         }
 
-        $user = Auth::user();
-
-        $token =  $request['tokenRequired'] ? $user->createToken('myapptoken')->plainTextToken : 'Not Applicable'; 
+        $token =  $user->createToken('myapptoken')->plainTextToken; 
 
         $response = [
             'user' => $user,
             'token' => $token
         ];
-
 
         return response($response, 201);
     }
