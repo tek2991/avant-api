@@ -23,6 +23,6 @@ class SpaLoginController extends Controller
 
         $user = Auth::user();
 
-        return response($user, 201);
+        return response(['user' => $user], 201);
     }
 }
