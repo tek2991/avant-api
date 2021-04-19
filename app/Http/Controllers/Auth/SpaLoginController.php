@@ -17,7 +17,8 @@ class SpaLoginController extends Controller
 
         if (!Auth::attempt($request->only('username', 'password'), $request->remember)) {
             return response([
-                'message' => 'Bad login details'
+                'header' => 'Bad login details',
+                'message' => 'Enter correct username & password.'
             ], 401);
         }
 

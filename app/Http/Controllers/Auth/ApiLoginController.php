@@ -20,7 +20,8 @@ class ApiLoginController extends Controller
 
         if(!$user || !Hash::check($request->password, $user->password)) {
             return response([
-                'message' => 'Bad creds'
+                'header' => 'Bad login details',
+                'message' => 'Enter correct username & password.'
             ], 401);
         }
 
