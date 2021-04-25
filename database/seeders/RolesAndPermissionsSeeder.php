@@ -20,19 +20,23 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'edit profile']);
 
 
-        // create roles and assign created permissions
+        // create director roles and assign permissions
         $role = Role::create(['name' => 'director']);
         $role->givePermissionTo('view profile');
         $role->givePermissionTo('edit profile');
         
+        // create student roles and assign permissions
         $role = Role::create(['name' => 'student']);
         $role->givePermissionTo('view profile');
+        $role->givePermissionTo('edit profile');
 
+        // Create Director User
         $user = User::factory()->create([
             'username' => 'director',
             'email' => 'test@example.com',
         ]);
-
-        $user->assignRole('student');
+        
+        // Assign Director role
+        $user->assignRole('director');
     }
 }
