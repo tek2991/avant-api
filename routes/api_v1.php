@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\API\v1\UserController;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\API\v1\UserController;
 use App\Http\Controllers\Auth\ApiLoginController;
 use App\Http\Controllers\Auth\ApiLogoutController;
 use App\Http\Controllers\Auth\ApiRegisterController;
+use App\Http\Controllers\API\v1\Setup\SessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         'show', 'destroy'
     ]);
     Route::get('user/{user?}', [UserController::class, 'show'])->name('user.show');
+    
+    Route::apiResource('session', SessionController::class);
 
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });
