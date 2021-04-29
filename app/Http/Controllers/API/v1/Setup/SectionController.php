@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\API\v1\Setup;
 
-use App\Http\Controllers\Controller;
-use App\Models\Session;
+use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
 
-class SessionController extends Controller
+class SectionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +16,7 @@ class SessionController extends Controller
      */
     public function index()
     {
-        return Session::paginate(20);
+        return Section::paginate(20);
     }
 
     /**
@@ -27,60 +28,57 @@ class SessionController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|max:255',
+            'name' => 'required|max:255|unique:sections',
         ]);
 
-        Session::where('is_active', true)->update([
-            'is_active' => 0
-        ]);
-
-        return Session::create([
+        return Section::create([
             'name' => $request->name,
-            'is_active' => true
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Session  $session
+     * @param  \App\Models\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function show(Session $session)
+    public function show(Section $section)
     {
-        return $session;
+        return $section;
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Session  $session
+     * @param  \App\Models\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Session $session)
+    public function update(Request $request, Section $section)
     {
         $this->validate($request, [
-            'name' => 'required|max:255',
+            'name' => [
+                'required', 'max:255',
+                Rule::unique('sections')->ignore($section)
+            ],
         ]);
 
-        $session->update([
-            'name' => $request->name
+        $section->update([
+            'name' => $request->name,
         ]);
 
-        return $session;
+        return $section;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Session  $session
+     * @param  \App\Models\Section  $section
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Session $session)
+    public function destroy(Section $section)
     {
-        $session->delete();
-
+        $section->delete();
         return response('', 204);
     }
 }
