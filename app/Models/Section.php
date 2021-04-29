@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Standard;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Section extends Model
 {
@@ -17,4 +18,8 @@ class Section extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    public function standards(){
+        return $this->belongsToMany(Standard::class, 'classes')->withPivot('id')->withTimestamps();
+    }
 }

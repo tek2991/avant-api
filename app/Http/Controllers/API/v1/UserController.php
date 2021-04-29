@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\v1;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 
@@ -54,8 +55,11 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required',
+            'email' => [
+                'required', 'email', 'max:255',
+                Rule::unique('users')->ignore($user)
+            ],
+            'phone' => 'required|max:255',
             'password' => 'nullable|min:8|max:24',
         ]);
 
