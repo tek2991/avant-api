@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\SectionStandard;
 use App\Models\User;
 use App\Models\Student;
 use Illuminate\Database\Seeder;
@@ -16,10 +17,12 @@ class StudentSeeder extends Seeder
     public function run()
     {
         $students = User::role('student')->get()->modelKeys();
+        $sectionStandard = collect(SectionStandard::all()->modelKeys());
 
         foreach($students as $student){
             Student::factory()->create([
                 'user_id' => $student,
+                'section_standard_id' => $sectionStandard->random()
             ]);
         }
     }

@@ -23,6 +23,7 @@ class StudentFactory extends Factory
     {
         return [
             'dob' => $this->faker->date,
+            'roll_no' => mt_rand(1, 100),
             'fathers_name' => $this->faker->name($gender = 'male'),
             'mothers_name' => $this->faker->name($gender = 'female'),
             'created_at' => now(),
