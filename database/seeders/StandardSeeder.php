@@ -18,7 +18,7 @@ class StandardSeeder extends Seeder
         $hierachy = 10;
 
         foreach($standards as $standard){
-            Standard::factory()->times(1)->create([
+            Standard::factory()->create([
                 'name' => $standard,
                 'hierachy' => $hierachy
             ]);

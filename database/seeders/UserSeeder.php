@@ -19,12 +19,12 @@ class UserSeeder extends Seeder
         ]);
         $director->assignRole('director');
 
-        $teachers = User::factory()->times(10)->create();
+        $teachers = User::factory(60)->create();
         foreach($teachers as $teacher){
             $teacher->assignRole('teacher');
         }
 
-        $students = User::factory()->times(500)->create();
+        $students = User::factory(600)->create();
         foreach($students as $student){
             $student->assignRole('student');
         }

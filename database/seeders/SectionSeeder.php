@@ -17,7 +17,7 @@ class SectionSeeder extends Seeder
         $sections = ['A', 'B', 'C', 'D', 'E'];
 
         foreach($sections as $section){
-            Section::factory()->times(1)->create([
+            Section::factory()->create([
                 'name' => $section,
             ]);
         }

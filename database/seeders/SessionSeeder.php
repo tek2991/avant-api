@@ -14,7 +14,7 @@ class SessionSeeder extends Seeder
      */
     public function run()
     {
-        Session::factory()->times(1)->create([
+        Session::factory()->create([
             'name' => '2021-2022'
         ]);
     }
