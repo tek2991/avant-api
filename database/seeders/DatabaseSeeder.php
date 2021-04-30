@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Database\Seeders\RollSeeder;
+use Database\Seeders\UserSeeder;
+use Database\Seeders\ClassSeeder;
 use Database\Seeders\SectionSeeder;
 use Database\Seeders\SessionSeeder;
 use Database\Seeders\StandardSeeder;
@@ -24,9 +27,12 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             RoleAndPermissionSeeder::class,
+            UserSeeder::class,
             SessionSeeder::class,
             StandardSeeder::class,
             SectionSeeder::class,
+            ClassSeeder::class,
+            RollSeeder::class,
         ]);
     }
 }

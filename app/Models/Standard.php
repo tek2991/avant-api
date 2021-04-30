@@ -21,6 +21,6 @@ class Standard extends Model
     ];
 
     public function sections(){
-        return $this->belongsToMany(Section::class, 'classes')->withPivot('id')->withTimestamps();
+        return $this->belongsToMany(Section::class)->withPivot('id')->withTimestamps();
     }
 }

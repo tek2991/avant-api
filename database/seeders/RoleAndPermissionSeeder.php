@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use Illuminate\Database\Seeder;
 
 use Spatie\Permission\Models\Role;
@@ -31,18 +30,14 @@ class RoleAndPermissionSeeder extends Seeder
         $role->givePermissionTo('standard CRUD');
         $role->givePermissionTo('section CRUD');
         
+        // create teacher roles and assign permissions
+        $role = Role::create(['name' => 'teacher']);
+        $role->givePermissionTo('view profile');
+        $role->givePermissionTo('edit profile');
+
         // create student roles and assign permissions
         $role = Role::create(['name' => 'student']);
         $role->givePermissionTo('view profile');
         $role->givePermissionTo('edit profile');
-
-        // Create Director User
-        $user = User::factory()->create([
-            'username' => 'director',
-            'email' => 'test@example.com',
-        ]);
-        
-        // Assign Director role
-        $user->assignRole('director');
     }
 }
