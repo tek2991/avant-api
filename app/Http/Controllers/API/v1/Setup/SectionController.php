@@ -16,7 +16,7 @@ class SectionController extends Controller
      */
     public function index()
     {
-        return Section::paginate(20);
+        return Section::paginate();
     }
 
     /**

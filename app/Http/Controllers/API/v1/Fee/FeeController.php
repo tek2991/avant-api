@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\API\v1\Setup;
+namespace App\Http\Controllers\API\v1\Fee;
 
-use App\Models\Standard;
+use App\Models\Fee;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 
-class StandardController extends Controller
+
+class FeeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +17,7 @@ class StandardController extends Controller
      */
     public function index()
     {
-        Return Standard::paginate();
+        return Fee::paginate();
     }
 
     /**
@@ -28,65 +29,58 @@ class StandardController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|max:255|unique:standards',
-            'hierachy' => 'required|integer|max:999|min:0|unique:standards'
+            'name' => 'required|max:255|string|unique:fees',
         ]);
 
-        return Standard::create([
-            'name' => $request->name,
-            'hierachy' => $request->hierachy,
+
+        return Fee::create([
+            'name' => $request->name
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Standard  $standard
+     * @param  \App\Models\Fee  $fee
      * @return \Illuminate\Http\Response
      */
-    public function show(Standard $standard)
+    public function show(Fee $fee)
     {
-        return $standard;
+        return $fee->load(['chargeables']);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Standard  $standard
+     * @param  \App\Models\Fee  $fee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Standard $standard)
+    public function update(Request $request, Fee $fee)
     {
         $this->validate($request, [
             'name' => [
-                'required', 'max:255',
-                Rule::unique('standards')->ignore($standard)
+                'required', 'max:255', 'string',
+                Rule::unique('fees')->ignore($fee)
             ],
-
-            'hierachy' => [
-                'required', 'integer', 'max:999', 'min:0',
-                Rule::unique('standards')->ignore($standard)
-            ]
         ]);
 
-        $standard->update([
+        $fee->update([
             'name' => $request->name,
-            'hierachy' => $request->hierachy,
         ]);
 
-        return $standard;
+        return $fee;
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Standard  $standard
+     * @param  \App\Models\Fee  $fee
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Standard $standard)
+    public function destroy(Fee $fee)
     {
-        $standard->delete();
+        $fee->delete();
         return response('', 204);
     }
 }

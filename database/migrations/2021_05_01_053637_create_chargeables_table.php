@@ -18,9 +18,9 @@ class CreateChargeablesTable extends Migration
             $table->string('name');
             $table->string('description');
             $table->foreignId('fee_id')->constrained();
-            $table->decimal('amount', 12, 2);
+            $table->unsignedBigInteger('amount_in_cent');
             $table->unsignedInteger('tax_rate');
-            $table->decimal('gross_amount', 12, 2);
+            $table->unsignedBigInteger('gross_amount_in_cent');
             $table->timestamps();
         });
     }

@@ -15,7 +15,7 @@ class SessionController extends Controller
      */
     public function index()
     {
-        return Session::paginate(20);
+        return Session::paginate();
     }
 
     /**
