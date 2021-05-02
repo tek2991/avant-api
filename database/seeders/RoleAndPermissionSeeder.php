@@ -14,12 +14,17 @@ class RoleAndPermissionSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         // create permissions
+        Permission::create(['name' => 'system_administration']);
         Permission::create(['name' => 'view profile']);
         Permission::create(['name' => 'edit profile']);
         Permission::create(['name' => 'session CRUD']);
         Permission::create(['name' => 'standard CRUD']);
         Permission::create(['name' => 'section CRUD']);
 
+
+        // create director roles and assign permissions
+        $role = Role::create(['name' => 'admin']);
+        $role->givePermissionTo('system_administration');
 
         // create director roles and assign permissions
         $role = Role::create(['name' => 'director']);

@@ -13,7 +13,13 @@ class UserSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
+    {   
+        $admin = User::factory()->create([
+            'username' => 'administrator',
+            'email' => 'admin@avant.com'
+        ]);
+        $admin->assignRole('admin');
+
         $director = User::factory()->create([
             'username' => 'director'
         ]);
