@@ -25,4 +25,8 @@ class Teacher extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    public function classStudents(){
+        return $this->hasManyThrough(Student::class, SectionStandard::class, 'teacher_id', 'section_standard_id');
+    }
 }
