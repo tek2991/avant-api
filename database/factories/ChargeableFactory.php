@@ -22,7 +22,6 @@ class ChargeableFactory extends Factory
      */
     public function definition()
     {
-        $fees = collect(Fee::all()->modelKeys());
         $tax_rates = [5, 12, 18, 28];
         $k = array_rand($tax_rates);
         $amount = mt_rand(100, 4000)*100;
@@ -31,7 +30,6 @@ class ChargeableFactory extends Factory
         return [
             'name' => $this->faker->word,
             'description' => $this->faker->sentence($nbWords = 6, $variableNbWords = true),
-            'fee_id' => $fees->random(),
             'amount_in_cent' => $amount,
             'tax_rate' => $tax_rate,
             'gross_amount_in_cent' => $gross_amount,

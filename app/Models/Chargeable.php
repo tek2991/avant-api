@@ -23,7 +23,7 @@ class Chargeable extends Model
         'updated_at' => 'datetime',
     ];
 
-    public function fee(){
-        return $this->belongsTo(Fee::class);
+    public function fees(){
+        return $this->belongsToMany(Fee::class)->withPivot('id')->withTimestamps();
     }
 }

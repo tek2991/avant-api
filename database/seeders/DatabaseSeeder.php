@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-
 use Database\Seeders\FeeSeeder;
+
+use Illuminate\Database\Seeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\SectionSeeder;
 use Database\Seeders\SessionSeeder;
@@ -13,6 +13,7 @@ use Database\Seeders\TeacherSeeder;
 use Database\Seeders\StandardSeeder;
 use Database\Seeders\ChargeableSeeder;
 use Database\Seeders\FeeStandardSeeder;
+use Database\Seeders\ChargeableFeeSeeder;
 use Database\Seeders\SectionStandardSeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
 
@@ -41,6 +42,7 @@ class DatabaseSeeder extends Seeder
             StudentSeeder::class,
             FeeSeeder::class,
             ChargeableSeeder::class,
+            ChargeableFeeSeeder::class,
             FeeStandardSeeder::class
         ]);
     }

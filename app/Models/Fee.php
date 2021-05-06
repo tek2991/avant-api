@@ -26,7 +26,7 @@ class Fee extends Model
     ];
 
     public function chargeables(){
-        return $this->hasMany(Chargeable::class);
+        return $this->belongsToMany(Chargeable::class)->withPivot('id')->withTimestamps();
     }
 
     public function standards()

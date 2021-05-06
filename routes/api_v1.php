@@ -2,8 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\API\v1\UserController;
+
 use App\Http\Controllers\Auth\ApiLoginController;
 use App\Http\Controllers\API\v1\Fee\FeeController;
 use App\Http\Controllers\Auth\ApiLogoutController;
@@ -13,6 +13,8 @@ use App\Http\Controllers\API\v1\Setup\SessionController;
 use App\Http\Controllers\API\v1\Fee\ChargeableController;
 use App\Http\Controllers\API\v1\Setup\StandardController;
 use App\Http\Controllers\API\v1\Setup\SectionStandardController;
+use App\Http\Controllers\API\v1\Fee\AttachStandardToFeeController;
+use App\Http\Controllers\API\v1\Fee\AttachChargeableToFeeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +41,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     Route::apiResource('fee', FeeController::class)->middleware(['can:section CRUD']);
     Route::apiResource('chargeable', ChargeableController::class)->middleware(['can:section CRUD']);
+    Route::post('attach-chargeable-to-fee', [AttachChargeableToFeeController::class, 'store'])->middleware(['can:section CRUD']);
+    Route::post('attach-standard-to-fee', [AttachStandardToFeeController::class, 'store'])->middleware(['can:section CRUD']);
 
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });

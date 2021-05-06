@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateChargeablesTable extends Migration
+class CreateChargeableFeeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateChargeablesTable extends Migration
      */
     public function up()
     {
-        Schema::create('chargeables', function (Blueprint $table) {
+        Schema::create('chargeable_fee', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('description');
-            $table->unsignedBigInteger('amount_in_cent');
-            $table->unsignedInteger('tax_rate');
-            $table->unsignedBigInteger('gross_amount_in_cent');
+            $table->foreignId('chargeable_id')->constrained();
+            $table->foreignId('fee_id')->constrained();
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class CreateChargeablesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chargeables');
+        Schema::dropIfExists('chargeable_fee');
     }
 }

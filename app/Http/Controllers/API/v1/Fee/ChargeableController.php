@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API\v1\Fee;
 
-use App\Models\Fee;
 use App\Models\Chargeable;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -37,18 +36,11 @@ class ChargeableController extends Controller
                 Rule::in([5, 12, 18, 28])
             ]
         ]);
-        
-        if(!Fee::find($request->fee_id)){
-            return response([
-                'header' => 'Invalid Fee',
-                'message' => 'The Fee id was not found in the database.'
-            ], 400);
-        }
 
         $amount_in_cent = ($request->amount)*100;
         $gross_amount_in_cent = (($request->amount)*100)*((($request->tax_rate)/100)+1);
 
-        return Fee::find($request->fee_id)->chargeables()->create([
+        return Chargeable::create([
             'name' => $request->name,
             'description' => $request->description,
             'amount_in_cent' => $amount_in_cent,
@@ -65,7 +57,7 @@ class ChargeableController extends Controller
      */
     public function show(Chargeable $chargeable)
     {
-        return $chargeable->load(['fee']);
+        return $chargeable->load(['fees']);
     }
 
     /**
