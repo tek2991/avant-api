@@ -15,5 +15,8 @@ class ChargeableSeeder extends Seeder
     public function run()
     {
         Chargeable::factory(20)->create();
+        Chargeable::factory(5)->create([
+            'is_mandatory' => false
+        ]);
     }
 }

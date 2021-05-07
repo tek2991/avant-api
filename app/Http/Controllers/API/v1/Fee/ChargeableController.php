@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\API\v1\Fee;
 
+use App\Models\Student;
 use App\Models\Chargeable;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Jobs\SyncChargeableStudentJob;
 
 class ChargeableController extends Controller
 {
@@ -30,6 +32,7 @@ class ChargeableController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255|string',
             'description' => 'required|max:255|string',
+            'is_mandatory' => 'required|boolean',
             'amount' => 'required|integer|min:1|max:9999999999',
             'tax_rate' => [
                 'required', 'integer',
@@ -37,17 +40,28 @@ class ChargeableController extends Controller
             ]
         ]);
 
-        $amount_in_cent = ($request->amount)*100;
-        $gross_amount_in_cent = (($request->amount)*100)*((($request->tax_rate)/100)+1);
+        $amount_in_cent = ($request->amount) * 100;
+        $gross_amount_in_cent = (($request->amount) * 100) * ((($request->tax_rate) / 100) + 1);
 
-        return Chargeable::create([
+
+        $chargeable = Chargeable::create([
             'name' => $request->name,
             'description' => $request->description,
+            'is_mandatory' => $request->is_mandatory,
             'amount_in_cent' => $amount_in_cent,
             'tax_rate' => $request->tax_rate,
             'gross_amount_in_cent' => $gross_amount_in_cent
         ]);
+        
+        if($request->boolean('is_mandatory')){
+            $students = Student::all()->modelKeys();
+            SyncChargeableStudentJob::dispatch($chargeable, $students);
+        }
+
+
+        return $chargeable;
     }
+
 
     /**
      * Display the specified resource.
@@ -72,6 +86,7 @@ class ChargeableController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255|string',
             'description' => 'required|max:255|string',
+            'is_mandatory' => 'required|boolean',
             'amount' => 'required|integer|min:1|max:9999999999',
             'tax_rate' => [
                 'required', 'integer',
@@ -79,12 +94,13 @@ class ChargeableController extends Controller
             ]
         ]);
 
-        $amount_in_cent = ($request->amount)*100;
-        $gross_amount_in_cent = (($request->amount)*100)*((($request->tax_rate)/100)+1);
+        $amount_in_cent = ($request->amount) * 100;
+        $gross_amount_in_cent = (($request->amount) * 100) * ((($request->tax_rate) / 100) + 1);
 
         $chargeable->update([
             'name' => $request->name,
             'description' => $request->description,
+            'is_mandatory' => $request->is_mandatory,
             'amount_in_cent' => $amount_in_cent,
             'tax_rate' => $request->tax_rate,
             'gross_amount_in_cent' => $gross_amount_in_cent

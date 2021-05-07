@@ -30,6 +30,7 @@ class ChargeableFactory extends Factory
         return [
             'name' => $this->faker->word,
             'description' => $this->faker->sentence($nbWords = 6, $variableNbWords = true),
+            'is_mandatory' => true,
             'amount_in_cent' => $amount,
             'tax_rate' => $tax_rate,
             'gross_amount_in_cent' => $gross_amount,
