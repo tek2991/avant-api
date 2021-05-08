@@ -15,6 +15,7 @@ use App\Http\Controllers\API\v1\Setup\StandardController;
 use App\Http\Controllers\API\v1\Setup\SectionStandardController;
 use App\Http\Controllers\API\v1\Fee\AttachStandardToFeeController;
 use App\Http\Controllers\API\v1\Fee\AttachChargeableToFeeController;
+use App\Http\Controllers\API\v1\Fee\AttachStudentToChargeableController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('chargeable', ChargeableController::class)->middleware(['can:section CRUD']);
     Route::post('attach-chargeable-to-fee', [AttachChargeableToFeeController::class, 'store'])->middleware(['can:section CRUD']);
     Route::post('attach-standard-to-fee', [AttachStandardToFeeController::class, 'store'])->middleware(['can:section CRUD']);
+    Route::post('attach-student-to-chargeable', [AttachStudentToChargeableController::class, 'store'])->middleware(['can:section CRUD']);
 
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });

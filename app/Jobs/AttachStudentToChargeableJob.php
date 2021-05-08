@@ -10,7 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class SyncChargeableStudentJob implements ShouldQueue
+class AttachStudentToChargeableJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -37,10 +37,6 @@ class SyncChargeableStudentJob implements ShouldQueue
      */
     public function handle()
     {
-        if($this->method === 'attach'){
-            $this->chargeable->students()->attach($this->students);
-        }else{
-            $this->chargeable->students()->sync($this->students);
-        }
+        $this->chargeable->students()->sync($this->students);
     }
 }

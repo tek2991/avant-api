@@ -7,7 +7,7 @@ use App\Models\Chargeable;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
-use App\Jobs\SyncChargeableStudentJob;
+use App\Jobs\AttachStudentToChargeableJob;
 
 class ChargeableController extends Controller
 {
@@ -55,7 +55,7 @@ class ChargeableController extends Controller
         
         if($request->boolean('is_mandatory')){
             $students = Student::all()->modelKeys();
-            SyncChargeableStudentJob::dispatch($chargeable, $students);
+            AttachStudentToChargeableJob::dispatch($chargeable, $students);
         }
 
 
