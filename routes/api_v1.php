@@ -9,6 +9,7 @@ use App\Http\Controllers\API\v1\Fee\FeeController;
 use App\Http\Controllers\Auth\ApiLogoutController;
 use App\Http\Controllers\API\v1\Bill\BillController;
 use App\Http\Controllers\Auth\ApiRegisterController;
+use App\Http\Controllers\API\v1\Bill\BillFeeController;
 use App\Http\Controllers\API\v1\Setup\SectionController;
 use App\Http\Controllers\API\v1\Setup\SessionController;
 use App\Http\Controllers\API\v1\Fee\ChargeableController;
@@ -39,7 +40,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('session', SessionController::class)->middleware(['can:session CRUD']);
     Route::apiResource('standard', StandardController::class)->middleware(['can:standard CRUD']);
     Route::apiResource('section', SectionController::class)->middleware(['can:section CRUD']);
-    Route::apiResource('sectionStandard', SectionStandardController::class)->except(['store', 'update'])->middleware(['can:section CRUD', 'can:standard CRUD']);
+    Route::apiResource('section-standard', SectionStandardController::class)->except(['store', 'update'])->middleware(['can:section CRUD', 'can:standard CRUD']);
     
     Route::apiResource('fee', FeeController::class)->middleware(['can:section CRUD']);
     Route::apiResource('chargeable', ChargeableController::class)->middleware(['can:section CRUD']);
@@ -47,6 +48,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('attach-standard-to-fee', [AttachStandardToFeeController::class, 'store'])->middleware(['can:section CRUD']);
     Route::post('attach-student-to-chargeable', [AttachStudentToChargeableController::class, 'store'])->middleware(['can:section CRUD']);
     Route::apiResource('bill', BillController::class)->only(['index', 'store', 'show'])->middleware(['can:section CRUD']);
+    Route::apiResource('bill-fee', BillFeeController::class)->only(['show'])->middleware(['can:section CRUD']);
 
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });
