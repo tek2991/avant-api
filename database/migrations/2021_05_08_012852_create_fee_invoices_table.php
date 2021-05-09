@@ -14,7 +14,7 @@ class CreateFeeInvoicesTable extends Migration
     public function up()
     {
         Schema::create('fee_invoices', function (Blueprint $table) {
-            $table->id();
+            $table->id()->startingValue(100001);
             $table->string('name');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('bill_fee_id')->constrained('bill_fee');

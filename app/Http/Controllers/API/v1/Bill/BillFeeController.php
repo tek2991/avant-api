@@ -37,7 +37,7 @@ class BillFeeController extends Controller
      */
     public function show(BillFee $billFee)
     {
-        $feeInvoices = $billFee->feeInvoices()->paginate();
+        $feeInvoices = $billFee->feeInvoices()->with('user', 'standard')->paginate();
 
         return response(compact('billFee', 'feeInvoices'));
     }
