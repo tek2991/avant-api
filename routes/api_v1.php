@@ -46,7 +46,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('attach-chargeable-to-fee', [AttachChargeableToFeeController::class, 'store'])->middleware(['can:section CRUD']);
     Route::post('attach-standard-to-fee', [AttachStandardToFeeController::class, 'store'])->middleware(['can:section CRUD']);
     Route::post('attach-student-to-chargeable', [AttachStudentToChargeableController::class, 'store'])->middleware(['can:section CRUD']);
-    Route::post('bill', [BillController::class, 'store'])->middleware(['can:section CRUD']);
+    Route::apiResource('bill', BillController::class)->only(['index', 'store', 'show'])->middleware(['can:section CRUD']);
 
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });
