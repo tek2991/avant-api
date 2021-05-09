@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Fee;
+use App\Models\BillFee;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -31,6 +32,10 @@ class Bill extends Model
 
     public function fees(){
         return $this->belongsToMany(Fee::class)->withPivot('id')->withTimestamps();
+    }
+
+    public function billFees(){
+        return $this->hasMany(BillFee::class);
     }
 
     public function feeInvoices(){
