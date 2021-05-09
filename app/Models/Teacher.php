@@ -12,11 +12,6 @@ class Teacher extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
-
     public function sectionStandard()
     {   
         return $this->hasMany(SectionStandard::class);

@@ -18,11 +18,6 @@ class Standard extends Model
         'hierachy'
     ];
 
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
-
     public function sections(){
         return $this->belongsToMany(Section::class)->withPivot('id')->withTimestamps();
     }

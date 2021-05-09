@@ -13,9 +13,4 @@ class Session extends Model
         'name',
         'is_active'
     ];
-
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
 }

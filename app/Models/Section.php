@@ -14,11 +14,6 @@ class Section extends Model
         'name',
     ];
 
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
-
     public function standards(){
         return $this->belongsToMany(Standard::class)->withPivot('id')->withTimestamps();
     }

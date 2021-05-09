@@ -43,7 +43,6 @@ class ChargeableController extends Controller
         $amount_in_cent = ($request->amount) * 100;
         $gross_amount_in_cent = (($request->amount) * 100) * ((($request->tax_rate) / 100) + 1);
 
-
         $chargeable = Chargeable::create([
             'name' => $request->name,
             'description' => $request->description,
@@ -57,7 +56,6 @@ class ChargeableController extends Controller
             $students = Student::all()->modelKeys();
             AttachStudentToChargeableJob::dispatch($chargeable, $students);
         }
-
 
         return $chargeable;
     }
@@ -97,6 +95,11 @@ class ChargeableController extends Controller
         $amount_in_cent = ($request->amount) * 100;
         $gross_amount_in_cent = (($request->amount) * 100) * ((($request->tax_rate) / 100) + 1);
 
+        if($request->boolean('is_mandatory') !== $chargeable->is_mandatory){
+            $students = $request->boolean('is_mandatory') ? Student::all()->modelKeys(): [];
+            AttachStudentToChargeableJob::dispatch($chargeable, $students);
+        }
+
         $chargeable->update([
             'name' => $request->name,
             'description' => $request->description,
@@ -105,6 +108,7 @@ class ChargeableController extends Controller
             'tax_rate' => $request->tax_rate,
             'gross_amount_in_cent' => $gross_amount_in_cent
         ]);
+
 
         return $chargeable;
     }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFeeInvoiceFeeItemTable extends Migration
+class CreateFeeInvoiceFeeInvoiceItemTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateFeeInvoiceFeeItemTable extends Migration
      */
     public function up()
     {
-        Schema::create('fee_invoice_fee_item', function (Blueprint $table) {
+        Schema::create('fee_invoice_fee_invoice_item', function (Blueprint $table) {
             $table->id();
             $table->foreignId('fee_invoice_id')->constrained('fee_invoices', 'id');
-            $table->foreignId('fee_item_id')->constrained('fee_items', 'id');
+            $table->foreignId('fee_invoice_item_id')->constrained('fee_invoice_items', 'id');
             $table->timestamps();
         });
     }

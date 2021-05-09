@@ -17,6 +17,10 @@ class CreateBillFeeTable extends Migration
             $table->id();
             $table->foreignId('bill_id')->constrained();
             $table->foreignId('fee_id')->constrained();
+            $table->unsignedBigInteger('amount_in_cent')->nullable();
+            $table->unsignedBigInteger('tax_in_cent')->nullable();
+            $table->unsignedBigInteger('gross_amount_in_cent')->nullable();
+            $table->timestamps();
         });
     }
 

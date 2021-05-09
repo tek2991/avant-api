@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Fee;
 use App\Models\Student;
+use App\Models\FeeInvoiceItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -21,8 +22,7 @@ class Chargeable extends Model
     ];
 
     protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
+        'is_mandatory' => 'boolean',
     ];
 
     public function fees(){
@@ -31,5 +31,9 @@ class Chargeable extends Model
 
     public function students(){
         return $this->belongsToMany(Student::class)->withPivot('id')->withTimestamps();
+    }
+
+    public function FeeInvoiceItems(){
+        return $this->hasMany(FeeInvoiceItem::class);
     }
 }

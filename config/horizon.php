@@ -174,6 +174,25 @@ return [
             'tries' => 1,
             'nice' => 0,
         ],
+
+        'supervisor-light' => [
+            'connection' => 'redis',
+            'queue' => ['light'],
+            'balance' => 'auto',
+            'maxProcesses' => 3,
+            'memory' => 128,
+            'tries' => 1,
+            'nice' => 0,
+        ],
+        'supervisor-heavy' => [
+            'connection' => 'redis',
+            'queue' => ['heavy'],
+            'balance' => 'auto',
+            'maxProcesses' => 3,
+            'memory' => 128,
+            'tries' => 1,
+            'nice' => 0,
+        ],
     ],
 
     'environments' => [

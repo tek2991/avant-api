@@ -20,11 +20,6 @@ class Fee extends Model
         'name',
     ];
 
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
-
     public function chargeables(){
         return $this->belongsToMany(Chargeable::class)->withPivot('id')->withTimestamps();
     }
@@ -32,5 +27,9 @@ class Fee extends Model
     public function standards()
     {
        return $this->belongsToMany(Standard::class)->withPivot('id')->withTimestamps();
+    }
+
+    public function bills(){
+        return $this->belongsToMany(Bill::class)->withPivot('id')->withTimestamps();
     }
 }

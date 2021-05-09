@@ -18,11 +18,8 @@ class CreateBillsTable extends Migration
             $table->string('name');
             $table->string('description');
             $table->foreignId('session_id')->constrained();
-            $table->date('bill_from_date');
-            $table->date('bill_to_date');
-            $table->unsignedBigInteger('amount_in_cent')->nullable();
-            $table->unsignedBigInteger('tax_in_cent')->nullable();
-            $table->unsignedBigInteger('gross_amount_in_cent')->nullable();
+            $table->dateTime('bill_from_date');
+            $table->dateTime('bill_to_date');
             $table->timestamps();
         });
     }
