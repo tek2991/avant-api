@@ -10,6 +10,12 @@ use App\Http\Controllers\Controller;
 
 class FeeInvoiceController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(FeeInvoice::class);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,8 +23,7 @@ class FeeInvoiceController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        // $user = User::find(65);
+        $user = User::find(65);
         return $user->FeeInvoices()->paginate();
     }
 
@@ -41,14 +46,6 @@ class FeeInvoiceController extends Controller
      */
     public function show(FeeInvoice $feeInvoice)
     {
-        $isOwner = $feeInvoice->user_id === Auth::user()->id ? true : false;
-        if(!Auth::user()->hasPermissionTo('section CRUD') && !$isOwner){
-            return response([
-                'header' => 'Not Authoried',
-                'message' => 'You cannot view Invoices.'
-            ], 401);
-        }
-
         return $feeInvoice->load('feeInvoiceItems', 'user', 'standard');
     }
 
