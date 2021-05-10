@@ -33,6 +33,6 @@ class CreateFeeInvoiceItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fee_items');
+        Schema::dropIfExists('fee_invoice_items');
     }
 }

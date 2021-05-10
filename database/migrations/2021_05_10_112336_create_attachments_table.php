@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSectionStandardTable extends Migration
+class CreateAttachmentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateSectionStandardTable extends Migration
      */
     public function up()
     {
-        Schema::create('section_standard', function (Blueprint $table) {
+        Schema::create('attachments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('standard_id')->constrained();
-            $table->foreignId('section_id')->constrained();
-            $table->foreignId('teacher_id')->constrained();
+            $table->string('attachment_url');
+            $table->bigInteger('attachmentable_id');
+            $table->string('attachmentable_type');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateSectionStandardTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('section_standard');
+        Schema::dropIfExists('attachments');
     }
 }
