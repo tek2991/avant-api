@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\API\v1\Bill;
 
-use App\Http\Controllers\Controller;
+use Auth;
+use App\Models\User;
 use App\Models\FeeInvoice;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class FeeInvoiceController extends Controller
 {
@@ -15,7 +17,9 @@ class FeeInvoiceController extends Controller
      */
     public function index()
     {
-        //
+        $user = Auth::user();
+        // $user = User::find(65);
+        return $user->FeeInvoices()->paginate();
     }
 
     /**
@@ -37,7 +41,15 @@ class FeeInvoiceController extends Controller
      */
     public function show(FeeInvoice $feeInvoice)
     {
-        //
+        $isOwner = $feeInvoice->user_id === Auth::user()->id ? true : false;
+        if(!Auth::user()->hasPermissionTo('section CRUD') && !$isOwner){
+            return response([
+                'header' => 'Not Authoried',
+                'message' => 'You cannot view Invoices.'
+            ], 401);
+        }
+
+        return $feeInvoice->load('feeInvoiceItems', 'user', 'standard');
     }
 
     /**
