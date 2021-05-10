@@ -67,7 +67,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Kolkata',
 
     /*
     |--------------------------------------------------------------------------
@@ -232,16 +232,5 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | My Settings
-    |--------------------------------------------------------------------------
-    |
-    | These are custom settings that are required for this project.
-    |
-    */
-
-    'db_date_format' => 'Y-m-d',
 
 ];
