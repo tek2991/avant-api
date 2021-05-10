@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Database\Seeders\FeeSeeder;
 
 use Illuminate\Database\Seeder;
+use Database\Seeders\BillSeeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\SectionSeeder;
 use Database\Seeders\SessionSeeder;
@@ -13,7 +14,10 @@ use Database\Seeders\TeacherSeeder;
 use Database\Seeders\StandardSeeder;
 use Database\Seeders\ChargeableSeeder;
 use Database\Seeders\FeeStandardSeeder;
+use Database\Seeders\RequestTypeSeeder;
+use Database\Seeders\RequestStateSeeder;
 use Database\Seeders\ChargeableFeeSeeder;
+use Database\Seeders\AttendenceStateSeeder;
 use Database\Seeders\SectionStandardSeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
 
@@ -27,10 +31,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-
-        // \App\Models\User::factory(1)->create();
-        
-
         $this->call([
             RoleAndPermissionSeeder::class,
             UserSeeder::class,
@@ -43,7 +43,11 @@ class DatabaseSeeder extends Seeder
             FeeSeeder::class,
             ChargeableSeeder::class,
             ChargeableFeeSeeder::class,
-            FeeStandardSeeder::class
+            FeeStandardSeeder::class,
+            BillSeeder::class,
+            AttendenceStateSeeder::class,
+            RequestStateSeeder::class,
+            RequestTypeSeeder::class,
         ]);
     }
 }
