@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RequestType extends Model
+class AppealType extends Model
 {
     public $timestamps = false;
     protected $fillable = [

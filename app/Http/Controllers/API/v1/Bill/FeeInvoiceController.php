@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API\v1\Bill;
 
-use Auth;
 use App\Models\User;
 use App\Models\FeeInvoice;
 use Illuminate\Http\Request;
@@ -23,8 +22,7 @@ class FeeInvoiceController extends Controller
      */
     public function index()
     {
-        $user = User::find(65);
-        return $user->FeeInvoices()->paginate();
+        return FeeInvoice::paginate();
     }
 
     /**

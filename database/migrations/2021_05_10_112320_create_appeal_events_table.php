@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRequestTypesTable extends Migration
+class CreateAppealEventsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateRequestTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('request_types', function (Blueprint $table) {
+        Schema::create('appeal_events', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('appeal_id')->constrained();
+            $table->foreignId('appeal_state_id')->constrained('appeal_states');
+            $table->foreignId('user_id')->constrained();
+            $table->timestamps();
         });
     }
 
@@ -26,6 +29,6 @@ class CreateRequestTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('request_types');
+        Schema::dropIfExists('appeal_events');
     }
 }

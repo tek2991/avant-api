@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\RequestType;
+use App\Models\AppealType;
 use Illuminate\Database\Seeder;
 
 class RequestTypeSeeder extends Seeder
@@ -14,11 +14,11 @@ class RequestTypeSeeder extends Seeder
      */
     public function run()
     {
-        $requestTypes = ['Leave Request'];
+        $appealTypes = ['Leave Request'];
 
-        foreach ($requestTypes as $requestType) {
-            RequestType::create([
-                'name' => $requestType
+        foreach ($appealTypes as $appealType) {
+            AppealType::create([
+                'name' => $appealType
             ]);
         }
     }
