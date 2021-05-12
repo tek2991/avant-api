@@ -14,8 +14,8 @@ use Database\Seeders\TeacherSeeder;
 use Database\Seeders\StandardSeeder;
 use Database\Seeders\ChargeableSeeder;
 use Database\Seeders\FeeStandardSeeder;
-use Database\Seeders\RequestTypeSeeder;
-use Database\Seeders\RequestStateSeeder;
+use Database\Seeders\AppealTypeSeeder;
+use Database\Seeders\AppealStateSeeder;
 use Database\Seeders\ChargeableFeeSeeder;
 use Database\Seeders\AttendenceStateSeeder;
 use Database\Seeders\SectionStandardSeeder;
@@ -46,8 +46,8 @@ class DatabaseSeeder extends Seeder
             FeeStandardSeeder::class,
             BillSeeder::class,
             AttendenceStateSeeder::class,
-            RequestStateSeeder::class,
-            RequestTypeSeeder::class,
+            AppealStateSeeder::class,
+            AppealTypeSeeder::class,
         ]);
     }
 }

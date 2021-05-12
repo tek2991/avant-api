@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use App\Models\AppealType;
 use Illuminate\Database\Seeder;
 
-class RequestTypeSeeder extends Seeder
+class AppealTypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.
