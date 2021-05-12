@@ -21,6 +21,8 @@ class CreateAppealsTable extends Migration
             $table->string('title');
             $table->text('body');
             $table->text('remark');
+            $table->dateTime('appeal_from_date');
+            $table->dateTime('appeal_to_date');
             $table->timestamps();
         });
     }
