@@ -20,7 +20,7 @@ class CreateAppealsTable extends Migration
             $table->foreignId('appeal_state_id')->constrained('appeal_states');
             $table->string('title');
             $table->text('body');
-            $table->text('remark');
+            $table->text('remark')->nullable();
             $table->dateTime('appeal_from_date');
             $table->dateTime('appeal_to_date');
             $table->timestamps();

@@ -13,13 +13,13 @@ class Appeal extends Model
     use HasFactory;
 
     protected $fillable = [
-        'appeal_type_id',
-        'appeal_state_id',
         'title',
         'body',
-        'remark',
         'appeal_from_date',
-        'appeal_to_date'
+        'appeal_to_date',
+        'appeal_type_id',
+        'appeal_state_id',
+        'remark',
     ];
 
     protected $cast = [
@@ -39,5 +39,9 @@ class Appeal extends Model
 
     public function appealState(){
         return $this->belongsTo(AppealState::class);
+    }
+
+    public function appealEvents(){
+        return $this->hasMany(AppealEvent::class);
     }
 }

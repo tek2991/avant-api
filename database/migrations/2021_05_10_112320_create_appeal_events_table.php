@@ -15,7 +15,7 @@ class CreateAppealEventsTable extends Migration
     {
         Schema::create('appeal_events', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('appeal_id')->constrained();
+            $table->foreignId('appeal_id')->constrained()->cascadeOnDelete();
             $table->foreignId('appeal_state_id')->constrained('appeal_states');
             $table->foreignId('user_id')->constrained();
             $table->timestamps();

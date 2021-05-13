@@ -14,6 +14,7 @@ use App\Http\Controllers\API\v1\Setup\SectionController;
 use App\Http\Controllers\API\v1\Setup\SessionController;
 use App\Http\Controllers\API\v1\Fee\ChargeableController;
 use App\Http\Controllers\API\v1\Setup\StandardController;
+use App\Http\Controllers\API\v1\Appeal\AppealController;
 use App\Http\Controllers\API\v1\Bill\FeeInvoiceController;
 use App\Http\Controllers\API\v1\Setup\SectionStandardController;
 use App\Http\Controllers\API\v1\Fee\AttachStandardToFeeController;
@@ -51,6 +52,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('bill', BillController::class)->only(['index', 'store', 'show'])->middleware(['can:section CRUD']);
     Route::apiResource('bill-fee', BillFeeController::class)->only(['show'])->middleware(['can:section CRUD']);
     Route::apiResource('fee-invoice', FeeInvoiceController::class)->only(['index', 'show'])->middleware(['can:section CRUD']);
+
+    Route::apiResource('appeal', AppealController::class);
 
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });

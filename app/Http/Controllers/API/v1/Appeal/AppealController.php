@@ -3,13 +3,19 @@
 namespace App\Http\Controllers\API\v1\Appeal;
 
 use App\Models\Appeal;
+use App\Models\AppealState;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\AppealState;
+use App\Models\AppealType;
 use Illuminate\Support\Facades\Auth;
 
-class MyAppealController extends Controller
+class AppealController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Appeal::class);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -31,20 +37,23 @@ class MyAppealController extends Controller
     {
         $this->validate($request, [
             'title' => 'required|max:255|string',
-            'body' => 'required|text',
+            'body' => 'required|string',
             'appeal_from_date' =>'required|date',
-            'appeal_to_date' => 'fter_or_equal:appeal_date_from',
+            'appeal_to_date' => 'after_or_equal:appeal_date_from',
             'appeal_type_id' =>'required|exists:appeal_types,id',
         ]);
 
         $appealStateId = AppealState::firstWhere('name', 'Created')->id;
-
-        $appeal = Auth::user()->appeals->create([
-            $request->only(['title', 'body', 'appeal_date_from', 'appeal_date_to', 'appeal_type_id']),
-            'appeal_state_id', $appealStateId
+        $request['appeal_state_id'] = $appealStateId;
+        $appeal = Auth::user()->appeals()->create(
+            $request->only(['title', 'body', 'appeal_from_date', 'appeal_to_date', 'appeal_type_id', 'appeal_state_id'])
+        );
+        $appeal->appealEvents()->create([
+            'appeal_state_id' => $appealStateId,
+            'user_id' => Auth::user()->id
         ]);
 
-        return $appeal;
+        return $appeal->load('appealEvents', 'appealState');
     }
 
     /**
@@ -55,7 +64,7 @@ class MyAppealController extends Controller
      */
     public function show(Appeal $appeal)
     {
-        //
+        return $appeal->load('appealEvents', 'appealState');
     }
 
     /**
@@ -67,7 +76,18 @@ class MyAppealController extends Controller
      */
     public function update(Request $request, Appeal $appeal)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required|max:255|string',
+            'body' => 'required|string',
+            'appeal_from_date' =>'required|date',
+            'appeal_to_date' => 'after_or_equal:appeal_date_from',
+        ]);
+
+        $appeal->update(
+            $request->only(['title', 'body', 'appeal_from_date', 'appeal_to_date'])
+        );
+
+        return $appeal->load('appealEvents', 'appealState');
     }
 
     /**
@@ -78,6 +98,8 @@ class MyAppealController extends Controller
      */
     public function destroy(Appeal $appeal)
     {
-        //
+
+        $appeal->delete();
+        return response('', 204);
     }
 }
