@@ -12,12 +12,12 @@ use Database\Seeders\SessionSeeder;
 use Database\Seeders\StudentSeeder;
 use Database\Seeders\TeacherSeeder;
 use Database\Seeders\StandardSeeder;
-use Database\Seeders\ChargeableSeeder;
-use Database\Seeders\FeeStandardSeeder;
 use Database\Seeders\AppealTypeSeeder;
+use Database\Seeders\ChargeableSeeder;
 use Database\Seeders\AppealStateSeeder;
+use Database\Seeders\FeeStandardSeeder;
 use Database\Seeders\ChargeableFeeSeeder;
-use Database\Seeders\AttendenceStateSeeder;
+use Database\Seeders\AttendanceStateSeeder;
 use Database\Seeders\SectionStandardSeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
 
@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
             ChargeableFeeSeeder::class,
             FeeStandardSeeder::class,
             BillSeeder::class,
-            AttendenceStateSeeder::class,
+            AttendanceStateSeeder::class,
             AppealStateSeeder::class,
             AppealTypeSeeder::class,
         ]);

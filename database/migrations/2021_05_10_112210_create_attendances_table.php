@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAttendenceStatesTable extends Migration
+class CreateAttendancesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateAttendenceStatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('attendence_states', function (Blueprint $table) {
+        Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('attendance_state_id')->constrained('attendance_states');
+            $table->dateTime('attendance_date');
+            $table->timestamps();
         });
     }
 
@@ -26,6 +29,6 @@ class CreateAttendenceStatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attendence_states');
+        Schema::dropIfExists('attendances');
     }
 }

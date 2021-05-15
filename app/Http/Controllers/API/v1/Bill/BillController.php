@@ -4,8 +4,6 @@ namespace App\Http\Controllers\API\v1\Bill;
 
 use App\Models\Fee;
 use App\Models\Bill;
-use App\Models\BillFee;
-use App\Models\FeeInvoice;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Jobs\CreateBillWithInvoiceJob;

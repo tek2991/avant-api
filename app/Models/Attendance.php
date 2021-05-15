@@ -3,31 +3,31 @@
 namespace App\Models;
 
 use App\Models\User;
-use App\Models\AttendenceState;
+use App\Models\AttendanceState;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Attendence extends Model
+class Attendance extends Model
 {
     use HasFactory;
 
     protected $fillable =[
         'user_id',
-        'attendence_state_id',
-        'attendence_date'
+        'attendance_state_id',
+        'attendance_date'
     ];
 
     protected $cast = [
-        'attendence_date' => 'datetime',
+        'attendance_date' => 'datetime',
     ];
 
-    protected $dates = ['attendence_date'];
+    protected $dates = ['attendance_date'];
 
     public function user(){
         return $this->belongsTo(User::class);
     }
 
-    public function attendenceState(){
-        return $this->belongsTo(AttendenceState::class);
+    public function attendanceState(){
+        return $this->belongsTo(AttendanceState::class);
     }
 }
