@@ -6,7 +6,6 @@ use App\Models\Appeal;
 use App\Models\AppealState;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\AppealType;
 use Illuminate\Support\Facades\Auth;
 
 class AppealController extends Controller
@@ -38,9 +37,9 @@ class AppealController extends Controller
         $this->validate($request, [
             'title' => 'required|max:255|string',
             'body' => 'required|string',
-            'appeal_from_date' =>'required|date',
+            'appeal_from_date' => 'required|date',
             'appeal_to_date' => 'after_or_equal:appeal_date_from',
-            'appeal_type_id' =>'required|exists:appeal_types,id',
+            'appeal_type_id' => 'required|exists:appeal_types,id',
         ]);
 
         $appealStateId = AppealState::firstWhere('name', 'Created')->id;
@@ -64,7 +63,7 @@ class AppealController extends Controller
      */
     public function show(Appeal $appeal)
     {
-        return $appeal->load('appealEvents', 'appealState');
+        return $appeal->load('appealEvents', 'appealState', 'appealEvents');
     }
 
     /**
@@ -78,13 +77,11 @@ class AppealController extends Controller
     {
         $this->validate($request, [
             'title' => 'required|max:255|string',
-            'body' => 'required|string',
-            'appeal_from_date' =>'required|date',
-            'appeal_to_date' => 'after_or_equal:appeal_date_from',
+            'body' => 'required|string'
         ]);
 
         $appeal->update(
-            $request->only(['title', 'body', 'appeal_from_date', 'appeal_to_date'])
+            $request->only(['title', 'body'])
         );
 
         return $appeal->load('appealEvents', 'appealState');
@@ -98,8 +95,6 @@ class AppealController extends Controller
      */
     public function destroy(Appeal $appeal)
     {
-
-        $appeal->delete();
-        return response('', 204);
+        // 
     }
 }

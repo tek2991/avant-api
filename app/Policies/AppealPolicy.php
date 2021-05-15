@@ -59,9 +59,9 @@ class AppealPolicy
     {
         $isOwner = $appeal->user_id === $user->id;
 
-        $hasPermission = $user->can('section CRUD');
+        $updatable = $appeal->appealState->name === "Created";
 
-        return $isOwner || $hasPermission;
+        return $isOwner && $updatable;
     }
 
     /**
@@ -73,7 +73,7 @@ class AppealPolicy
      */
     public function delete(User $user, Appeal $appeal)
     {
-        return $appeal->user_id === $user->id;
+        return false;
     }
 
     /**

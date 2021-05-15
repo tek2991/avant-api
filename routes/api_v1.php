@@ -10,13 +10,15 @@ use App\Http\Controllers\Auth\ApiLogoutController;
 use App\Http\Controllers\API\v1\Bill\BillController;
 use App\Http\Controllers\Auth\ApiRegisterController;
 use App\Http\Controllers\API\v1\Bill\BillFeeController;
+use App\Http\Controllers\API\v1\Appeal\AppealController;
 use App\Http\Controllers\API\v1\Setup\SectionController;
 use App\Http\Controllers\API\v1\Setup\SessionController;
 use App\Http\Controllers\API\v1\Fee\ChargeableController;
 use App\Http\Controllers\API\v1\Setup\StandardController;
-use App\Http\Controllers\API\v1\Appeal\AppealController;
 use App\Http\Controllers\API\v1\Bill\FeeInvoiceController;
+use App\Http\Controllers\API\v1\Appeal\CloseAppealController;
 use App\Http\Controllers\API\v1\Setup\SectionStandardController;
+use App\Http\Controllers\API\v1\Appeal\RecommendAppealController;
 use App\Http\Controllers\API\v1\Fee\AttachStandardToFeeController;
 use App\Http\Controllers\API\v1\Fee\AttachChargeableToFeeController;
 use App\Http\Controllers\API\v1\Fee\AttachStudentToChargeableController;
@@ -49,11 +51,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('attach-chargeable-to-fee', [AttachChargeableToFeeController::class, 'store'])->middleware(['can:section CRUD']);
     Route::post('attach-standard-to-fee', [AttachStandardToFeeController::class, 'store'])->middleware(['can:section CRUD']);
     Route::post('attach-student-to-chargeable', [AttachStudentToChargeableController::class, 'store'])->middleware(['can:section CRUD']);
+
     Route::apiResource('bill', BillController::class)->only(['index', 'store', 'show'])->middleware(['can:section CRUD']);
     Route::apiResource('bill-fee', BillFeeController::class)->only(['show'])->middleware(['can:section CRUD']);
     Route::apiResource('fee-invoice', FeeInvoiceController::class)->only(['index', 'show'])->middleware(['can:section CRUD']);
 
     Route::apiResource('appeal', AppealController::class);
+    Route::post('recommend-appeal/{appeal}', [RecommendAppealController::class, 'store'])->middleware(['can:section CRUD']);
+    Route::post('close-appeal/{appeal}', [CloseAppealController::class, 'store'])->middleware(['can:section CRUD']);
+
 
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });

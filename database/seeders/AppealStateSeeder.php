@@ -14,7 +14,7 @@ class AppealStateSeeder extends Seeder
      */
     public function run()
     {
-        $appealStates = ['Created', 'Recomemded', 'Approved', 'Rejected'];
+        $appealStates = ['Created', 'Recommended', 'Approved', 'Rejected'];
 
         foreach ($appealStates as $appealState) {
             AppealState::create([

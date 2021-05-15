@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Appeal;
+use App\Models\Attendence;
 use App\Models\FeeInvoice;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
@@ -54,5 +55,9 @@ class User extends Authenticatable
 
     public function appeals(){
         return $this->hasMany(Appeal::class);
+    }
+
+    public function attendences(){
+        return $this->hasMany(Attendence::class);
     }
 }
