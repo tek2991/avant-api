@@ -35,14 +35,16 @@ class CloseAppealController extends Controller
         ]);
 
         if ($appeal->appeal_type_id == AppealType::firstWhere('name', 'Leave Request')->id) {
-            Attendance::where('user_id', Auth::user()->id)->whereBetween('attendance_date', [$appeal->appeal_from_date, $appeal->appeal_to_date])->delete();
             $period = CarbonPeriod::create($request->appeal_from_date, $request->appeal_to_date);
+            $attendanceStateId = $request->appeal_state_id == 3 ? 5 : 6;
             foreach ($period as $date) {
-                Attendance::firstOrCreate(
+                Attendance::updateOrCreate(
                     [
                         'user_id' => Auth::user()->id,
                         'attendance_date' => $date,
-                        'attendance_state_id' => AttendanceState::firstWhere('name', 'Leave applied')->id,
+                    ],
+                    [
+                        'attendance_state_id' => $attendanceStateId,
                     ]
                 );
             }
