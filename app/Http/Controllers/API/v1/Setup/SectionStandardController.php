@@ -15,7 +15,7 @@ class SectionStandardController extends Controller
      */
     public function index()
     {
-        return SectionStandard::with(['section:id,name', 'standard:id,name', 'teacher.user.userDetail'])->paginate();
+        return SectionStandard::with(['section:id,name', 'standard:id,name', 'teacher.user.userDetail'])->withCount('students')->join('standards', 'section_standard.standard_id', 'standards.id')->orderby('standards.hierachy','asc')->paginate();
     }
 
     /**
