@@ -15,7 +15,7 @@ class SectionStandardController extends Controller
      */
     public function index()
     {
-        return SectionStandard::with(['section:id,name', 'standard:id,name', 'teacher.user'])->paginate();
+        return SectionStandard::with(['section:id,name', 'standard:id,name', 'teacher.user.userDetail'])->paginate();
     }
 
     /**
@@ -38,7 +38,7 @@ class SectionStandardController extends Controller
     public function show(SectionStandard $sectionStandard)
     {
         // return $sectionStandard;
-        return $sectionStandard->load(['section:id,name', 'standard:id,name', 'students.user', 'teacher.user']);
+        return $sectionStandard->load(['section:id,name', 'standard:id,name', 'students.user.userDetail', 'teacher.user.userDetail']);
     }
 
     /**
