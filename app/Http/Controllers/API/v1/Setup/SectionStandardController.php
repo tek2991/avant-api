@@ -38,8 +38,12 @@ class SectionStandardController extends Controller
     public function show(SectionStandard $sectionStandard)
     {
         $students = $sectionStandard->students()->with('user.userDetail')->paginate();
+
         $sectionStandard = $sectionStandard->with(['section:id,name', 'standard:id,name', 'teacher.user.userDetail'])->first();
-        return response(compact('sectionStandard', 'students'));
+
+        $sectionStandard->students = $students;
+        
+        return response($sectionStandard);
     }
 
     /**
