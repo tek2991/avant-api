@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\UserDetail;
 use Illuminate\Database\Eloquent\Model;
 
 class BloodGroup extends Model
@@ -10,7 +11,7 @@ class BloodGroup extends Model
         'name',
     ];
 
-    public function users(){
-        return $this->hasOneThrough(User::class, UserDetail::class);
+    public function userDetails(){
+        return $this->hasMany(UserDetail::class);
     }
 }
