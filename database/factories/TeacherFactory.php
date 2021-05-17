@@ -22,7 +22,6 @@ class TeacherFactory extends Factory
     public function definition()
     {
         return [
-            'dob' => $this->faker->date,
             'created_at' => now(),
             'updated_at' => now(),
         ];

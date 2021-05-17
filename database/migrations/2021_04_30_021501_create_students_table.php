@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use phpDocumentor\Reflection\Types\Nullable;
 
 class CreateStudentsTable extends Migration
 {
@@ -16,11 +17,8 @@ class CreateStudentsTable extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('section_standard_id')->constrained('section_standard');
-            $table->unsignedInteger('roll_no');
-            $table->date('dob')->nullable();
-            $table->string('fathers_name')->nullable();
-            $table->string('mothers_name')->nullable();
+            $table->foreignId('section_standard_id')->nullable()->constrained('section_standard');
+            $table->unsignedInteger('roll_no')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

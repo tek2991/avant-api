@@ -7,6 +7,7 @@ use Database\Seeders\FeeSeeder;
 use Illuminate\Database\Seeder;
 use Database\Seeders\BillSeeder;
 use Database\Seeders\UserSeeder;
+use Database\Seeders\GenderSeeder;
 use Database\Seeders\SectionSeeder;
 use Database\Seeders\SessionSeeder;
 use Database\Seeders\StudentSeeder;
@@ -14,7 +15,9 @@ use Database\Seeders\TeacherSeeder;
 use Database\Seeders\StandardSeeder;
 use Database\Seeders\AppealTypeSeeder;
 use Database\Seeders\ChargeableSeeder;
+use Database\Seeders\UserDetailSeeder;
 use Database\Seeders\AppealStateSeeder;
+use Database\Seeders\BloodGroupsSeeder;
 use Database\Seeders\FeeStandardSeeder;
 use Database\Seeders\ChargeableFeeSeeder;
 use Database\Seeders\AttendanceStateSeeder;
@@ -34,6 +37,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RoleAndPermissionSeeder::class,
             UserSeeder::class,
+            BloodGroupsSeeder::class,
+            GenderSeeder::class,
+            UserDetailSeeder::class,
             SessionSeeder::class,
             StandardSeeder::class,
             SectionSeeder::class,

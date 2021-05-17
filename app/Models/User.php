@@ -3,8 +3,12 @@
 namespace App\Models;
 
 use App\Models\Appeal;
+use App\Models\Gender;
+use App\Models\Student;
+use App\Models\Teacher;
 use App\Models\Attendence;
 use App\Models\FeeInvoice;
+use App\Models\UserDetail;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -25,7 +29,6 @@ class User extends Authenticatable
         'name',
         'username',
         'email',
-        'phone',
         'password',
     ];
 
@@ -58,5 +61,17 @@ class User extends Authenticatable
 
     public function attendences(){
         return $this->hasMany(Attendence::class);
+    }
+
+    public function userDetail(){
+        return $this->hasOne(UserDetail::class);
+    }
+
+    public function student(){
+        return $this->hasOne(Student::class);
+    }
+
+    public function teacher(){
+        return $this->hasOne(Teacher::class);
     }
 }

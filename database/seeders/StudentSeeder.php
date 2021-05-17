@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\SectionStandard;
 use App\Models\User;
+use App\Models\Gender;
 use App\Models\Student;
+use App\Models\BloodGroup;
+use App\Models\SectionStandard;
 use Illuminate\Database\Seeder;
 
 class StudentSeeder extends Seeder
@@ -22,7 +24,7 @@ class StudentSeeder extends Seeder
         foreach($students as $student){
             Student::factory()->create([
                 'user_id' => $student,
-                'section_standard_id' => $sectionStandard->random()
+                'section_standard_id' => $sectionStandard->random(),
             ]);
         }
     }
