@@ -37,8 +37,9 @@ class SectionStandardController extends Controller
      */
     public function show(SectionStandard $sectionStandard)
     {
-        // return $sectionStandard;
-        return $sectionStandard->load(['section:id,name', 'standard:id,name', 'students.user.userDetail', 'teacher.user.userDetail']);
+        $students = $sectionStandard->students()->with('user.userDetail')->paginate();
+        $sectionStandard = $sectionStandard->with(['section:id,name', 'standard:id,name', 'teacher.user.userDetail'])->first();
+        return response(compact('sectionStandard', 'students'));
     }
 
     /**
