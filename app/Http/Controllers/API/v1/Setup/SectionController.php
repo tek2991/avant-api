@@ -6,6 +6,7 @@ use App\Models\Section;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use Exception;
 
 class SectionController extends Controller
 {
@@ -78,7 +79,14 @@ class SectionController extends Controller
      */
     public function destroy(Section $section)
     {
-        $section->delete();
+        try {
+            $section->delete();
+        } catch (Exception $ex) {
+            return response([
+                'header' => 'Dependency error',
+                'message' => 'Other resources depend on this record.'
+            ], 418);
+        }
         return response('', 204);
     }
 }

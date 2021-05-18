@@ -15,7 +15,7 @@ class SectionStandardController extends Controller
      */
     public function index()
     {
-        return SectionStandard::with(['section:id,name', 'standard:id,name', 'teacher:id,user_id', 'teacher.user:id', 'teacher.user.userDetail:id,user_id,name'])->select(['section_standard.id', 'standard_id', 'section_id', 'teacher_id'])->withCount('students')->join('standards', 'section_standard.standard_id', 'standards.id')->orderby('standards.hierachy','asc')->paginate();
+        return SectionStandard::with(['section', 'standard', 'teacher:id,user_id', 'teacher.user:id', 'teacher.user.userDetail:id,user_id,name'])->withCount('students')->join('standards', 'section_standard.standard_id', 'standards.id')->orderby('standards.hierachy','asc')->paginate();
     }
 
     /**
@@ -39,7 +39,7 @@ class SectionStandardController extends Controller
     {
         $students = $sectionStandard->students()->with('user:id', 'user.userDetail:id,user_id,name')->select(['id', 'user_id', 'section_standard_id', 'roll_no'])->orderBy('roll_no')->paginate();
 
-        $sectionStandard = $sectionStandard->with(['section:id,name', 'standard:id,name', 'teacher:id,user_id', 'teacher.user:id', 'teacher.user.userDetail:id,user_id,name'])->select(['id', 'standard_id', 'section_id', 'teacher_id'])->find($sectionStandard->id);
+        $sectionStandard = $sectionStandard->with(['section', 'standard', 'teacher:id,user_id', 'teacher.user:id', 'teacher.user.userDetail:id,user_id,name'])->find($sectionStandard->id);
         return response(compact('sectionStandard', 'students'));
     }
 

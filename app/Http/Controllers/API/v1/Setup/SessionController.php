@@ -15,7 +15,7 @@ class SessionController extends Controller
      */
     public function index()
     {
-        return Session::paginate();
+        return Session::select(['id', 'name', 'is_active'])->paginate();
     }
 
     /**

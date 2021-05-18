@@ -14,6 +14,11 @@ class Section extends Model
         'name',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
     public function standards(){
         return $this->belongsToMany(Standard::class)->withPivot('id')->withTimestamps();
     }

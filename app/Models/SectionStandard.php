@@ -9,6 +9,11 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class SectionStandard extends Pivot
 {
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
      public function teacher(){
          return $this->belongsTo(Teacher::class);
      }

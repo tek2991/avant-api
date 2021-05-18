@@ -18,6 +18,11 @@ class Standard extends Model
         'hierachy'
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
     public function sections(){
         return $this->belongsToMany(Section::class)->withPivot('id')->withTimestamps();
     }
