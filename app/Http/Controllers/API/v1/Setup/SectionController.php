@@ -17,7 +17,7 @@ class SectionController extends Controller
      */
     public function index()
     {
-        return Section::paginate();
+        return Section::orderBy('id')->paginate();
     }
 
     /**
