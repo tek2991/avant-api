@@ -14,6 +14,12 @@ class Student extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $fillable = [
+        'user_id',
+        'section_standard_id',
+        'roll_no',
+    ];
+
     public function sectionStandard(){
         return $this->belongsTo(SectionStandard::class);
     }

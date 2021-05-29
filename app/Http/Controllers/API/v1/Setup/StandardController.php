@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\v1\Setup;
 
+use Exception;
 use App\Models\Standard;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -16,7 +17,17 @@ class StandardController extends Controller
      */
     public function index()
     {
-        Return Standard::paginate();
+        Return Standard::orderBy('hierachy')->paginate();
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function all()
+    {
+        Return Standard::orderBy('hierachy')->get();
     }
 
     /**
@@ -86,7 +97,14 @@ class StandardController extends Controller
      */
     public function destroy(Standard $standard)
     {
-        $standard->delete();
+        try {
+            $standard->delete();
+        } catch (Exception $ex) {
+            return response([
+                'header' => 'Dependency error',
+                'message' => 'Other resources depend on this record.'
+            ], 418);
+        }
         return response('', 204);
     }
 }

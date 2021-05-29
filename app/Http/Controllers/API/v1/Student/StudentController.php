@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\API\v1\Setup;
+namespace App\Http\Controllers\API\v1\Student;
 
 use Exception;
-use App\Models\Session;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class SessionController extends Controller
+class StudentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +16,7 @@ class SessionController extends Controller
      */
     public function index()
     {
-        return Session::select(['id', 'name', 'is_active'])->paginate();
+        //
     }
 
     /**
@@ -28,60 +28,65 @@ class SessionController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|max:255',
+            'user_id' => 'required|min:1|exists:users,id',
+            'section_standard_id' => 'required|min:1|exists:section_standard,id',
+            'roll_no' => 'required|max:255',
         ]);
 
-        Session::where('is_active', true)->update([
-            'is_active' => 0
-        ]);
+        $studentExist = Student::where('user_id', $request->user_id)->first();
 
-        return Session::create([
-            'name' => $request->name,
-            'is_active' => true
-        ]);
+        if($studentExist){
+            return response([
+                'header' => 'Already exists',
+                'message' => 'Student is already allocated.'
+            ], 418);
+        }
+
+        return Student::create($request->only(['user_id', 'section_standard_id', 'roll_no']));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Session  $session
+     * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function show(Session $session)
+    public function show(Student $student)
     {
-        return $session;
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Session  $session
+     * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Session $session)
+    public function update(Request $request, Student $student)
     {
         $this->validate($request, [
-            'name' => 'required|max:255',
+            'roll_no' => 'required|max:255',
         ]);
 
-        $session->update([
-            'name' => $request->name
+        $student->update([
+            'roll_no' => $request->roll_no
         ]);
 
-        return $session;
+        return $student;
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Session  $session
+     * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Session $session)
+    public function destroy(Student $student)
     {
         try {
-            $session->delete();
+            $student->delete();
         } catch (Exception $ex) {
             return response([
                 'header' => 'Dependency error',
