@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\API\v1;
+namespace App\Http\Controllers\API\v1\User;
 
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -37,11 +38,9 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user, Request $request)
+    public function show(User $user)
     {
-        $user = $user->id ? $user : $request->user();
-
-        return ['user' => $user];
+        return $user->select(['id', 'username', 'email'])->with('userDetail');
     }
 
     /**
@@ -53,6 +52,13 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        if(Auth::user()->id !== $user->id){
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
         $this->validate($request, [
             'name' => 'required|max:255',
             'email' => [
@@ -60,20 +66,49 @@ class UserController extends Controller
                 Rule::unique('users')->ignore($user)
             ],
             'phone' => 'required|max:255',
+            'phone_alternate' => 'nullable|max:255',
+            'dob' => 'nullable|date',
+            'gender_id' => 'nullable|exists:genders,id',
+            'blood_group_id' => 'nullable|exists:blood_groups,id',
+            'address' => 'nullable|max:255',
+            'fathers_name' => 'nullable|max:255',
+            'mothers_name' => 'nullable|max:255',
+            'voter_id' => 'nullable|max:255',
+            'aadhar_no' => 'nullable|max:255',
+            'dl_no' => 'nullable|max:255',
             'password' => 'nullable|min:8|max:24',
         ]);
 
         $user->update([
-            'name' => $request->name,
             'email' => $request->email,
-            'phone' => $request->phone,
         ]);
+
+        $user->userDetail()->update($request->only([
+            'name',
+            'phone',
+            'phone_alternate',
+            'dob',
+            'gender_id',
+            'blood_group_id',
+            'address',
+            'fathers_name',
+            'mothers_name',
+            'voter_id',
+            'aadhar_id',
+            'dl_no'
+        ]));
 
         if(!empty($request->password)){
             $user->update(['password' => Hash::make($request->password)]);
         }
 
-        return ['user' => $user];
+        $profile = $user->where('id', $user->id)->with('userDetail')->first();
+
+        $response = [
+            'user' => $profile,
+        ];
+
+        return response($response, 201);
     }
 
     /**

@@ -1,9 +1,6 @@
 <?php
-
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\v1\UserController;
-
+use App\Http\Controllers\API\v1\User\UserController;
 use App\Http\Controllers\Auth\ApiLoginController;
 use App\Http\Controllers\API\v1\Fee\FeeController;
 use App\Http\Controllers\Auth\ApiLogoutController;
@@ -18,7 +15,9 @@ use App\Http\Controllers\API\v1\Fee\ChargeableController;
 use App\Http\Controllers\API\v1\Setup\StandardController;
 use App\Http\Controllers\API\v1\Bill\FeeInvoiceController;
 use App\Http\Controllers\API\v1\Student\StudentController;
+use App\Http\Controllers\API\v1\Attributes\GenderController;
 use App\Http\Controllers\API\v1\Appeal\CloseAppealController;
+use App\Http\Controllers\API\v1\Attributes\BloodGroupController;
 use App\Http\Controllers\API\v1\Setup\SectionStandardController;
 use App\Http\Controllers\API\v1\Appeal\RecommendAppealController;
 use App\Http\Controllers\API\v1\Fee\AttachStandardToFeeController;
@@ -52,6 +51,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('section-standard', SectionStandardController::class)->middleware(['can:section CRUD', 'can:standard CRUD']);
 
     Route::get('teacher-all', [TeacherController::class, 'all'])->middleware(['can:section CRUD']);
+
+    Route::apiResource('gender', GenderController::class)->only(['index'])->middleware(['can:section CRUD']);
+    Route::apiResource('blood-group', BloodGroupController::class)->only(['index'])->middleware(['can:section CRUD']);
     
     Route::apiResource('fee', FeeController::class)->middleware(['can:section CRUD']);
     Route::apiResource('chargeable', ChargeableController::class)->middleware(['can:section CRUD']);

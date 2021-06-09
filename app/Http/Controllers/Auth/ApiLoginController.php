@@ -25,10 +25,12 @@ class ApiLoginController extends Controller
             ], 401);
         }
 
-        $token =  $user->createToken('myapptoken')->plainTextToken; 
+        $profile = User::where('username', $request->username)->select(['id', 'username', 'email'])->with('userDetail')->first();
+
+        $token =  $user->createToken('myapptoken')->plainTextToken;
 
         $response = [
-            'user' => $user,
+            'user' => $profile,
             'token' => $token
         ];
 

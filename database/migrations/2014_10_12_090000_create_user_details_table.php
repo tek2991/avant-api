@@ -18,7 +18,7 @@ class CreateUserDetailsTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->string('name');
             $table->string('phone');
-            $table->string('phone_alternate');
+            $table->string('phone_alternate')->nullable();
             $table->date('dob')->nullable();
             $table->foreignId('gender_id')->constrained();
             $table->foreignId('blood_group_id')->constrained('blood_groups');
