@@ -51,6 +51,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('section-standard', SectionStandardController::class)->middleware(['can:section CRUD', 'can:standard CRUD']);
 
     Route::get('teacher-all', [TeacherController::class, 'all'])->middleware(['can:section CRUD']);
+    Route::apiResource('teacher', TeacherController::class)->only(['index', 'store'])->middleware(['can:section CRUD']);
 
     Route::apiResource('gender', GenderController::class)->only(['index'])->middleware(['can:section CRUD']);
     Route::apiResource('blood-group', BloodGroupController::class)->only(['index'])->middleware(['can:section CRUD']);

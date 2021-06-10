@@ -52,7 +52,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        if(Auth::user()->id !== $user->id){
+        if(Auth::user()->id !== $user->id && Auth::user()->hasRole('director') !== true){
             return response([
                 'header' => 'Forbidden',
                 'message' => 'Please Logout and Login again.'
@@ -71,8 +71,11 @@ class UserController extends Controller
             'gender_id' => 'nullable|exists:genders,id',
             'blood_group_id' => 'nullable|exists:blood_groups,id',
             'address' => 'nullable|max:255',
+            'pincode' => 'nullable|max:255',
             'fathers_name' => 'nullable|max:255',
             'mothers_name' => 'nullable|max:255',
+            'pan_no' => 'nullable|max:255',
+            'passport_no' => 'nullable|max:255',
             'voter_id' => 'nullable|max:255',
             'aadhar_no' => 'nullable|max:255',
             'dl_no' => 'nullable|max:255',
@@ -84,18 +87,7 @@ class UserController extends Controller
         ]);
 
         $user->userDetail()->update($request->only([
-            'name',
-            'phone',
-            'phone_alternate',
-            'dob',
-            'gender_id',
-            'blood_group_id',
-            'address',
-            'fathers_name',
-            'mothers_name',
-            'voter_id',
-            'aadhar_id',
-            'dl_no'
+            'name', 'phone', 'phone_alternate', 'dob', 'gender_id', 'blood_group_id', 'address', 'pincode', 'fathers_name', 'mothers_name', 'pan_no', 'passport_no', 'voter_id', 'aadhar_no', 'dl_no'
         ]));
 
         if(!empty($request->password)){

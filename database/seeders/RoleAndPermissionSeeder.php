@@ -33,7 +33,7 @@ class RoleAndPermissionSeeder extends Seeder
         $role->givePermissionTo('session CRUD');
         $role->givePermissionTo('standard CRUD');
         $role->givePermissionTo('section CRUD');
-        
+
         // create teacher roles and assign permissions
         $role = Role::create(['name' => 'teacher']);
         $role->givePermissionTo('view profile');
@@ -43,5 +43,8 @@ class RoleAndPermissionSeeder extends Seeder
         $role = Role::create(['name' => 'student']);
         $role->givePermissionTo('view profile');
         $role->givePermissionTo('edit profile');
+
+        // create disables roles
+        $role = Role::create(['name' => 'disabled']);
     }
 }
