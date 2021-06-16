@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\v1\Fee;
 
+use Exception;
 use App\Models\Student;
 use App\Models\Chargeable;
 use Illuminate\Http\Request;
@@ -98,7 +99,7 @@ class ChargeableController extends Controller
             'amount' => 'required|integer|min:1|max:9999999999',
             'tax_rate' => [
                 'required', 'integer',
-                Rule::in([5, 12, 18, 28])
+                Rule::in([0, 5, 12, 18, 28])
             ]
         ]);
 
@@ -131,7 +132,15 @@ class ChargeableController extends Controller
      */
     public function destroy(Chargeable $chargeable)
     {
-        $chargeable->delete();
+        try {
+            $chargeable->delete();
+        } catch (Exception $ex) {
+            return response([
+                'header' => 'Dependency error',
+                'message' => 'Other resources depend on this record.'
+            ], 418);
+        }
+
         return response('', 204);
     }
 }

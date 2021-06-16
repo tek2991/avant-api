@@ -17,7 +17,7 @@ class FeeController extends Controller
      */
     public function index()
     {
-        return Fee::with('chargeables')->paginate();
+        return Fee::with('chargeables', 'standards')->paginate();
     }
 
     /**
@@ -31,6 +31,7 @@ class FeeController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255|string|unique:fees',
             'chargeable_ids' => 'exists:chargeables,id',
+            'standard_ids' => 'exists:standards,id',
         ]);
 
 
@@ -39,6 +40,8 @@ class FeeController extends Controller
         ]);
 
         $fee->chargeables()->sync($request->chargeable_ids);
+
+        $fee->standards()->sync($request->standard_ids);
 
         return $fee;
     }
@@ -69,6 +72,7 @@ class FeeController extends Controller
                 Rule::unique('fees')->ignore($fee)
             ],
             'chargeable_ids' => 'exists:chargeables,id',
+            'standard_ids' => 'exists:standards,id',
         ]);
 
         $fee->update([
@@ -76,7 +80,9 @@ class FeeController extends Controller
         ]);
 
         $fee->chargeables()->sync($request->chargeable_ids);
-        
+
+        $fee->standards()->sync($request->standard_ids);
+
         return $fee;
     }
 
