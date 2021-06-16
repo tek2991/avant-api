@@ -21,6 +21,11 @@ class Chargeable extends Model
         'gross_amount_in_cent'
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
     protected $casts = [
         'is_mandatory' => 'boolean',
     ];

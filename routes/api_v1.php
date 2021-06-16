@@ -59,6 +59,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     Route::apiResource('fee', FeeController::class)->middleware(['can:section CRUD']);
     Route::apiResource('chargeable', ChargeableController::class)->middleware(['can:section CRUD']);
+    Route::get('chargeable-all', [ChargeableController::class, 'all'])->middleware(['can:section CRUD']);
 
     Route::apiResource('student', StudentController::class)->only(['index', 'store', 'update', 'destroy'])->middleware(['can:section CRUD']);
     Route::get('unallocated-student', [UnallocatedStudentController::class, 'index'])->middleware(['can:section CRUD']);

@@ -51,8 +51,8 @@ class ChargeableController extends Controller
             'tax_rate' => $request->tax_rate,
             'gross_amount_in_cent' => $gross_amount_in_cent
         ]);
-        
-        if($request->boolean('is_mandatory')){
+
+        if ($request->boolean('is_mandatory')) {
             $students = Student::all()->modelKeys();
             AttachStudentToChargeableJob::dispatch($chargeable, $students);
         }
@@ -70,6 +70,16 @@ class ChargeableController extends Controller
     public function show(Chargeable $chargeable)
     {
         return $chargeable->load(['fees']);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function all()
+    {
+        return Chargeable::get();
     }
 
     /**
@@ -95,8 +105,8 @@ class ChargeableController extends Controller
         $amount_in_cent = ($request->amount) * 100;
         $gross_amount_in_cent = (($request->amount) * 100) * ((($request->tax_rate) / 100) + 1);
 
-        if($request->boolean('is_mandatory') !== $chargeable->is_mandatory){
-            $students = $request->boolean('is_mandatory') ? Student::all()->modelKeys(): [];
+        if ($request->boolean('is_mandatory') !== $chargeable->is_mandatory) {
+            $students = $request->boolean('is_mandatory') ? Student::all()->modelKeys() : [];
             AttachStudentToChargeableJob::dispatch($chargeable, $students);
         }
 

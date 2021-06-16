@@ -20,8 +20,14 @@ class Fee extends Model
         'name',
     ];
 
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
     public function chargeables(){
-        return $this->belongsToMany(Chargeable::class)->withPivot('id')->withTimestamps();
+        return $this->belongsToMany(Chargeable::class)->withPivot('id');
     }
 
     public function standards()
