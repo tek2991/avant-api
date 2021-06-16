@@ -20,6 +20,12 @@ class Student extends Model
         'roll_no',
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at'
+    ];
+
     public function sectionStandard(){
         return $this->belongsTo(SectionStandard::class);
     }

@@ -1,10 +1,10 @@
 <?php
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\v1\User\UserController;
 use App\Http\Controllers\Auth\ApiLoginController;
 use App\Http\Controllers\API\v1\Fee\FeeController;
 use App\Http\Controllers\Auth\ApiLogoutController;
 use App\Http\Controllers\API\v1\Bill\BillController;
+use App\Http\Controllers\API\v1\User\UserController;
 use App\Http\Controllers\Auth\ApiRegisterController;
 use App\Http\Controllers\API\v1\Bill\BillFeeController;
 use App\Http\Controllers\API\v1\User\TeacherController;
@@ -19,6 +19,7 @@ use App\Http\Controllers\API\v1\Attributes\GenderController;
 use App\Http\Controllers\API\v1\Appeal\CloseAppealController;
 use App\Http\Controllers\API\v1\Attributes\BloodGroupController;
 use App\Http\Controllers\API\v1\Setup\SectionStandardController;
+use App\Http\Controllers\API\v1\Student\EnrollStudentController;
 use App\Http\Controllers\API\v1\Appeal\RecommendAppealController;
 use App\Http\Controllers\API\v1\Fee\AttachStandardToFeeController;
 use App\Http\Controllers\API\v1\Fee\AttachChargeableToFeeController;
@@ -58,8 +59,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     Route::apiResource('fee', FeeController::class)->middleware(['can:section CRUD']);
     Route::apiResource('chargeable', ChargeableController::class)->middleware(['can:section CRUD']);
-    Route::apiResource('student', StudentController::class)->only(['store', 'update', 'destroy'])->middleware(['can:section CRUD']);
+
+    Route::apiResource('student', StudentController::class)->only(['index', 'store', 'update', 'destroy'])->middleware(['can:section CRUD']);
     Route::get('unallocated-student', [UnallocatedStudentController::class, 'index'])->middleware(['can:section CRUD']);
+    Route::post('enroll-student', [EnrollStudentController::class, 'store'])->middleware(['can:section CRUD']);
 
     Route::post('attach-chargeable-to-fee', [AttachChargeableToFeeController::class, 'store'])->middleware(['can:section CRUD']);
     Route::post('attach-standard-to-fee', [AttachStandardToFeeController::class, 'store'])->middleware(['can:section CRUD']);

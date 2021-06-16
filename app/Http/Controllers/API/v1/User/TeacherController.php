@@ -24,14 +24,22 @@ class TeacherController extends Controller
             'search_string' => 'max:255',
         ]);
 
-        return Teacher::whereHas('user', function ($query) use ($request) {
-            $query->whereHas('userDetail', function ($query) use ($request) {
-                $query->where('name', 'like', '%' . $request->search_string . '%');
-            });
+        // return Teacher::whereHas('user', function ($query) use ($request) {
+        //     $query->whereHas('userDetail', function ($query) use ($request) {
+        //         $query->where('name', 'like', '%' . $request->search_string . '%');
+        //     });
+        // })->with([
+        //     'user',
+        //     'user.userDetail',
+        //     'user.roles:id,name'
+        // ])->paginate();
+
+        return User::role('teacher')->whereHas('userDetail', function ($query) use ($request) {
+            $query->where('name', 'like', '%' . $request->search_string . '%');
         })->with([
-            'user',
-            'user.userDetail',
-            'user.roles:id,name'
+            'teacher',
+            'userDetail',
+            'roles:id,name',
         ])->paginate();
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\v1\Student;
 
 use Exception;
+use App\Models\User;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -14,9 +15,21 @@ class StudentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $this->validate($request, [
+            'search_string' => 'max:255',
+        ]);
+
+        return User::role('student')->whereHas('userDetail', function ($query) use ($request) {
+            $query->where('name', 'like', '%' . $request->search_string . '%');
+        })->with([
+            'student',
+            'userDetail',
+            'roles:id,name',
+            'student.sectionStandard.section',
+            'student.sectionStandard.standard',
+        ])->paginate();
     }
 
     /**
