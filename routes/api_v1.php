@@ -45,6 +45,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('user/{user?}', [UserController::class, 'show'])->name('user.show');
     
     Route::apiResource('session', SessionController::class)->middleware(['can:session CRUD']);
+    Route::get('session-all', [SessionController::class, 'all'])->middleware(['can:section CRUD']);
     Route::get('standard-all', [StandardController::class, 'all'])->middleware(['can:standard CRUD']);
     Route::apiResource('standard', StandardController::class)->middleware(['can:standard CRUD']);
     Route::get('section-all', [SectionController::class, 'all'])->middleware(['can:section CRUD']);
@@ -58,6 +59,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('blood-group', BloodGroupController::class)->only(['index'])->middleware(['can:section CRUD']);
     
     Route::apiResource('fee', FeeController::class)->middleware(['can:section CRUD']);
+    Route::get('fee-all', [FeeController::class, 'all'])->middleware(['can:section CRUD']);
     Route::apiResource('chargeable', ChargeableController::class)->middleware(['can:section CRUD']);
     Route::get('chargeable-all', [ChargeableController::class, 'all'])->middleware(['can:section CRUD']);
 

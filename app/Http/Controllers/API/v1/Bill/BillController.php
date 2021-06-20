@@ -17,7 +17,7 @@ class BillController extends Controller
      */
     public function index()
     {
-        return Bill::with(['billFees', 'billFees.fee'])->paginate();
+        return Bill::with(['session'])->paginate();
     }
 
     /**
@@ -56,7 +56,11 @@ class BillController extends Controller
      */
     public function show(Bill $bill)
     {
-        Return $bill->load(['billFees', 'billFees.fee']);
+        $bill =  $bill->load(['session']);
+
+        $billFees = $bill->billFees()->with('fee')->paginate();
+
+        return response(compact('bill', 'billFees'));
     }
 
     /**

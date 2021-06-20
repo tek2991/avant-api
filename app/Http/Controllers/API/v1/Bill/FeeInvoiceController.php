@@ -20,9 +20,31 @@ class FeeInvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return FeeInvoice::paginate();
+        $this->validate($request, [
+            'session_id' => 'exists:sessions,id',
+            'bill_id' => 'exists:bills,id',
+            'fee_id' => 'exists:fees,id',
+            'standard_id' => 'exists:standards,id',
+            'invoice_id' => 'max:255',
+        ]);
+
+        return FeeInvoice::
+        whereHas('billFee', function ($query) use ($request) {
+            $query->whereHas('bill', function ($query) use ($request) {
+                $query->whereHas('session', function ($query) use ($request) {
+                    $query->where('id', 'like', '%' . $request->session_id . '%');
+                });
+                $query->where('id', 'like', '%' . $request->bill_id . '%');
+            });
+            $query->whereHas('fee', function ($query) use ($request) {
+                $query->where('id', 'like', '%' . $request->fee_id . '%');
+            });
+        })
+        ->where('standard_id', 'like', '%' . $request->standard_id . '%')
+        ->where('id', 'like', '%' . $request->invoice_id . '%')
+        ->with('user:id', 'user.userDetail:id,user_id,name', 'user.student:id,user_id,section_standard_id', 'user.student.sectionStandard.section', 'user.student.sectionStandard.standard')->paginate();
     }
 
     /**

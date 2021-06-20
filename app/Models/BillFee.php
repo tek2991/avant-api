@@ -17,6 +17,12 @@ class BillFee extends Pivot
         'gross_amount_in_cent'
     ];
 
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
+
     public function fee(){
         return $this->belongsTo(Fee::class);
     }

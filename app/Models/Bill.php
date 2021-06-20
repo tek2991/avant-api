@@ -41,4 +41,8 @@ class Bill extends Model
     public function feeInvoices(){
         return $this->hasMany(FeeInvoice::class);
     }
+
+    public function session(){
+        return $this->belongsTo(Session::class);
+    }
 }

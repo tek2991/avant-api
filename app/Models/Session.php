@@ -13,4 +13,10 @@ class Session extends Model
         'name',
         'is_active'
     ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
 }
