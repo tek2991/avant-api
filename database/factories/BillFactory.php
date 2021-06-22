@@ -30,7 +30,8 @@ class BillFactory extends Factory
             'description' => $this->faker->sentence($nbWords = 6, $variableNbWords = true),
             'session_id' => $session_id,
             'bill_from_date' => Carbon::today(),
-            'bill_to_date' => Carbon::today()->addMonth()
+            'bill_to_date' => Carbon::today()->addMonth(),
+            'bill_due_date' => Carbon::today()->addDay(),
         ];
     }
 }

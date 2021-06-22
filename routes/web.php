@@ -1,5 +1,6 @@
 <?php
 
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\SpaLoginController;
 use App\Http\Controllers\Auth\SpaLogoutController;
@@ -18,6 +19,12 @@ use App\Http\Controllers\Auth\SpaRegisterController;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('invoice', function () {
+    $pdf = PDF::loadView('documents.fee-invoice');
+    return $pdf->download('invoice.pdf');
+    // return view('documents.fee-invoice');
 });
 
 

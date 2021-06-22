@@ -17,6 +17,7 @@ class Bill extends Model
         'session_id',
         'bill_from_date',
         'bill_to_date',
+        'bill_due_date',
         'amount_in_cent',
         'tax_in_cent',
         'gross_amount_in_cent'
@@ -26,9 +27,10 @@ class Bill extends Model
     protected $cast = [
         'bill_from_date' => 'datetime',
         'bill_to_date' => 'datetime',
+        'bill_due_date' => 'datetime',
     ];
 
-    protected $dates = ['bill_from_date', 'bill_to_date'];
+    protected $dates = ['bill_from_date', 'bill_to_date', 'bill_due_date'];
 
     public function fees(){
         return $this->belongsToMany(Fee::class)->withPivot('id')->withTimestamps();

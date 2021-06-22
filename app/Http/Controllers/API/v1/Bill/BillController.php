@@ -21,6 +21,16 @@ class BillController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function all()
+    {
+        return Bill::orderBy('id')->get();
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -34,10 +44,11 @@ class BillController extends Controller
             'session_id' => 'required|exists:sessions,id',
             'bill_from_date' => 'required|date|after_or_equal:today',
             'bill_to_date' => 'required|date|after_or_equal:bill_date_from',
+            'bill_due_date' => 'required|date|after_or_equal:bill_date_from',
             'fee_ids' => 'required|min:1|exists:fees,id'
         ]);
 
-        $bill = Bill::create($request->only(['name', 'description', 'session_id', 'bill_from_date', 'bill_to_date']));
+        $bill = Bill::create($request->only(['name', 'description', 'session_id', 'bill_from_date', 'bill_to_date', 'bill_due_date']));
 
         $bill->fees()->attach($request->fee_ids);
 

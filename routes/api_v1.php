@@ -72,16 +72,20 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('attach-student-to-chargeable', [AttachStudentToChargeableController::class, 'store'])->middleware(['can:section CRUD']);
 
     Route::apiResource('bill', BillController::class)->only(['index', 'store', 'show'])->middleware(['can:section CRUD']);
+    Route::get('bill-all', [BillController::class, 'all'])->middleware(['can:section CRUD']);
     Route::apiResource('bill-fee', BillFeeController::class)->only(['show'])->middleware(['can:section CRUD']);
     Route::apiResource('fee-invoice', FeeInvoiceController::class)->only(['index', 'show'])->middleware(['can:section CRUD']);
-
+    
+    
     Route::apiResource('appeal', AppealController::class);
     Route::post('recommend-appeal/{appeal}', [RecommendAppealController::class, 'store'])->middleware(['can:section CRUD']);
     Route::post('close-appeal/{appeal}', [CloseAppealController::class, 'store'])->middleware(['can:section CRUD']);
-
-
+    
+    
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });
+
+Route::get('fee-invoice-print/{fee_invoice}', [FeeInvoiceController::class, 'print']);
 
 Route::get('register', [ApiRegisterController::class, 'api-register']);
 Route::post('director-login', [ApiLoginController::class, 'directorLogin'])->name('api-director-login');

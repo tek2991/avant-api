@@ -20,6 +20,7 @@ class CreateBillsTable extends Migration
             $table->foreignId('session_id')->constrained();
             $table->dateTime('bill_from_date');
             $table->dateTime('bill_to_date');
+            $table->dateTime('bill_due_date');
             $table->timestamps();
         });
     }

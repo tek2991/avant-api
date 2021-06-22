@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\v1\Bill;
 
 use App\Models\User;
+use Barryvdh\DomPDF\Facade as PDF;
 use App\Models\FeeInvoice;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -66,7 +67,7 @@ class FeeInvoiceController extends Controller
      */
     public function show(FeeInvoice $feeInvoice)
     {
-        return $feeInvoice->load('feeInvoiceItems', 'user', 'standard');
+        return $feeInvoice->load('billFee:id,bill_id,fee_id', 'billFee.bill', 'billFee.bill.session', 'feeInvoiceItems', 'standard', 'user:id', 'user.userDetail:id,user_id,name');
     }
 
     /**
@@ -90,5 +91,19 @@ class FeeInvoiceController extends Controller
     public function destroy(FeeInvoice $feeInvoice)
     {
         //
+    }
+
+    /**
+     * Print the Fee Invoice.
+     *
+     * @param  \App\Models\FeeInvoice  $feeInvoice
+     * @return \Illuminate\Http\Response
+     */
+    public function print(FeeInvoice $feeInvoice)
+    {
+        $data = $feeInvoice->load('billFee:id,bill_id,fee_id', 'billFee.bill', 'billFee.bill.session', 'feeInvoiceItems', 'standard', 'user:id,email', 'user.userDetail:id,user_id,name');
+
+        $pdf = PDF::loadView('documents.fee-invoice', ['data' => $data]);
+        return $pdf->download('fee_invoice_' . $feeInvoice->id . '.pdf');
     }
 }
