@@ -24,6 +24,7 @@ use App\Http\Controllers\API\v1\Appeal\RecommendAppealController;
 use App\Http\Controllers\API\v1\Fee\AttachStandardToFeeController;
 use App\Http\Controllers\API\v1\Fee\AttachChargeableToFeeController;
 use App\Http\Controllers\API\v1\Student\UnallocatedStudentController;
+use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Fee\AttachStudentToChargeableController;
 
 /*
@@ -75,6 +76,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('bill-all', [BillController::class, 'all'])->middleware(['can:section CRUD']);
     Route::apiResource('bill-fee', BillFeeController::class)->only(['show'])->middleware(['can:section CRUD']);
     Route::apiResource('fee-invoice', FeeInvoiceController::class)->only(['index', 'show'])->middleware(['can:section CRUD']);
+
+    Route::get('razorpay-fee-invoice/{fee_invoice}', [RazorpayFeeInvoiceController::class, 'show'])->middleware(['can:section CRUD']);
     
     
     Route::apiResource('appeal', AppealController::class);
@@ -86,6 +89,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::get('fee-invoice-print/{fee_invoice}', [FeeInvoiceController::class, 'print']);
+
+Route::post('/razorpay-callback', function () {
+    return response('OK', 200);
+});
 
 Route::get('register', [ApiRegisterController::class, 'api-register']);
 Route::post('director-login', [ApiLoginController::class, 'directorLogin'])->name('api-director-login');

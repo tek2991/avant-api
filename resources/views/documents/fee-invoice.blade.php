@@ -118,7 +118,7 @@
                     <table>
                         <tr>
                             <td class="title">
-                                <img src="https://resources.ap-south-1.linodeobjects.com/logo.png"
+                                <img src="{{ env('LOGO') }}"
                                     style="width: 100%; max-width: 200px" />
                             </td>
 

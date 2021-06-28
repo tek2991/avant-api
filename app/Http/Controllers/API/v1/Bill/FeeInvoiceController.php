@@ -67,7 +67,7 @@ class FeeInvoiceController extends Controller
      */
     public function show(FeeInvoice $feeInvoice)
     {
-        return $feeInvoice->load('billFee:id,bill_id,fee_id', 'billFee.bill', 'billFee.bill.session', 'feeInvoiceItems', 'standard', 'user:id', 'user.userDetail:id,user_id,name');
+        return $feeInvoice->load('billFee:id,bill_id,fee_id', 'billFee.bill', 'billFee.bill.session', 'feeInvoiceItems', 'standard', 'user:id,email', 'user.userDetail:id,user_id,name');
     }
 
     /**
