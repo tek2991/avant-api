@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\BillFee;
+use App\Models\Payment;
 use App\Models\Standard;
 use App\Models\FeeInvoiceItem;
 use Illuminate\Database\Eloquent\Model;
@@ -37,5 +38,9 @@ class FeeInvoice extends Model
 
     public function feeInvoiceItems(){
         return $this->belongsToMany(FeeInvoiceItem::class, 'fee_invoice_fee_invoice_item', 'fee_invoice_id', 'fee_invoice_item_id')->withPivot('id')->withTimestamps();
+    }
+
+    public function payment(){
+        return $this->hasOne(Payment::class);
     }
 }

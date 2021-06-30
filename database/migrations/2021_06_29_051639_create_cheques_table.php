@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFeePaymentsTable extends Migration
+class CreateChequesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateFeePaymentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('fee_payments', function (Blueprint $table) {
+        Schema::create('cheques', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('fee_invoice_id')->constrained('fee_invoices');
-            $table->foreignId('transaction_id')->constrained('transactions');
-            $table->unsignedBigInteger('amount_in_cent')->nullable();
+            $table->unsignedBigInteger('amount_in_cent');
+            $table->string('cheque_no');
+            $table->string('cheque_date');
+            $table->foreignId('bank_id')->constrained('banks');
+            $table->string('remarks')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreateFeePaymentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fee_payments');
+        Schema::dropIfExists('cheques');
     }
 }

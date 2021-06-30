@@ -21,10 +21,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/razorpay-callback', function () {
-    return response('OK', 200);
-});
-
 Route::get('invoice', function () {
     $pdf = PDF::loadView('documents.fee-invoice');
     return $pdf->download('invoice.pdf');

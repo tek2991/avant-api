@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use Database\Seeders\FeeSeeder;
-
 use Illuminate\Database\Seeder;
+use Database\Seeders\BankSeeder;
 use Database\Seeders\BillSeeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\GenderSeeder;
@@ -20,6 +20,7 @@ use Database\Seeders\AppealStateSeeder;
 use Database\Seeders\BloodGroupsSeeder;
 use Database\Seeders\FeeStandardSeeder;
 use Database\Seeders\ChargeableFeeSeeder;
+use Database\Seeders\PaymentMethodSeeder;
 use Database\Seeders\AttendanceStateSeeder;
 use Database\Seeders\SectionStandardSeeder;
 use Database\Seeders\RoleAndPermissionSeeder;
@@ -54,6 +55,8 @@ class DatabaseSeeder extends Seeder
             AttendanceStateSeeder::class,
             AppealStateSeeder::class,
             AppealTypeSeeder::class,
+            PaymentMethodSeeder::class,
+            BankSeeder::class,
         ]);
     }
 }

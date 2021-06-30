@@ -78,6 +78,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('fee-invoice', FeeInvoiceController::class)->only(['index', 'show'])->middleware(['can:section CRUD']);
 
     Route::get('razorpay-fee-invoice/{fee_invoice}', [RazorpayFeeInvoiceController::class, 'show'])->middleware(['can:section CRUD']);
+    Route::get('razorpay-verify-payment/{fee_invoice}', [RazorpayFeeInvoiceController::class, 'verifyPayment'])->middleware(['can:section CRUD']);
     
     
     Route::apiResource('appeal', AppealController::class);
@@ -89,6 +90,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::get('fee-invoice-print/{fee_invoice}', [FeeInvoiceController::class, 'print']);
+
+Route::post('/razorpay-callback', function () {
+    return response('OK', 200);
+});
 
 Route::post('/razorpay-callback', function () {
     return response('OK', 200);
