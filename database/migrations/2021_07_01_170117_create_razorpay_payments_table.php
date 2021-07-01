@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePaymentsTable extends Migration
+class CreateRazorpayPaymentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreatePaymentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::create('razorpay_payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('payment_method_id')->constrained('payment_methods');
-            $table->foreignId('fee_invoice_id')->constrained('fee_invoices');
-            $table->string('status')->default('created');
-            $table->string('status_source')->default('api');
+
+            $table->string('order_id');
+            $table->string('payment_id')->nullable();
+            $table->string('payment_status')->nullable();
+
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreatePaymentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('razorpay_payments');
     }
 }
