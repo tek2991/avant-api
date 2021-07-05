@@ -17,17 +17,19 @@ class CreateRazorpaysTable extends Migration
             $table->id();
 
             $table->string('order_id');
+            $table->string('order_status');
+
             $table->string('payment_id')->nullable();
-            $table->string('signature')->nullable();
+            $table->string('payment_status')->nullable();
+            
             $table->string('attempts');
+            $table->string('signature')->nullable();
 
             $table->unsignedBigInteger('amount_in_cent');
             $table->unsignedBigInteger('amount_paid_in_cent');
             $table->unsignedBigInteger('amount_due_in_cent');
 
             $table->string('currency');
-            $table->string('order_status');
-            $table->string('payment_status')->nullable();
 
             $table->timestamps();
         });

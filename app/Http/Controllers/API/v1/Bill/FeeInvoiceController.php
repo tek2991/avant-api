@@ -7,6 +7,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 use App\Models\FeeInvoice;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Receipt;
 
 class FeeInvoiceController extends Controller
 {
@@ -67,7 +68,7 @@ class FeeInvoiceController extends Controller
      */
     public function show(FeeInvoice $feeInvoice)
     {
-        return $feeInvoice->load('billFee:id,bill_id,fee_id', 'billFee.bill', 'billFee.bill.session', 'feeInvoiceItems', 'standard', 'user:id,email', 'user.userDetail:id,user_id,name');
+        return $feeInvoice->load('billFee:id,bill_id,fee_id', 'billFee.bill', 'billFee.bill.session', 'feeInvoiceItems', 'payment', 'standard', 'user:id,email', 'user.userDetail:id,user_id,name');
     }
 
     /**
@@ -105,5 +106,22 @@ class FeeInvoiceController extends Controller
 
         $pdf = PDF::loadView('documents.fee-invoice', ['data' => $data]);
         return $pdf->download('fee_invoice_' . $feeInvoice->id . '.pdf');
+    }
+
+    /**
+     * Print the Fee Invoice.
+     *
+     * @param  \App\Models\FeeInvoice  $feeInvoice
+     * @return \Illuminate\Http\Response
+     */
+    public function printReceipt(FeeInvoice $feeInvoice)
+    {
+        $data = $feeInvoice->load('billFee:id,bill_id,fee_id', 'billFee.bill', 'billFee.bill.session', 'feeInvoiceItems', 'standard', 'payment', 'user:id,email', 'user.userDetail:id,user_id,name');
+
+        $receipt = Receipt::where('fee_invoice_id', $feeInvoice->id)->first();
+
+        $pdf = PDF::loadView('documents.fee-invoice-receipt', ['data' => $data, 'receipt' =>$receipt]);
+
+        return $pdf->download('fee_invoice_receipt' . $feeInvoice->id . '.pdf');
     }
 }

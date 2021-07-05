@@ -90,6 +90,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 });
 
 Route::get('fee-invoice-print/{fee_invoice}', [FeeInvoiceController::class, 'print']);
+Route::get('fee-invoice-receipt/{fee_invoice}', [FeeInvoiceController::class, 'printReceipt']);
 
 Route::post('/razorpay-callback', function () {
     return response('OK', 200);

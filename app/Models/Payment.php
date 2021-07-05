@@ -15,6 +15,7 @@ class Payment extends Model
         'payment_method_id',
         'fee_invoice_id',
         'status',
+        'status_source'
     ];
 
     /**
