@@ -119,17 +119,21 @@ class RazorpayFeeInvoiceController extends Controller
 
         if ($feeInvoice->payment()->count() > 0) {
             if ($feeInvoice->payment->status === 'authorised') {
-                return response([
-                    'header' => 'Payment error',
-                    'message' => 'Payment already authorires. Please contact admin.'
-                ], 401);
+                // return response([
+                //     'header' => 'Payment error',
+                //     'message' => 'Payment already authorires. Please contact admin.'
+                // ], 401);
+
+                return response('OK', 200);
             }
 
             if ($feeInvoice->payment->status === 'captured') {
-                return response([
-                    'header' => 'Payment error',
-                    'message' => 'Payment credited. Please contact admin.'
-                ], 401);
+                // return response([
+                //     'header' => 'Payment error',
+                //     'message' => 'Payment credited. Please contact admin.'
+                // ], 401);
+
+                return response('OK', 200);
             }
         }
 

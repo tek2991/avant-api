@@ -45,45 +45,49 @@ Route::middleware(['auth:sanctum'])->group(function () {
     ]);
     Route::get('user/{user?}', [UserController::class, 'show'])->name('user.show');
     
-    Route::apiResource('session', SessionController::class)->middleware(['can:session CRUD']);
-    Route::get('session-all', [SessionController::class, 'all'])->middleware(['can:section CRUD']);
-    Route::get('standard-all', [StandardController::class, 'all'])->middleware(['can:standard CRUD']);
-    Route::apiResource('standard', StandardController::class)->middleware(['can:standard CRUD']);
-    Route::get('section-all', [SectionController::class, 'all'])->middleware(['can:section CRUD']);
-    Route::apiResource('section', SectionController::class)->middleware(['can:section CRUD']);
-    Route::apiResource('section-standard', SectionStandardController::class)->middleware(['can:section CRUD', 'can:standard CRUD']);
+    Route::apiResource('session', SessionController::class)->middleware(['can:session_crud']);
+    Route::get('session-all', [SessionController::class, 'all'])->middleware(['can:session_read']);
 
-    Route::get('teacher-all', [TeacherController::class, 'all'])->middleware(['can:section CRUD']);
-    Route::apiResource('teacher', TeacherController::class)->only(['index', 'store'])->middleware(['can:section CRUD']);
+    Route::apiResource('standard', StandardController::class)->middleware(['can:standard_crud']);
+    Route::get('standard-all', [StandardController::class, 'all'])->middleware(['can:standard_read']);
 
-    Route::apiResource('gender', GenderController::class)->only(['index'])->middleware(['can:section CRUD']);
-    Route::apiResource('blood-group', BloodGroupController::class)->only(['index'])->middleware(['can:section CRUD']);
+    Route::apiResource('section', SectionController::class)->middleware(['can:section_crud']);
+    Route::get('section-all', [SectionController::class, 'all'])->middleware(['can:section_crud', 'can:section_read']);
     
-    Route::apiResource('fee', FeeController::class)->middleware(['can:section CRUD']);
-    Route::get('fee-all', [FeeController::class, 'all'])->middleware(['can:section CRUD']);
-    Route::apiResource('chargeable', ChargeableController::class)->middleware(['can:section CRUD']);
-    Route::get('chargeable-all', [ChargeableController::class, 'all'])->middleware(['can:section CRUD']);
+    Route::apiResource('section-standard', SectionStandardController::class)->middleware(['can:standard_crud', 'can:section_crud']);
 
-    Route::apiResource('student', StudentController::class)->only(['index', 'store', 'update', 'destroy'])->middleware(['can:section CRUD']);
-    Route::get('unallocated-student', [UnallocatedStudentController::class, 'index'])->middleware(['can:section CRUD']);
-    Route::post('enroll-student', [EnrollStudentController::class, 'store'])->middleware(['can:section CRUD']);
+    Route::apiResource('teacher', TeacherController::class)->only(['index', 'store'])->middleware(['can:teacher_crud']);
+    Route::get('teacher-all', [TeacherController::class, 'all'])->middleware(['can:teacher_read']);
 
-    Route::post('attach-chargeable-to-fee', [AttachChargeableToFeeController::class, 'store'])->middleware(['can:section CRUD']);
-    Route::post('attach-standard-to-fee', [AttachStandardToFeeController::class, 'store'])->middleware(['can:section CRUD']);
-    Route::post('attach-student-to-chargeable', [AttachStudentToChargeableController::class, 'store'])->middleware(['can:section CRUD']);
+    Route::apiResource('gender', GenderController::class)->only(['index'])->middleware(['can:gender_read']);
+    Route::apiResource('blood-group', BloodGroupController::class)->only(['index'])->middleware(['can:blood_group_read']);
+    
+    Route::apiResource('fee', FeeController::class)->middleware(['can:bill_crud']);
+    Route::get('fee-all', [FeeController::class, 'all'])->middleware(['can:bill_read']);
 
-    Route::apiResource('bill', BillController::class)->only(['index', 'store', 'show'])->middleware(['can:section CRUD']);
-    Route::get('bill-all', [BillController::class, 'all'])->middleware(['can:section CRUD']);
-    Route::apiResource('bill-fee', BillFeeController::class)->only(['show'])->middleware(['can:section CRUD']);
-    Route::apiResource('fee-invoice', FeeInvoiceController::class)->only(['index', 'show'])->middleware(['can:section CRUD']);
+    Route::apiResource('chargeable', ChargeableController::class)->middleware(['can:bill_crud']);
+    Route::get('chargeable-all', [ChargeableController::class, 'all'])->middleware(['can:bill_read']);
 
-    Route::get('razorpay-fee-invoice/{fee_invoice}', [RazorpayFeeInvoiceController::class, 'show'])->middleware(['can:section CRUD']);
-    Route::post('razorpay-verify-payment/{fee_invoice}', [RazorpayFeeInvoiceController::class, 'verifyPayment'])->middleware(['can:section CRUD']);
+    Route::apiResource('student', StudentController::class)->only(['index', 'store', 'update', 'destroy'])->middleware(['can:student_crud']);
+    Route::get('unallocated-student', [UnallocatedStudentController::class, 'index'])->middleware(['can:student_read']);
+    Route::post('enroll-student', [EnrollStudentController::class, 'store'])->middleware(['can:student_crud']);
+
+    Route::post('attach-chargeable-to-fee', [AttachChargeableToFeeController::class, 'store'])->middleware(['can:bill_crud']);
+    Route::post('attach-standard-to-fee', [AttachStandardToFeeController::class, 'store'])->middleware(['can:bill_crud']);
+    Route::post('attach-student-to-chargeable', [AttachStudentToChargeableController::class, 'store'])->middleware(['can:bill_crud']);
+
+    Route::apiResource('bill', BillController::class)->only(['index', 'store', 'show'])->middleware(['can:bill_crud']);
+    Route::get('bill-all', [BillController::class, 'all'])->middleware(['can:bill_read']);
+    Route::apiResource('bill-fee', BillFeeController::class)->only(['show'])->middleware(['can:bill_read']);
+    Route::apiResource('fee-invoice', FeeInvoiceController::class)->only(['index', 'show'])->middleware(['can:bill_read']);
+
+    Route::get('razorpay-fee-invoice/{fee_invoice}', [RazorpayFeeInvoiceController::class, 'show']);
+    Route::post('razorpay-verify-payment/{fee_invoice}', [RazorpayFeeInvoiceController::class, 'verifyPayment']);
     
     
     Route::apiResource('appeal', AppealController::class);
-    Route::post('recommend-appeal/{appeal}', [RecommendAppealController::class, 'store'])->middleware(['can:section CRUD']);
-    Route::post('close-appeal/{appeal}', [CloseAppealController::class, 'store'])->middleware(['can:section CRUD']);
+    Route::post('recommend-appeal/{appeal}', [RecommendAppealController::class, 'store'])->middleware(['can:appeal_crud']);
+    Route::post('close-appeal/{appeal}', [CloseAppealController::class, 'store'])->middleware(['can:appeal_crud']);
     
     
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
@@ -92,11 +96,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::get('fee-invoice-print/{fee_invoice}', [FeeInvoiceController::class, 'print']);
 Route::get('fee-invoice-receipt/{fee_invoice}', [FeeInvoiceController::class, 'printReceipt']);
 
-Route::post('/razorpay-callback', function () {
-    return response('OK', 200);
-});
+// Route::post('/razorpay-callback', function () {
+//     return response('OK', 200);
+// });
 
 Route::post('razorpay-webhook', [RazorpayFeeInvoiceController::class, 'webhook']);
 
 Route::get('register', [ApiRegisterController::class, 'api-register']);
+
 Route::post('director-login', [ApiLoginController::class, 'directorLogin'])->name('api-director-login');
+Route::post('student-login', [ApiLoginController::class, 'studentLogin'])->name('api-student-login');

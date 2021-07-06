@@ -18,7 +18,7 @@ class FeeInvoicePolicy
      */
     public function viewAny(User $user)
     {
-        return $user->can('section CRUD');
+        return $user->can('bill_read');
     }
 
     /**
@@ -32,7 +32,7 @@ class FeeInvoicePolicy
     {
         $isOwner = $feeInvoice->user_id === $user->id;
 
-        $hasPermission = $user->can('section CRUD');
+        $hasPermission = $user->can('bill_read');
 
         return $isOwner || $hasPermission;
     }
