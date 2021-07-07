@@ -33,6 +33,12 @@ class FeeInvoiceController extends Controller
             'invoice_id' => 'max:255',
         ]);
 
+        $user_id = '%%';
+
+        if (Auth::user()->hasRole('director') !== true) {
+            $user_id = Auth::user()->id;
+        }
+
         return FeeInvoice::
         whereHas('billFee', function ($query) use ($request) {
             $query->whereHas('bill', function ($query) use ($request) {
@@ -47,7 +53,8 @@ class FeeInvoiceController extends Controller
         })
         ->where('standard_id', 'like', '%' . $request->standard_id . '%')
         ->where('id', 'like', '%' . $request->invoice_id . '%')
-        ->with('user:id', 'user.userDetail:id,user_id,name', 'user.student:id,user_id,section_standard_id', 'user.student.sectionStandard.section', 'user.student.sectionStandard.standard')->paginate();
+        ->where('user_id', 'like', $user_id)
+        ->with('user:id', 'user.userDetail:id,user_id,name', 'user.student:id,user_id,section_standard_id', 'user.student.sectionStandard.section', 'user.student.sectionStandard.standard', 'payment')->paginate();
     }
 
     /**
@@ -133,7 +140,7 @@ class FeeInvoiceController extends Controller
 
         $data = $feeInvoice->load('billFee:id,bill_id,fee_id', 'billFee.bill', 'billFee.bill.session', 'feeInvoiceItems', 'standard', 'payment', 'user:id,email', 'user.userDetail:id,user_id,name');
 
-        $receipt = Receipt::where('fee_invoice_id', $feeInvoice->id)->first();
+        $receipt = Receipt::where('fee_invoice_id', $feeInvoice->id)->firstOrFail();
 
         $pdf = PDF::loadView('documents.fee-invoice-receipt', ['data' => $data, 'receipt' =>$receipt]);
 

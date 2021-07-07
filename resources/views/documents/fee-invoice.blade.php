@@ -129,6 +129,8 @@
 
                                 Due: {{ $data->billFee->bill->bill_due_date->toFormattedDateString() }} <br />
 
+                                {{ $data->name }} <br />
+
                                 For: {{ $data->billFee->bill->bill_from_date->toFormattedDateString() }} to
                                 {{ $data->billFee->bill->bill_to_date->toFormattedDateString() }}
                             </td>

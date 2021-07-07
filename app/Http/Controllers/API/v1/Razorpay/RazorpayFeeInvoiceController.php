@@ -74,7 +74,7 @@ class RazorpayFeeInvoiceController extends Controller
             'image' => env('LOGO'),
         ];
 
-        $payment_method_id = PaymentMethod::where('name', 'Razorpay')->first()->id;
+        $payment_method_id = PaymentMethod::where('name', 'Razorpay')->firstOrFail()->id;
 
         $payment = Payment::updateOrCreate(
             ['fee_invoice_id' => $feeInvoice->id],

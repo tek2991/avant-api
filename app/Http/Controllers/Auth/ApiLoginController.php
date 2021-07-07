@@ -16,7 +16,7 @@ class ApiLoginController extends Controller
             'password' => 'required|string',
         ]);
 
-        $user = User::where('username', $request->username)->first();
+        $user = User::where('username', $request->username)->firstOrFail();
 
         if($user->hasRole('director') !== true){
             return response([
@@ -51,7 +51,7 @@ class ApiLoginController extends Controller
             'password' => 'required|string',
         ]);
 
-        $user = User::where('username', $request->username)->first();
+        $user = User::where('username', $request->username)->firstOrFail();
 
         if($user->hasRole('student') !== true){
             return response([
