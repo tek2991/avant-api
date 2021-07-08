@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use App\Models\Appeal;
-use App\Models\Gender;
 use App\Models\Student;
 use App\Models\Teacher;
-use App\Models\Attendence;
+use App\Models\Attendance;
 use App\Models\FeeInvoice;
 use App\Models\UserDetail;
 use Laravel\Sanctum\HasApiTokens;
@@ -63,8 +62,8 @@ class User extends Authenticatable
         return $this->hasMany(Appeal::class);
     }
 
-    public function attendences(){
-        return $this->hasMany(Attendence::class);
+    public function attendances(){
+        return $this->hasMany(Attendance::class);
     }
 
     public function userDetail(){

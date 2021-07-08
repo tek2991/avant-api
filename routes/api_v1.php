@@ -21,6 +21,7 @@ use App\Http\Controllers\API\v1\Attributes\BloodGroupController;
 use App\Http\Controllers\API\v1\Setup\SectionStandardController;
 use App\Http\Controllers\API\v1\Student\EnrollStudentController;
 use App\Http\Controllers\API\v1\Appeal\RecommendAppealController;
+use App\Http\Controllers\API\v1\Attendance\AttendanceController;
 use App\Http\Controllers\API\v1\Fee\AttachStandardToFeeController;
 use App\Http\Controllers\API\v1\Fee\AttachChargeableToFeeController;
 use App\Http\Controllers\API\v1\Student\UnallocatedStudentController;
@@ -89,6 +90,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('recommend-appeal/{appeal}', [RecommendAppealController::class, 'store'])->middleware(['can:appeal_crud']);
     Route::post('close-appeal/{appeal}', [CloseAppealController::class, 'store'])->middleware(['can:appeal_crud']);
     
+    Route::apiResource('attendance', AttendanceController::class);
     
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });

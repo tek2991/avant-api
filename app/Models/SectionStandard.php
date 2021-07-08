@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Section;
 use App\Models\Student;
 use App\Models\Teacher;
+use App\Models\Attendance;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class SectionStandard extends Pivot
@@ -27,5 +28,8 @@ class SectionStandard extends Pivot
      }
      public function standard(){
          return $this->belongsTo(Standard::class);
+     }
+     public function attendance(){
+         return $this->hasMany(Attendance::class);
      }
 }

@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Session;
 use App\Models\AttendanceState;
+use App\Models\SectionStandard;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -14,7 +16,9 @@ class Attendance extends Model
     protected $fillable =[
         'user_id',
         'attendance_state_id',
-        'attendance_date'
+        'attendance_date',
+        'section_standard_id',
+        'session_id',
     ];
 
     protected $cast = [
@@ -29,5 +33,13 @@ class Attendance extends Model
 
     public function attendanceState(){
         return $this->belongsTo(AttendanceState::class);
+    }
+
+    public function sectionStandard(){
+        return $this->belongsTo(SectionStandard::class);
+    }
+
+    public function session(){
+        return $this->belongsTo(Session::class);
     }
 }
