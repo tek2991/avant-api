@@ -22,6 +22,56 @@ class AttendanceController extends Controller
      */
     public function index(Request $request)
     {
+        // $user = Auth::user();
+        // if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
+        //     return response([
+        //         'header' => 'Forbidden',
+        //         'message' => 'Please Logout and Login again.'
+        //     ], 401);
+        // }
+
+        // $this->validate($request, [
+        //     'section_standard_id' => 'required|min:1|exists:section_standard,id',
+        //     'attendance_date' => 'required|date',
+        // ]);
+
+        // $sectionStandard = SectionStandard::where('id', $request->section_standard_id)->firstOrFail();
+
+        // $canProceed = false;
+
+        // $user->hasRole('director') === true ? $canProceed = true : false;
+
+        // if ($user->hasRole('teacher') === true) {
+        //     $user->teacher->id === $sectionStandard->teacher_id ? $canProceed = true : false;
+        // }
+
+        // if ($canProceed == false) {
+        //     return response([
+        //         'header' => 'Forbidden',
+        //         'message' => 'Please Logout and Login again.'
+        //     ], 401);
+        // }
+
+        // $students = $sectionStandard->students()->with([
+        //     'user:id', 'user.userDetail:id,user_id,name',
+        //     'user.attendances' => function ($query) use ($request) {
+        //         $query->where('attendance_date', 'like', '%' . $request->attendance_date . '%');
+        //     }
+        // ])->select(['id', 'user_id', 'section_standard_id', 'roll_no'])->orderBy('roll_no')->paginate();
+
+        // $sectionStandard = $sectionStandard->with(['section', 'standard', 'teacher:id,user_id', 'teacher.user:id', 'teacher.user.userDetail:id,user_id,name'])->find($request->section_standard_id);
+
+        // return response(compact('sectionStandard', 'students'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
         $user = Auth::user();
         if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
             return response([
@@ -53,72 +103,13 @@ class AttendanceController extends Controller
             ], 401);
         }
 
-        // $attendances = $sectionStandard->whereHas('students', function ($query) use ($request) {
-        //     $query->whereHas('user', function ($query) use ($request) {
-        //         $query->whereHas('attendances', function ($query) use ($request) {
-        //             $query->where('attendance_date', 'like', '%' . $request->attendance_date . '%');
-        //         });
-        //     });
-        // })->with(['students:id,user_id,section_standard_id,roll_no', 'students.user:id', 'students.user.attendances'])->get();
-
-        $attendances = $sectionStandard->load([
-            'students:id,user_id,section_standard_id,roll_no', 'students.user:id', 'students.user.userDetail',
-            'students.user.attendances' => function ($query) use ($request){
-                $query->where('attendance_date', 'like', '%' . $request->attendance_date . '%');
-            }
-        ]);
-
-        // $attendances = 'ok';
-
-        return $attendances;
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $user = Auth::user();
-        if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
-            return response([
-                'header' => 'Forbidden',
-                'message' => 'Please Logout and Login again.'
-            ], 401);
-        }
-
-        $this->validate($request, [
-            'section_id' => 'required|min:1|exists:sections,id',
-            'standard_id' => 'required|min:1|exists:standards,id',
-            'attendance_date' => 'required|date',
-        ]);
-
-        $sectionStandard = SectionStandard::where('section_id', $request->section_id)->where('standard_id', $request->standard_id)->firstOrFail();
-
-        $canProceed = false;
-
-        $user->hasRole('director') === true ? $canProceed = true : false;
-
-        if($user->hasRole('teacher') === true){
-            $user->teacher->id === $sectionStandard->teacher_id ? $canProceed = true : false;
-        }
-
-        if($canProceed == false){
-            return response([
-                'header' => 'Forbidden',
-                'message' => 'Please Logout and Login again.'
-            ], 401);
-        }
-
         $students = $sectionStandard->students;
         $attendanceStateId = AttendanceState::where('name', 'Not taken')->firstOrFail()->id;
         $sessionId = Session::where('is_active', true)->firstOrFail()->id;
         $data = [];
         $now = Carbon::now('utc')->toDateTimeString();
 
-        foreach($students as $student){
+        foreach ($students as $student) {
             $data[] = [
                 'user_id' => $student->user_id,
                 'attendance_state_id' => $attendanceStateId,
@@ -134,7 +125,7 @@ class AttendanceController extends Controller
 
         $chunks = array_chunk($data, 1000);
 
-        foreach($chunks as $chunk){
+        foreach ($chunks as $chunk) {
             Attendance::insert($chunk);
         }
 
@@ -147,9 +138,48 @@ class AttendanceController extends Controller
      * @param  \App\Models\Attendance  $attendance
      * @return \Illuminate\Http\Response
      */
-    public function show(Attendance $attendance)
+    public function show(SectionStandard $sectionStandard, Request $request)
     {
-        //
+        $user = Auth::user();
+        if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
+        $this->validate($request, [
+            // 'section_standard_id' => 'required|min:1|exists:section_standard,id',
+            'attendance_date' => 'required|date',
+        ]);
+
+        // $sectionStandard = SectionStandard::where('id', $request->section_standard_id)->firstOrFail();
+
+        $canProceed = false;
+
+        $user->hasRole('director') === true ? $canProceed = true : false;
+
+        if ($user->hasRole('teacher') === true) {
+            $user->teacher->id === $sectionStandard->teacher_id ? $canProceed = true : false;
+        }
+
+        if ($canProceed == false) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
+        $students = $sectionStandard->students()->with([
+            'user:id', 'user.userDetail:id,user_id,name',
+            'user.attendances' => function ($query) use ($request) {
+                $query->where('attendance_date', 'like', '%' . $request->attendance_date . '%');
+            }
+        ])->select(['id', 'user_id', 'section_standard_id', 'roll_no'])->orderBy('roll_no')->paginate();
+
+        $sectionStandard = $sectionStandard->with(['section', 'standard', 'teacher:id,user_id', 'teacher.user:id', 'teacher.user.userDetail:id,user_id,name'])->find($sectionStandard->id);
+
+        return response(compact('sectionStandard', 'students'));
     }
 
     /**

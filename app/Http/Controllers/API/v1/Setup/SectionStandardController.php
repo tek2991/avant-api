@@ -16,7 +16,7 @@ class SectionStandardController extends Controller
      */
     public function index()
     {
-        return SectionStandard::with(['section', 'standard', 'teacher:id,user_id', 'teacher.user:id', 'teacher.user.userDetail:id,user_id,name'])->withCount('students')->join('standards', 'section_standard.standard_id', 'standards.id')->join('sections', 'section_standard.section_id', 'sections.id')->orderby('standards.hierachy','asc')->orderby('sections.id','asc')->paginate();
+        return SectionStandard::with(['section', 'standard', 'teacher:id,user_id', 'teacher.user:id', 'teacher.user.userDetail:id,user_id,name'])->withCount('students')->join('standards', 'section_standard.standard_id', 'standards.id')->join('sections', 'section_standard.section_id', 'sections.id')->orderby('standards.hierachy', 'asc')->orderby('sections.id', 'asc')->paginate();
     }
 
     /**
@@ -35,7 +35,7 @@ class SectionStandardController extends Controller
 
         $sectionStandard = SectionStandard::where('section_id', $request->section_id)->where('standard_id', $request->standard_id)->first();
 
-        if($sectionStandard){
+        if ($sectionStandard) {
             return response([
                 'header' => 'Class exists',
                 'message' => 'Class already exist!'
@@ -43,6 +43,16 @@ class SectionStandardController extends Controller
         }
 
         return SectionStandard::create($request->only(['section_id', 'standard_id', 'teacher_id']));
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function all()
+    {
+        return SectionStandard::with(['section', 'standard'])->join('standards', 'section_standard.standard_id', 'standards.id')->join('sections', 'section_standard.section_id', 'sections.id')->orderby('standards.hierachy', 'asc')->orderby('sections.id', 'asc')->get();
     }
 
     /**
@@ -56,7 +66,7 @@ class SectionStandardController extends Controller
         $students = $sectionStandard->students()->with('user:id', 'user.userDetail:id,user_id,name')->select(['id', 'user_id', 'section_standard_id', 'roll_no'])->orderBy('roll_no')->paginate();
 
         $sectionStandard = $sectionStandard->with(['section', 'standard', 'teacher:id,user_id', 'teacher.user:id', 'teacher.user.userDetail:id,user_id,name'])->find($sectionStandard->id);
-        
+
         return response(compact('sectionStandard', 'students'));
     }
 

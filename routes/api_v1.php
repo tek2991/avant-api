@@ -53,9 +53,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('standard-all', [StandardController::class, 'all'])->middleware(['can:standard_read']);
 
     Route::apiResource('section', SectionController::class)->middleware(['can:section_crud']);
-    Route::get('section-all', [SectionController::class, 'all'])->middleware(['can:section_crud', 'can:section_read']);
+    Route::get('section-all', [SectionController::class, 'all'])->middleware(['can:section_read']);
     
     Route::apiResource('section-standard', SectionStandardController::class)->middleware(['can:standard_crud', 'can:section_crud']);
+    Route::get('section-standard-all', [SectionStandardController::class, 'all'])->middleware(['can:standard_read', 'can:section_read']);
 
     Route::apiResource('teacher', TeacherController::class)->only(['index', 'store'])->middleware(['can:teacher_crud']);
     Route::get('teacher-all', [TeacherController::class, 'all'])->middleware(['can:teacher_read']);
@@ -90,7 +91,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('recommend-appeal/{appeal}', [RecommendAppealController::class, 'store'])->middleware(['can:appeal_crud']);
     Route::post('close-appeal/{appeal}', [CloseAppealController::class, 'store'])->middleware(['can:appeal_crud']);
     
-    Route::apiResource('attendance', AttendanceController::class);
+    // Route::apiResource('attendance', AttendanceController::class);
+    Route::get('attendance/{section_standard}', [AttendanceController::class, 'show']);
     
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });
