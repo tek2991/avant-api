@@ -17,15 +17,16 @@ use App\Http\Controllers\API\v1\Bill\FeeInvoiceController;
 use App\Http\Controllers\API\v1\Student\StudentController;
 use App\Http\Controllers\API\v1\Attributes\GenderController;
 use App\Http\Controllers\API\v1\Appeal\CloseAppealController;
+use App\Http\Controllers\API\v1\Attendance\AttendanceController;
 use App\Http\Controllers\API\v1\Attributes\BloodGroupController;
 use App\Http\Controllers\API\v1\Setup\SectionStandardController;
 use App\Http\Controllers\API\v1\Student\EnrollStudentController;
 use App\Http\Controllers\API\v1\Appeal\RecommendAppealController;
-use App\Http\Controllers\API\v1\Attendance\AttendanceController;
 use App\Http\Controllers\API\v1\Fee\AttachStandardToFeeController;
 use App\Http\Controllers\API\v1\Fee\AttachChargeableToFeeController;
 use App\Http\Controllers\API\v1\Student\UnallocatedStudentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
+use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
 use App\Http\Controllers\API\v1\Fee\AttachStudentToChargeableController;
 
 /*
@@ -55,7 +56,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('section', SectionController::class)->middleware(['can:section_crud']);
     Route::get('section-all', [SectionController::class, 'all'])->middleware(['can:section_read']);
     
-    Route::apiResource('section-standard', SectionStandardController::class)->middleware(['can:standard_crud', 'can:section_crud']);
+    Route::apiResource('section-standard', SectionStandardController::class)->except(['index'])->middleware(['can:standard_crud', 'can:section_crud']);
+    Route::get('section-standard', [SectionStandardController::class, 'index'])->middleware(['can:standard_read', 'can:section_read']);
     Route::get('section-standard-all', [SectionStandardController::class, 'all'])->middleware(['can:standard_read', 'can:section_read']);
 
     Route::apiResource('teacher', TeacherController::class)->only(['index', 'store'])->middleware(['can:teacher_crud']);
@@ -93,6 +95,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     // Route::apiResource('attendance', AttendanceController::class);
     Route::get('attendance/{section_standard}', [AttendanceController::class, 'show']);
+    Route::put('attendance/{attendance}', [AttendanceController::class, 'update']);
+    Route::post('attendance', [AttendanceController::class, 'store']);
+
+    Route::get('student-attendance', [StudentAttendanceController::class, 'index']);
     
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });
@@ -110,3 +116,4 @@ Route::get('register', [ApiRegisterController::class, 'api-register']);
 
 Route::post('director-login', [ApiLoginController::class, 'directorLogin'])->name('api-director-login');
 Route::post('student-login', [ApiLoginController::class, 'studentLogin'])->name('api-student-login');
+Route::post('teacher-login', [ApiLoginController::class, 'teacherLogin'])->name('api-teacher-login');

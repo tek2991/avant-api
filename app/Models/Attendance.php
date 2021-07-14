@@ -19,6 +19,8 @@ class Attendance extends Model
         'attendance_date',
         'section_standard_id',
         'session_id',
+        'created_by',
+        'updated_by',
     ];
 
     protected $cast = [
@@ -41,5 +43,13 @@ class Attendance extends Model
 
     public function session(){
         return $this->belongsTo(Session::class);
+    }
+
+    public function creator(){
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function updator(){
+        return $this->belongsTo(User::class, 'updated_by', 'id');
     }
 }

@@ -81,12 +81,21 @@ class AttendanceController extends Controller
         }
 
         $this->validate($request, [
-            'section_id' => 'required|min:1|exists:sections,id',
-            'standard_id' => 'required|min:1|exists:standards,id',
+            'user_id' => 'required|min:1|exists:users,id',
             'attendance_date' => 'required|date',
+            'attendance_state_id' => 'required|min:1|exists:attendance_states,id',
         ]);
 
-        $sectionStandard = SectionStandard::where('section_id', $request->section_id)->where('standard_id', $request->standard_id)->firstOrFail();
+        $student = User::find($request->user_id)->student()->exists() ? User::find($request->user_id)->student : false;
+
+        if ($student == false) {
+            return response([
+                'header' => 'Error',
+                'message' => 'Student not found.'
+            ], 401);
+        }
+
+        $sectionStandard = $student->sectionStandard;
 
         $canProceed = false;
 
@@ -103,33 +112,17 @@ class AttendanceController extends Controller
             ], 401);
         }
 
-        $students = $sectionStandard->students;
-        $attendanceStateId = AttendanceState::where('name', 'Not taken')->firstOrFail()->id;
-        $sessionId = Session::where('is_active', true)->firstOrFail()->id;
-        $data = [];
-        $now = Carbon::now('utc')->toDateTimeString();
+        $session = Session::where('is_active', true)->firstOrFail();
 
-        foreach ($students as $student) {
-            $data[] = [
-                'user_id' => $student->user_id,
-                'attendance_state_id' => $attendanceStateId,
-                'attendance_date' => $request->attendance_date,
-                'section_standard_id' => $sectionStandard->id,
-                'session_id' => $sessionId,
-                'created_by' => $user->id,
-                'updated_by' => $user->id,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ];
-        }
-
-        $chunks = array_chunk($data, 1000);
-
-        foreach ($chunks as $chunk) {
-            Attendance::insert($chunk);
-        }
-
-        return response('OK', 200);
+        return Attendance::Create([
+            'user_id' => $request->user_id,
+            'attendance_date' => $request->attendance_date,
+            'attendance_state_id' => $request->attendance_state_id,
+            'section_standard_id' => $sectionStandard->id,
+            'session_id' => $session->id,
+            'created_by' => $user->id,
+            'updated_by' => $user->id,
+        ]);
     }
 
     /**
@@ -201,7 +194,7 @@ class AttendanceController extends Controller
 
         $this->validate($request, [
             'user_id' => 'required|min:1|exists:users,id',
-            // 'attendance_date' => 'required|date',
+            'attendance_date' => 'required|date',
             'attendance_state_id' => 'required|min:1|exists:attendance_states,id',
         ]);
 
@@ -231,7 +224,7 @@ class AttendanceController extends Controller
             ], 401);
         }
 
-
+        $session = Session::where('is_active', true)->firstOrFail();
 
         $attendance->updateOrCreate(
             [
@@ -239,9 +232,9 @@ class AttendanceController extends Controller
                 'attendance_date' => $request->attendance_date,
             ],
             [
-                'attendeace_state_id' => $request->attendance_state_id,
+                'attendance_state_id' => $request->attendance_state_id,
                 'section_standard_id' => $sectionStandard->id,
-                'session_id' => $request->session_id,
+                'session_id' => $session->id,
                 'updated_by' => $user->id,
             ]
         );
