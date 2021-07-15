@@ -27,6 +27,8 @@ use App\Http\Controllers\API\v1\Fee\AttachChargeableToFeeController;
 use App\Http\Controllers\API\v1\Student\UnallocatedStudentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
+use App\Http\Controllers\API\v1\Event\EventController;
+use App\Http\Controllers\API\v1\Event\EventTypeController;
 use App\Http\Controllers\API\v1\Fee\AttachStudentToChargeableController;
 
 /*
@@ -93,12 +95,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('recommend-appeal/{appeal}', [RecommendAppealController::class, 'store'])->middleware(['can:appeal_crud']);
     Route::post('close-appeal/{appeal}', [CloseAppealController::class, 'store'])->middleware(['can:appeal_crud']);
     
-    // Route::apiResource('attendance', AttendanceController::class);
     Route::get('attendance/{section_standard}', [AttendanceController::class, 'show']);
     Route::put('attendance/{attendance}', [AttendanceController::class, 'update']);
     Route::post('attendance', [AttendanceController::class, 'store']);
 
     Route::get('student-attendance', [StudentAttendanceController::class, 'index']);
+
+    Route::apiResource('event', EventController::class);
+    Route::get('event-type', [EventTypeController::class, 'index']);
     
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });
