@@ -57,6 +57,7 @@ class DatabaseSeeder extends Seeder
             AppealTypeSeeder::class,
             PaymentMethodSeeder::class,
             BankSeeder::class,
+            EventTypeSeeder::class,
         ]);
     }
 }
