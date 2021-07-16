@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\v1\Event;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
@@ -14,9 +15,16 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $this->validate($request, [
+            'start_of_month' => 'required|date',
+        ]);
+
+        $start = $request->start_of_month;
+        $end = Carbon::create($start)->lastOfMonth()->format('Y-m-d');
+
+        return Event::whereBetween('event_from_date', [$start, $end])->orWhereBetween('event_to_date', [$start, $end])->with(['creator.userDetail', 'eventType'])->paginate();
     }
 
     /**
