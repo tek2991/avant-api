@@ -21,6 +21,7 @@ class CreateEventsTable extends Migration
             $table->dateTime('event_from_date');
             $table->dateTime('event_to_date');
             $table->foreignId('created_by')->constrained('users', 'id');
+            $table->foreignId('updated_by')->constrained('users', 'id');
             $table->timestamps();
         });
     }

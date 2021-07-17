@@ -17,7 +17,8 @@ class Event extends Model
         'description',
         'event_from_date',
         'event_to_date',
-        'created_by'
+        'created_by',
+        'updated_by',
     ];
 
     protected $cast = [
@@ -29,6 +30,10 @@ class Event extends Model
 
     public function creator(){
         return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function updator(){
+        return $this->belongsTo(User::class, 'updated_by', 'id');
     }
 
     public function eventType(){
