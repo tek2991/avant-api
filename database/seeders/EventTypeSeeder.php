@@ -14,7 +14,7 @@ class EventTypeSeeder extends Seeder
      */
     public function run()
     {
-        $eventTypes = ['Exam' => 'purple', 'Holiday' => 'red', 'Occasion' => 'teal', 'Other' => 'blue'];
+        $eventTypes = ['Exam' => 'yellow', 'Holiday' => 'red', 'Occasion' => 'green', 'Other' => 'blue'];
 
         foreach ($eventTypes as $eventType => $color) {
             EventType::create([
