@@ -15,6 +15,9 @@ class ChargeableFeeSeeder extends Seeder
      */
     public function run()
     {
+        if(env('APP_ENV') !== 'local'){
+            return;
+        }
         $fees = Fee::all();
         $chargeables = Chargeable::all();
 

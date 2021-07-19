@@ -15,6 +15,9 @@ class ChargeableSeeder extends Seeder
      */
     public function run()
     {
+        if(env('APP_ENV') !== 'local'){
+            return;
+        }
         Chargeable::factory(5)->create();
         Chargeable::factory(2)->create([
             'is_mandatory' => false

@@ -14,6 +14,9 @@ class SectionSeeder extends Seeder
      */
     public function run()
     {   
+        if(env('APP_ENV') !== 'local'){
+            return;
+        }
         $sections = ['A', 'B', 'C', 'D', 'E'];
 
         foreach($sections as $section){

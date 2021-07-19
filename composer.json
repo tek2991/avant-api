@@ -13,13 +13,11 @@
         "laravel/breeze": "^1.1",
         "laravel/framework": "^8.5.18",
         "laravel/horizon": "^5.7",
-        "laravel/octane": "^1.0",
         "laravel/sanctum": "^2.9",
         "laravel/telescope": "^4.4",
         "laravel/tinker": "^2.5",
         "razorpay/razorpay": "2.7",
-        "spatie/laravel-permission": "^4.0",
-        "spiral/roadrunner": "^2.0"
+        "spatie/laravel-permission": "^4.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.10",

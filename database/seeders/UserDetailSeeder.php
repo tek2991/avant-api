@@ -15,7 +15,12 @@ class UserDetailSeeder extends Seeder
      */
     public function run()
     {
-        $users = User::all();
+        if(env('APP_ENV') !== 'local'){
+            return;
+        }
+
+        $users = User::where('username', '!=', 'administrator')->where('username', '!=', 'director')->get();
+
         foreach($users as $user){
             UserDetail::factory()->create([
                 'user_id' => $user

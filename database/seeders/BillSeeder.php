@@ -17,6 +17,9 @@ class BillSeeder extends Seeder
      */
     public function run()
     {
+        if(env('APP_ENV') !== 'local'){
+            return;
+        }
         $fee_ids = Fee::all()->modelKeys();
         $bill = Bill::factory()->create();
         $bill->fees()->attach($fee_ids);

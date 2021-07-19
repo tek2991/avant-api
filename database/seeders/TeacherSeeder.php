@@ -15,6 +15,10 @@ class TeacherSeeder extends Seeder
      */
     public function run()
     {
+        if(env('APP_ENV') !== 'local'){
+            return;
+        }
+        
         $teachers = User::role('teacher')->get()->modelKeys();
 
         foreach($teachers as $teacher){

@@ -15,6 +15,9 @@ class FeeStandardSeeder extends Seeder
      */
     public function run()
     {
+        if(env('APP_ENV') !== 'local'){
+            return;
+        }
         $standards = Standard::all();
         $fees = collect(Fee::all());
         foreach($standards as $standard){

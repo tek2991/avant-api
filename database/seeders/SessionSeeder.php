@@ -14,6 +14,10 @@ class SessionSeeder extends Seeder
      */
     public function run()
     {
+        if(env('APP_ENV') !== 'local'){
+            return;
+        }
+        
         Session::factory()->create([
             'name' => '2021-2022'
         ]);
