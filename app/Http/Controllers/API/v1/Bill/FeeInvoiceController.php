@@ -78,15 +78,15 @@ class FeeInvoiceController extends Controller
         return $invoices->whereHas('billFee', function ($query) use ($request) {
             $query->whereHas('bill', function ($query) use ($request) {
                 $query->whereHas('session', function ($query) use ($request) {
-                    $query->where('id', 'like', '%' . $request->session_id . '%');
+                    $query->when($request->session_id, function($query) use($request){$query->where('id', $request->session_id);});
                 });
-                $query->where('id', 'like', '%' . $request->bill_id . '%');
+                $query->when($request->bill_id, function($query) use($request){$query->where('id', $request->bill_id);});
             });
             $query->whereHas('fee', function ($query) use ($request) {
-                $query->where('id', 'like', '%' . $request->fee_id . '%');
+                $query->when($request->fee_id, function($query) use($request){$query->where('id', $request->fee_id);});
             });
         })
-            ->where('standard_id', 'like', '%' . $request->standard_id . '%')
+            ->when($request->standard_id, function($query) use($request){$query->where('standard_id', $request->standard_id);})
             ->where('id', 'like', '%' . $request->invoice_id . '%')
             ->where('user_id', 'like', $user_id)
             ->with(['user:id', 'user.userDetail:id,user_id,name', 'user.student:id,user_id,section_standard_id', 'user.student.sectionStandard.section', 'user.student.sectionStandard.standard', 'payment'])->paginate();
