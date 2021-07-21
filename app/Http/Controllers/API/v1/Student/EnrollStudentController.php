@@ -21,7 +21,7 @@ class EnrollStudentController extends Controller
         }
 
         $this->validate($request, [
-            'username' => 'required|max:255',
+            'username' => 'required|alpha_num|max:255',
             'email' => ['required', 'email', 'max:255'],
             'password' => 'nullable|min:8|max:24',
 
