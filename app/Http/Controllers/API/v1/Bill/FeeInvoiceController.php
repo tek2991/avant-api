@@ -8,6 +8,7 @@ use App\Models\FeeInvoice;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Http\Controllers\Controller;
+use App\Models\Fee;
 use Illuminate\Support\Facades\Auth;
 
 class FeeInvoiceController extends Controller
@@ -26,11 +27,12 @@ class FeeInvoiceController extends Controller
     public function index(Request $request)
     {
         $this->validate($request, [
-            'session_id' => 'exists:sessions,id',
-            'bill_id' => 'exists:bills,id',
-            'fee_id' => 'exists:fees,id',
-            'standard_id' => 'exists:standards,id',
-            'invoice_id' => 'max:255',
+            'session_id' => 'nullable|exists:sessions,id',
+            'bill_id' => 'nullable|exists:bills,id',
+            'fee_id' => 'nullable|exists:fees,id',
+            'standard_id' => 'nullable|exists:standards,id',
+            'invoice_id' => 'nullable|max:255',
+            'segment' => 'nullable|max:255',
         ]);
 
         $user_id = '%%';
@@ -39,8 +41,41 @@ class FeeInvoiceController extends Controller
             $user_id = Auth::user()->id;
         }
 
-        return FeeInvoice::
-        whereHas('billFee', function ($query) use ($request) {
+        $segment = $request->segment;
+        $payment_status = '';
+
+        switch ($segment) {
+            case "paid":
+                $payment_status = ['authorised', 'captured'];
+                break;
+            case "pending":
+                $payment_status = ['verified', 'failed'];
+                break;
+            case "due":
+                $payment_status = ['created'];
+                break;
+        }
+
+        $invoices = null;
+
+        if ($segment === 'paid' || $segment === 'pending') {
+            $invoices = FeeInvoice::whereHas('payment', function ($query) use ($payment_status) {
+                    $query->whereIn('status', $payment_status);
+                });
+        }
+
+        if ($segment === 'due') {
+            $invoices = FeeInvoice::whereHas('payment', function ($query) use ($payment_status) {
+                    $query->whereIn('status', $payment_status);
+                })
+                ->orDoesntHave('payment');
+        }
+
+        if ($segment === 'all') {
+            $invoices = FeeInvoice::where('id', 'like', "%%");
+        }
+
+        return $invoices->whereHas('billFee', function ($query) use ($request) {
             $query->whereHas('bill', function ($query) use ($request) {
                 $query->whereHas('session', function ($query) use ($request) {
                     $query->where('id', 'like', '%' . $request->session_id . '%');
@@ -51,10 +86,10 @@ class FeeInvoiceController extends Controller
                 $query->where('id', 'like', '%' . $request->fee_id . '%');
             });
         })
-        ->where('standard_id', 'like', '%' . $request->standard_id . '%')
-        ->where('id', 'like', '%' . $request->invoice_id . '%')
-        ->where('user_id', 'like', $user_id)
-        ->with('user:id', 'user.userDetail:id,user_id,name', 'user.student:id,user_id,section_standard_id', 'user.student.sectionStandard.section', 'user.student.sectionStandard.standard', 'payment')->paginate();
+            ->where('standard_id', 'like', '%' . $request->standard_id . '%')
+            ->where('id', 'like', '%' . $request->invoice_id . '%')
+            ->where('user_id', 'like', $user_id)
+            ->with(['user:id', 'user.userDetail:id,user_id,name', 'user.student:id,user_id,section_standard_id', 'user.student.sectionStandard.section', 'user.student.sectionStandard.standard', 'payment'])->paginate();
     }
 
     /**
@@ -142,7 +177,7 @@ class FeeInvoiceController extends Controller
 
         $receipt = Receipt::where('fee_invoice_id', $feeInvoice->id)->firstOrFail();
 
-        $pdf = PDF::loadView('documents.fee-invoice-receipt', ['data' => $data, 'receipt' =>$receipt]);
+        $pdf = PDF::loadView('documents.fee-invoice-receipt', ['data' => $data, 'receipt' => $receipt]);
 
         return $pdf->download('fee_invoice_receipt' . $feeInvoice->id . '.pdf');
     }

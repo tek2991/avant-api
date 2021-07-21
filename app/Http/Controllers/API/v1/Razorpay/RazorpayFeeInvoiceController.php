@@ -37,7 +37,7 @@ class RazorpayFeeInvoiceController extends Controller
             if ($feeInvoice->payment->status === 'authorised') {
                 return response([
                     'header' => 'Payment error',
-                    'message' => 'Payment already authorires. Please contact admin.'
+                    'message' => 'Payment authorired. Please contact admin.'
                 ], 401);
             }
 
@@ -163,7 +163,6 @@ class RazorpayFeeInvoiceController extends Controller
             Payment::where('fee_invoice_id', $feeInvoice->id)->first()->update([
                 'status' => 'verified',
             ]);
-
         } catch (Exception $ex) {
             return response([
                 'header' => 'Verification failed',
@@ -190,7 +189,6 @@ class RazorpayFeeInvoiceController extends Controller
         } catch (Exception $ex) {
             $content = $ip . ' _|_ ' . $ex->getMessage() . ' _|_ ' . $webhookBody;
             Storage::put('error_signature_' . $ip . '_' . $now . '_.txt', $content);
-
             return response('OK', 200);
         }
 
@@ -210,6 +208,7 @@ class RazorpayFeeInvoiceController extends Controller
             $payload = $request->payload;
             $order_id = $payload['payment']['entity']['order_id'];
             $payment_id = $payload['payment']['entity']['id'];
+
             $models_razorpay = ModelsRazorpay::where('order_id', $order_id)->first();
             $fee_invoice_id = $models_razorpay->payments()->first()->fee_invoice_id;
             $payment = Payment::where('fee_invoice_id', $fee_invoice_id)->first();
@@ -222,20 +221,20 @@ class RazorpayFeeInvoiceController extends Controller
         }
 
         if ($event === 'payment.authorized') {
-            if($payment_status === 'created' || $payment_status ===  'failed' || $payment_status ===  'verified'){
+            if ($payment_status === 'created' || $payment_status ===  'failed' || $payment_status ===  'verified') {
                 $payment->update([
                     'status' => 'authorised',
                     'status_source' => 'webhook',
                 ]);
             }
 
-            if($order_status === 'created' || $order_status ===  'failed'){
+            if ($order_status === 'created' || $order_status ===  'failed') {
                 $models_razorpay->update([
                     'order_status' => 'attempted',
                 ]);
             }
 
-            if($razorpay_payment_status === 'created' || $razorpay_payment_status ===  'failed' || empty($razorpay_payment_status)){
+            if ($razorpay_payment_status === 'created' || $razorpay_payment_status ===  'failed' || empty($razorpay_payment_status)) {
                 $models_razorpay->update([
                     'payment_status' => 'authorised',
                     'payment_id' => $payment_id,
@@ -244,20 +243,20 @@ class RazorpayFeeInvoiceController extends Controller
         }
 
         if ($event === 'payment.failed') {
-            if($payment_status === 'created' || $payment_status ===  'verified'){
+            if ($payment_status === 'created' || $payment_status ===  'verified') {
                 $payment->update([
                     'status' => 'failed',
                     'status_source' => 'webhook',
                 ]);
             }
 
-            if($order_status === 'created'){
+            if ($order_status === 'created') {
                 $models_razorpay->update([
                     'order_status' => 'attempted',
                 ]);
             }
 
-            if($razorpay_payment_status === 'created' || $razorpay_payment_status ===  'verified' || empty($razorpay_payment_status)){
+            if ($razorpay_payment_status === 'created' || empty($razorpay_payment_status)) {
                 $models_razorpay->update([
                     'payment_status' => 'failed',
                     'payment_id' => $payment_id,
@@ -266,25 +265,19 @@ class RazorpayFeeInvoiceController extends Controller
         }
 
         if ($event === 'order.paid') {
-            if($payment_status === 'created' || $payment_status ===  'failed' || $payment_status ===  'verified' || $payment_status ===  'authorised'){
-                $payment->update([
-                    'status' => 'captured',
-                    'status_source' => 'webhook',
-                ]);
-            }
+            $payment->update([
+                'status' => 'captured',
+                'status_source' => 'webhook',
+            ]);
 
-            if($order_status === 'created' || $order_status ===  'attempted'){
-                $models_razorpay->update([
-                    'order_status' => 'paid',
-                ]);
-            }
+            $models_razorpay->update([
+                'order_status' => 'paid',
+            ]);
 
-            if($razorpay_payment_status === 'created' || $razorpay_payment_status ===  'failed' || empty($razorpay_payment_status)){
-                $models_razorpay->update([
-                    'payment_status' => 'captured',
-                    'payment_id' => $payment_id,
-                ]);
-            }
+            $models_razorpay->update([
+                'payment_status' => 'captured',
+                'payment_id' => $payment_id,
+            ]);
 
             Receipt::create([
                 'fee_invoice_id' => $fee_invoice_id,
