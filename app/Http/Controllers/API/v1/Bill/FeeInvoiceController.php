@@ -74,6 +74,7 @@ class FeeInvoiceController extends Controller
         if ($segment === 'all') {
             $invoices = FeeInvoice::where('id', 'like', "%%");
         }
+        
 
         return $invoices->whereHas('billFee', function ($query) use ($request) {
             $query->whereHas('bill', function ($query) use ($request) {
