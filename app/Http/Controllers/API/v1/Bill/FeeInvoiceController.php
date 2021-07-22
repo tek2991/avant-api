@@ -46,10 +46,10 @@ class FeeInvoiceController extends Controller
 
         switch ($segment) {
             case "paid":
-                $payment_status = ['authorised', 'captured'];
+                $payment_status = ['verified', 'authorised', 'captured'];
                 break;
             case "pending":
-                $payment_status = ['verified', 'failed'];
+                $payment_status = ['created', 'failed'];
                 break;
             case "due":
                 $payment_status = ['created'];
@@ -65,10 +65,11 @@ class FeeInvoiceController extends Controller
         }
 
         if ($segment === 'due') {
-            $invoices = FeeInvoice::whereHas('payment', function ($query) use ($payment_status) {
-                    $query->whereIn('status', $payment_status);
-                })
-                ->orDoesntHave('payment');
+            // $invoices = FeeInvoice::whereHas('payment', function ($query) use ($payment_status) {
+            //         $query->whereIn('status', $payment_status);
+            //     })
+            //     ->orDoesntHave('payment');
+            $invoices = FeeInvoice::doesntHave('payment');
         }
 
         if ($segment === 'all') {
