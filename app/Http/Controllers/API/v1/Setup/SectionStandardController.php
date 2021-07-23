@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Http\Request;
 use App\Models\SectionStandard;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class SectionStandardController extends Controller
 {
@@ -16,7 +17,21 @@ class SectionStandardController extends Controller
      */
     public function index()
     {
-        return SectionStandard::with(['section', 'standard', 'teacher:id,user_id', 'teacher.user:id', 'teacher.user.userDetail:id,user_id,name'])->withCount('students')->join('standards', 'section_standard.standard_id', 'standards.id')->join('sections', 'section_standard.section_id', 'sections.id')->orderby('standards.hierachy', 'asc')->orderby('sections.id', 'asc')->paginate();
+        $user = Auth::user();
+        if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
+        $teacher_id = '%%';
+
+        if (Auth::user()->hasRole('teacher') === true) {
+            $teacher_id = Auth::user()->teacher->id;
+        }
+        
+        return SectionStandard::where('teacher_id', 'like', $teacher_id)->with(['section', 'standard', 'teacher:id,user_id', 'teacher.user:id', 'teacher.user.userDetail:id,user_id,name'])->withCount('students')->join('standards', 'section_standard.standard_id', 'standards.id')->join('sections', 'section_standard.section_id', 'sections.id')->orderby('standards.hierachy', 'asc')->orderby('sections.id', 'asc')->paginate();
     }
 
     /**
