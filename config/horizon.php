@@ -188,7 +188,7 @@ return [
             'connection' => 'redis',
             'queue' => ['heavy'],
             'balance' => 'auto',
-            'maxProcesses' => 15,
+            'maxProcesses' => 5,
             'memory' => 128,
             'tries' => 1,
             'nice' => 0,
@@ -198,7 +198,7 @@ return [
     'environments' => [
         'production' => [
             'supervisor-1' => [
-                'maxProcesses' => 15,
+                'maxProcesses' => 5,
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
             ],
