@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\ApiLogoutController;
 use App\Http\Controllers\API\v1\Bill\BillController;
 use App\Http\Controllers\API\v1\User\UserController;
 use App\Http\Controllers\Auth\ApiRegisterController;
+use App\Http\Controllers\API\v1\Event\EventController;
 use App\Http\Controllers\API\v1\Bill\BillFeeController;
 use App\Http\Controllers\API\v1\User\TeacherController;
 use App\Http\Controllers\API\v1\Appeal\AppealController;
@@ -13,7 +14,9 @@ use App\Http\Controllers\API\v1\Setup\SectionController;
 use App\Http\Controllers\API\v1\Setup\SessionController;
 use App\Http\Controllers\API\v1\Fee\ChargeableController;
 use App\Http\Controllers\API\v1\Setup\StandardController;
+use App\Http\Controllers\API\v1\Subject\StreamController;
 use App\Http\Controllers\API\v1\Bill\FeeInvoiceController;
+use App\Http\Controllers\API\v1\Event\EventTypeController;
 use App\Http\Controllers\API\v1\Student\StudentController;
 use App\Http\Controllers\API\v1\Attributes\GenderController;
 use App\Http\Controllers\API\v1\Appeal\CloseAppealController;
@@ -27,9 +30,8 @@ use App\Http\Controllers\API\v1\Fee\AttachChargeableToFeeController;
 use App\Http\Controllers\API\v1\Student\UnallocatedStudentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
-use App\Http\Controllers\API\v1\Event\EventController;
-use App\Http\Controllers\API\v1\Event\EventTypeController;
 use App\Http\Controllers\API\v1\Fee\AttachStudentToChargeableController;
+use App\Http\Controllers\API\v1\Subject\SubjectGroupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,6 +105,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('event', EventController::class);
     Route::get('event-type', [EventTypeController::class, 'index']);
+
+    Route::apiResource('stream', StreamController::class)->middleware(['can:session_crud']);
+    Route::get('stream-all', [StreamController::class, 'all'])->middleware(['can:session_read']);
+
+    Route::apiResource('subject-group', SubjectGroupController::class)->middleware(['can:session_crud']);
+    Route::get('subject-group-all', [SubjectGroupController::class, 'all'])->middleware(['can:session_read']);
     
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });
