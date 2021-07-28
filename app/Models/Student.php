@@ -37,4 +37,8 @@ class Student extends Model
     public function chargeables(){
         return $this->belongsToMany(Chargeable::class)->withPivot('id')->withTimestamps();
     }
+
+    public function subjects(){
+        return $this->belongsToMany(Subject::class)->withPivot('id')->withTimestamps();
+    }
 }
