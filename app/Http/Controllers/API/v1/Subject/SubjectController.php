@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\v1\Subject;
 
 use Exception;
 use App\Models\Subject;
+use App\Models\Standard;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -14,9 +15,23 @@ class SubjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Subject::select(['id', 'name', 'subject_group_id'])->with('subjectGroup:id,name')->paginate();
+        $this->validate($request, [
+            'standard_id' => 'nullable|exists:standards,id',
+            'subject_group_id' => 'nullable|exists:subject_groups,id',
+        ]);
+
+        $standard_id = $request->input('standard_id', '%%');
+        $subject_group_id = $request->input('subject_group_id', '%%');
+
+        return Subject::select(['subjects.id', 'subjects.name', 'subjects.subject_group_id', 'subjects.standard_id', 'subjects.is_mandatory'])
+        ->where('standard_id', 'like', $standard_id)
+        ->where('subject_group_id', 'like', $subject_group_id)
+        ->with('subjectGroup:id,name', 'standard')
+        ->join('standards', 'subjects.standard_id', 'standards.id')
+        ->orderBy('standards.hierachy', 'asc')
+        ->paginate();
     }
 
     /**
@@ -44,12 +59,19 @@ class SubjectController extends Controller
             'is_mandatory' => 'required|boolean',
         ]);
 
-        return Subject::create([
+        $subject = Subject::create([
             'name' => $request->name,
             'subject_group_id' => $request->subject_group_id,
             'standard_id' => $request->standard_id,
             'is_mandatory' => $request->is_mandatory,
         ]);
+
+        if ($request->boolean('is_mandatory')) {
+            $students = Standard::find($request->standard_id)->students()->get()->modelKeys();
+            $subject->students()->sync($students);
+        }
+
+        return $subject;
     }
 
     /**
@@ -85,6 +107,14 @@ class SubjectController extends Controller
             'standard_id' => $request->standard_id,
             'is_mandatory' => $request->is_mandatory,
         ]);
+
+        $students = [];
+
+        if ($request->boolean('is_mandatory')) {
+            $students = Standard::find($request->standard_id)->students()->get()->modelKeys();
+        }
+
+        $subject->students()->sync($students);
 
         return $subject;
     }

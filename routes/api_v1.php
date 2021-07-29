@@ -18,8 +18,10 @@ use App\Http\Controllers\API\v1\Subject\StreamController;
 use App\Http\Controllers\API\v1\Bill\FeeInvoiceController;
 use App\Http\Controllers\API\v1\Event\EventTypeController;
 use App\Http\Controllers\API\v1\Student\StudentController;
+use App\Http\Controllers\API\v1\Subject\SubjectController;
 use App\Http\Controllers\API\v1\Attributes\GenderController;
 use App\Http\Controllers\API\v1\Appeal\CloseAppealController;
+use App\Http\Controllers\API\v1\Subject\SubjectGroupController;
 use App\Http\Controllers\API\v1\Attendance\AttendanceController;
 use App\Http\Controllers\API\v1\Attributes\BloodGroupController;
 use App\Http\Controllers\API\v1\Setup\SectionStandardController;
@@ -31,7 +33,6 @@ use App\Http\Controllers\API\v1\Student\UnallocatedStudentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
 use App\Http\Controllers\API\v1\Fee\AttachStudentToChargeableController;
-use App\Http\Controllers\API\v1\Subject\SubjectGroupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -111,6 +112,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('subject-group', SubjectGroupController::class)->middleware(['can:session_crud']);
     Route::get('subject-group-all', [SubjectGroupController::class, 'all'])->middleware(['can:session_read']);
+
+    Route::apiResource('subject', SubjectController::class)->middleware(['can:session_crud']);
     
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });
