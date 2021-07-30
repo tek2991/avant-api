@@ -22,8 +22,8 @@ class SubjectController extends Controller
             'subject_group_id' => 'nullable|exists:subject_groups,id',
         ]);
 
-        $standard_id = $request->input('standard_id', '%%');
-        $subject_group_id = $request->input('subject_group_id', '%%');
+        $standard_id = empty($request->standard_id) ? '%%' : $request->standard_id;
+        $subject_group_id = empty($request->subject_group_id) ? '%%' : $request->subject_group_id;
 
         return Subject::select(['subjects.id', 'subjects.name', 'subjects.subject_group_id', 'subjects.standard_id', 'subjects.is_mandatory'])
         ->where('standard_id', 'like', $standard_id)
@@ -58,6 +58,15 @@ class SubjectController extends Controller
             'standard_id' => 'required|exists:standards,id',
             'is_mandatory' => 'required|boolean',
         ]);
+
+        $exists = Subject::where('subject_group_id', $request->subject_group_id)->where('standard_id', $request->standard_id)->exists();
+
+        if($exists){
+            return response([
+                'header' => 'Dulicate',
+                'message' => 'The subject is already created!'
+            ], 418);
+        }
 
         $subject = Subject::create([
             'name' => $request->name,

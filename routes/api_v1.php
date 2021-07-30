@@ -27,6 +27,7 @@ use App\Http\Controllers\API\v1\Attributes\BloodGroupController;
 use App\Http\Controllers\API\v1\Setup\SectionStandardController;
 use App\Http\Controllers\API\v1\Student\EnrollStudentController;
 use App\Http\Controllers\API\v1\Appeal\RecommendAppealController;
+use App\Http\Controllers\API\v1\Subject\SubjectTeacherController;
 use App\Http\Controllers\API\v1\Fee\AttachStandardToFeeController;
 use App\Http\Controllers\API\v1\Fee\AttachChargeableToFeeController;
 use App\Http\Controllers\API\v1\Student\UnallocatedStudentController;
@@ -114,6 +115,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('subject-group-all', [SubjectGroupController::class, 'all'])->middleware(['can:session_read']);
 
     Route::apiResource('subject', SubjectController::class)->middleware(['can:session_crud']);
+    Route::apiResource('subject-teacher', SubjectTeacherController::class)->middleware(['can:session_crud']);
     
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });
