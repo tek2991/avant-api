@@ -34,6 +34,7 @@ use App\Http\Controllers\API\v1\Student\UnallocatedStudentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
 use App\Http\Controllers\API\v1\Fee\AttachStudentToChargeableController;
+use App\Http\Controllers\API\v1\Subject\StudentSubjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -116,6 +117,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('subject', SubjectController::class)->middleware(['can:session_crud']);
     Route::apiResource('subject-teacher', SubjectTeacherController::class)->middleware(['can:session_crud']);
+    Route::apiResource('student-subject', StudentSubjectController::class)->middleware(['can:session_crud']);
     
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });

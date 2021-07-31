@@ -4,12 +4,11 @@ namespace App\Http\Controllers\API\v1\Subject;
 
 use Exception;
 use App\Models\Subject;
-use App\Models\Teacher;
 use Illuminate\Http\Request;
-use App\Models\SubjectTeacher;
+use App\Models\StudentSubject;
 use App\Http\Controllers\Controller;
 
-class SubjectTeacherController extends Controller
+class StudentSubjectController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,7 +21,12 @@ class SubjectTeacherController extends Controller
             'subject_id' => 'required|min:1|exists:subjects,id',
         ]);
 
-        return SubjectTeacher::where('subject_id', $request->subject_id)->with(['teacher.user:id','teacher.user.userDetail:user_id,name'])->paginate();
+        return Subject::find($request->subject_id)->standard->students()->with([
+            'subjects' => function ($query) use ($request) {
+                $query->select('subject_id')->where('subject_id', $request->subject_id);
+            }, 
+            'user:id','user.userDetail:user_id,name'
+        ])->paginate();
     }
 
     /**
@@ -35,21 +39,21 @@ class SubjectTeacherController extends Controller
     {
         $this->validate($request, [
             'subject_id' => 'required|min:1|exists:subjects,id',
-            'teacher_id' => 'required|min:1|exists:teachers,id',
+            'student_id' => 'required|min:1|exists:students,id',
         ]);
 
-        $teacher = [$request->teacher_id];
+        $student = [$request->student_id];
 
-        return Subject::find($request->subject_id)->teachers()->syncWithoutDetaching($teacher);
+        return Subject::find($request->subject_id)->students()->syncWithoutDetaching($student);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\SubjectTeacher  $subjectTeacher
+     * @param  \App\Models\StudentSubject  $studentSubject
      * @return \Illuminate\Http\Response
      */
-    public function show(SubjectTeacher $subjectTeacher)
+    public function show(StudentSubject $studentSubject)
     {
         //
     }
@@ -58,24 +62,24 @@ class SubjectTeacherController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SubjectTeacher  $subjectTeacher
+     * @param  \App\Models\StudentSubject  $studentSubject
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SubjectTeacher $subjectTeacher)
+    public function update(Request $request, StudentSubject $studentSubject)
     {
         //
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\SubjectTeacher  $subjectTeacher
+     * 
+     * @param  \App\Models\StudentSubject  $studentSubject
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SubjectTeacher $subjectTeacher)
+    public function destroy(StudentSubject $studentSubject)
     {
         try {
-            $subjectTeacher->delete();
+            $studentSubject->delete();
         } catch (Exception $ex) {
             return response([
                 'header' => 'Dependency error',

@@ -32,10 +32,10 @@ class Subject extends Model
     }
 
     public function teachers(){
-        return $this->belongsToMany(Teacher::class)->withPivot('id')->withTimestamps();
+        return $this->belongsToMany(Teacher::class)->withPivot('id');
     }
 
     public function students(){
-        return $this->belongsToMany(Student::class)->withPivot('id')->withTimestamps();
+        return $this->belongsToMany(Student::class)->withPivot('id');
     }
 }
