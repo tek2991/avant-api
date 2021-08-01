@@ -31,6 +31,7 @@ class SubjectController extends Controller
         ->with('subjectGroup:id,name', 'standard')
         ->join('standards', 'subjects.standard_id', 'standards.id')
         ->orderBy('standards.hierachy', 'asc')
+        ->orderBy('subject_group_id', 'asc')
         ->paginate();
     }
 

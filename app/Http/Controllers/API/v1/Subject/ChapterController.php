@@ -16,7 +16,7 @@ class ChapterController extends Controller
      */
     public function index()
     {
-        return Chapter::select(['id', 'name', 'description', 'subject_id'])->with('subject:id,name')->paginate();
+        return Chapter::with('subject:id,name')->paginate();
     }
 
     /**
