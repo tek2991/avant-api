@@ -25,8 +25,8 @@ class StudentSubjectController extends Controller
             'subjects' => function ($query) use ($request) {
                 $query->select('subject_id')->where('subject_id', $request->subject_id);
             }, 
-            'user:id','user.userDetail:user_id,name'
-        ])->paginate();
+            'user:id','user.userDetail:user_id,name', 'sectionStandard:id,section_id', 'sectionStandard.section:id,name'
+        ])->orderBy('section_standard_id')->orderBy('roll_no')->paginate();
     }
 
     /**

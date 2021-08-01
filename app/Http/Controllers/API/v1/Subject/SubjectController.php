@@ -57,6 +57,7 @@ class SubjectController extends Controller
             'subject_group_id' => 'required|exists:subject_groups,id',
             'standard_id' => 'required|exists:standards,id',
             'is_mandatory' => 'required|boolean',
+            'assign_students' => 'required|boolean',
         ]);
 
         $exists = Subject::where('subject_group_id', $request->subject_group_id)->where('standard_id', $request->standard_id)->exists();
@@ -75,7 +76,7 @@ class SubjectController extends Controller
             'is_mandatory' => $request->is_mandatory,
         ]);
 
-        if ($request->boolean('is_mandatory')) {
+        if ($request->boolean('is_mandatory') || $request->boolean('assign_students')) {
             $students = Standard::find($request->standard_id)->students()->get()->modelKeys();
             $subject->students()->sync($students);
         }
@@ -91,7 +92,7 @@ class SubjectController extends Controller
      */
     public function show(Subject $subject)
     {
-        return $subject->with('subjectGroup')->get();
+        return $subject;
     }
 
     /**
@@ -108,6 +109,7 @@ class SubjectController extends Controller
             'subject_group_id' => 'required|exists:subject_groups,id',
             'standard_id' => 'required|exists:standards,id',
             'is_mandatory' => 'required|boolean',
+            'assign_students' => 'required|boolean'
         ]);
 
         $subject->update([
@@ -119,7 +121,7 @@ class SubjectController extends Controller
 
         $students = [];
 
-        if ($request->boolean('is_mandatory')) {
+        if ($request->boolean('is_mandatory') || $request->boolean('assign_students') == true) {
             $students = Standard::find($request->standard_id)->students()->get()->modelKeys();
         }
 
