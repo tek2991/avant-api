@@ -12,7 +12,7 @@ class Chapter extends Model
     protected $fillable = [
         'name',
         'subject_id',
-        'decription',
+        'description',
     ];
 
     protected $hidden = [

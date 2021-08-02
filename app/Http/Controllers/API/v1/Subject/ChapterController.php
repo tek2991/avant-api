@@ -14,9 +14,13 @@ class ChapterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Chapter::with('subject:id,name')->paginate();
+        $this->validate($request, [
+            'subject_id' => 'required|exists:subjects,id',
+        ]);
+
+        return Chapter::where('subject_id', $request->subject_id)->with('subject:id,name')->paginate();
     }
 
     /**
@@ -33,10 +37,10 @@ class ChapterController extends Controller
             'subject_id' => 'required|exists:subjects,id',
         ]);
 
-        return Chapter::create($request, [
-            'name' => 'required|max:255',
-            'description' => 'required|max:255',
-            'subject_id' => 'required|exists:subjects,id',
+        return Chapter::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'subject_id' => $request->subject_id,
         ]);
     }
 
