@@ -67,13 +67,11 @@ class ChapterController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255',
             'description' => 'required|max:255',
-            'subject_id' => 'required|exists:subjects,id',
         ]);
 
         $chapter->update([
             'name' => $request->name,
             'description' => $request->description,
-            'subject_id' => $request->subject_id,
         ]);
         return $chapter;
     }
