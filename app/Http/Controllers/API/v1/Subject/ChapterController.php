@@ -53,7 +53,9 @@ class ChapterController extends Controller
      */
     public function show(Chapter $chapter)
     {
-        return $chapter;
+        return $chapter->load([
+            'subject.standard'
+        ]);
     }
 
     /**
