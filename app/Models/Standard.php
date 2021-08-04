@@ -24,7 +24,7 @@ class Standard extends Model
     ];
 
     public function sections(){
-        return $this->belongsToMany(Section::class)->withPivot('id')->withTimestamps();
+        return $this->belongsToMany(Section::class)->withPivot('id');
     }
 
     public function fees(){

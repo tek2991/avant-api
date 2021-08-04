@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\ChapterProgression;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Chapter extends Model
 {
@@ -22,5 +23,9 @@ class Chapter extends Model
 
     public function subject(){
         return $this->belongsTo(Subject::class);
+    }
+
+    public function chapterProgressions(){
+        return $this->hasMany(ChapterProgression::class);
     }
 }

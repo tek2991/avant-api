@@ -18,8 +18,8 @@ class CreateChapterProgressionsTable extends Migration
             $table->foreignId('session_id')->constrained();
             $table->foreignId('chapter_id')->constrained();
             $table->foreignId('section_id')->constrained();
-            $table->foreignId('started_by')->constrained('teachers', 'id')->nullable();
-            $table->foreignId('completed_by')->constrained('teachers', 'id')->nullable();
+            $table->foreignId('started_by')->nullable()->constrained('teachers', 'id');
+            $table->foreignId('completed_by')->nullable()->constrained('teachers', 'id');
             $table->dateTime('started_at')->nullable();
             $table->dateTime('completed_at')->nullable();
             $table->dateTime('complete_before');

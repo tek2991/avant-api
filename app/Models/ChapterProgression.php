@@ -16,7 +16,7 @@ class ChapterProgression extends Model
         'section_id',
         'started_by',
         'completed_by',
-        'complete_before_date',
+        'complete_before',
     ];
 
     protected $cast = [
@@ -34,10 +34,10 @@ class ChapterProgression extends Model
     }
 
     public function startedBy(){
-        return $this->belongsTo(Teacher::class);
+        return $this->belongsTo(Teacher::class, 'started_by', 'id');
     }
 
     public function completedBy(){
-        return $this->belongsTo(Teacher::class);
+        return $this->belongsTo(Teacher::class, 'completed_by', 'id');
     }
 }

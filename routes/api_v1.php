@@ -33,10 +33,10 @@ use App\Http\Controllers\API\v1\Subject\SubjectTeacherController;
 use App\Http\Controllers\API\v1\Fee\AttachStandardToFeeController;
 use App\Http\Controllers\API\v1\Fee\AttachChargeableToFeeController;
 use App\Http\Controllers\API\v1\Student\UnallocatedStudentController;
+use App\Http\Controllers\API\v1\Subject\ChapterProgressionController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
 use App\Http\Controllers\API\v1\Fee\AttachStudentToChargeableController;
-use App\Http\Controllers\API\v1\Subject\UpdateChapterProgression;
 
 /*
 |--------------------------------------------------------------------------
@@ -121,7 +121,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('subject-teacher', SubjectTeacherController::class)->middleware(['can:session_crud']);
     Route::apiResource('student-subject', StudentSubjectController::class)->middleware(['can:session_crud']);
     Route::apiResource('chapter', ChapterController::class)->middleware(['can:session_crud']);
-    Route::put('chapter-progression-update/{chapter}', [UpdateChapterProgression::class, 'update']);
+    Route::apiResource('chapter-progression', ChapterProgressionController::class)->middleware(['can:session_crud']);
     
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });
