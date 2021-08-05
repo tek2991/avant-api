@@ -21,7 +21,7 @@ class ChapterController extends Controller
             'subject_id' => 'required|exists:subjects,id',
         ]);
 
-        return Chapter::where('subject_id', $request->subject_id)->with('subject:id,name')->paginate();
+        return Chapter::where('subject_id', $request->subject_id)->with('subject:id,name,standard_id', 'subject.standard')->paginate();
     }
 
     /**
