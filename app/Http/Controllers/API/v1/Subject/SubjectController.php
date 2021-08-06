@@ -6,6 +6,7 @@ use Exception;
 use App\Models\Subject;
 use App\Models\Standard;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 
 class SubjectController extends Controller
@@ -110,8 +111,18 @@ class SubjectController extends Controller
             'subject_group_id' => 'required|exists:subject_groups,id',
             'standard_id' => 'required|exists:standards,id',
             'is_mandatory' => 'required|boolean',
-            'assign_students' => 'required|boolean'
+            'assign_students' => Rule::requiredIf(!$request->boolean('is_mandatory')),
         ]);
+
+        $exists = Subject::where('subject_group_id', $request->subject_group_id)->where('standard_id', $request->standard_id)->exists();
+        $groupChanged = $subject->subject_group_id != $request->subject_group_id ? true : false;
+
+        if($exists && $groupChanged){
+            return response([
+                'header' => 'Dulicate',
+                'message' => 'The subject is already created!'
+            ], 418);
+        }
 
         $subject->update([
             'name' => $request->name,
