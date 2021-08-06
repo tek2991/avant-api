@@ -22,46 +22,7 @@ class AttendanceController extends Controller
      */
     public function index(Request $request)
     {
-        // $user = Auth::user();
-        // if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
-        //     return response([
-        //         'header' => 'Forbidden',
-        //         'message' => 'Please Logout and Login again.'
-        //     ], 401);
-        // }
-
-        // $this->validate($request, [
-        //     'section_standard_id' => 'required|min:1|exists:section_standard,id',
-        //     'attendance_date' => 'required|date',
-        // ]);
-
-        // $sectionStandard = SectionStandard::where('id', $request->section_standard_id)->firstOrFail();
-
-        // $canProceed = false;
-
-        // $user->hasRole('director') === true ? $canProceed = true : false;
-
-        // if ($user->hasRole('teacher') === true) {
-        //     $user->teacher->id === $sectionStandard->teacher_id ? $canProceed = true : false;
-        // }
-
-        // if ($canProceed == false) {
-        //     return response([
-        //         'header' => 'Forbidden',
-        //         'message' => 'Please Logout and Login again.'
-        //     ], 401);
-        // }
-
-        // $students = $sectionStandard->students()->with([
-        //     'user:id', 'user.userDetail:id,user_id,name',
-        //     'user.attendances' => function ($query) use ($request) {
-        //         $query->where('attendance_date', 'like', '%' . $request->attendance_date . '%');
-        //     }
-        // ])->select(['id', 'user_id', 'section_standard_id', 'roll_no'])->orderBy('roll_no')->paginate();
-
-        // $sectionStandard = $sectionStandard->with(['section', 'standard', 'teacher:id,user_id', 'teacher.user:id', 'teacher.user.userDetail:id,user_id,name'])->find($request->section_standard_id);
-
-        // return response(compact('sectionStandard', 'students'));
+        //    
     }
 
     /**
@@ -99,11 +60,12 @@ class AttendanceController extends Controller
 
         $canProceed = false;
 
-        $user->hasRole('director') === true ? $canProceed = true : false;
-
+        
         if ($user->hasRole('teacher') === true) {
             $user->teacher->id === $sectionStandard->teacher_id ? $canProceed = true : false;
         }
+        
+        $user->hasRole('director') === true ? $canProceed = true : false;
 
         if ($canProceed == false) {
             return response([
@@ -150,11 +112,12 @@ class AttendanceController extends Controller
 
         $canProceed = false;
 
-        $user->hasRole('director') === true ? $canProceed = true : false;
-
+        
         if ($user->hasRole('teacher') === true) {
             $user->teacher->id === $sectionStandard->teacher_id ? $canProceed = true : false;
         }
+
+        $user->hasRole('director') === true ? $canProceed = true : false;
 
         if ($canProceed == false) {
             return response([
@@ -211,11 +174,12 @@ class AttendanceController extends Controller
 
         $canProceed = false;
 
-        $user->hasRole('director') === true ? $canProceed = true : false;
-
+        
         if ($user->hasRole('teacher') === true) {
             $user->teacher->id === $sectionStandard->teacher_id ? $canProceed = true : false;
         }
+        
+        $user->hasRole('director') === true ? $canProceed = true : false;
 
         if ($canProceed == false) {
             return response([

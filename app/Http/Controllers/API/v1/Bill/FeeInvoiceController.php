@@ -146,13 +146,6 @@ class FeeInvoiceController extends Controller
      */
     public function print(FeeInvoice $feeInvoice)
     {
-        // if (Auth::user()->id !== $feeInvoice->user_id && Auth::user()->hasRole('director') !== true) {
-        //     return response([
-        //         'header' => 'Forbidden',
-        //         'message' => 'Please Logout and Login again.'
-        //     ], 401);
-        // }
-
         $data = $feeInvoice->load('billFee:id,bill_id,fee_id', 'billFee.bill', 'billFee.bill.session', 'feeInvoiceItems', 'standard', 'user:id,email', 'user.userDetail:id,user_id,name');
 
         $pdf = PDF::loadView('documents.fee-invoice', ['data' => $data]);
@@ -167,13 +160,6 @@ class FeeInvoiceController extends Controller
      */
     public function printReceipt(FeeInvoice $feeInvoice)
     {
-        // if (Auth::user()->id !== $feeInvoice->user_id && Auth::user()->hasRole('director') !== true) {
-        //     return response([
-        //         'header' => 'Forbidden',
-        //         'message' => 'Please Logout and Login again.'
-        //     ], 401);
-        // }
-
         $data = $feeInvoice->load('billFee:id,bill_id,fee_id', 'billFee.bill', 'billFee.bill.session', 'feeInvoiceItems', 'standard', 'payment', 'user:id,email', 'user.userDetail:id,user_id,name');
 
         $receipt = Receipt::where('fee_invoice_id', $feeInvoice->id)->firstOrFail();

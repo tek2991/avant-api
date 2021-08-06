@@ -43,6 +43,7 @@ class UserSeeder extends Seeder
             'email' => 'director@avant.com'
         ]);
         $director->assignRole('director');
+        $director->assignRole('teacher');
 
         $director->userDetail()->create([
             'name' => 'The Principal',

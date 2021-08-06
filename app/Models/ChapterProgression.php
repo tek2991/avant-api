@@ -14,6 +14,8 @@ class ChapterProgression extends Model
         'session_id',
         'chapter_id',
         'section_id',
+        'started_at',
+        'completed_at',
         'started_by',
         'completed_by',
         'complete_before',

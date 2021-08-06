@@ -5,8 +5,10 @@ namespace App\Http\Controllers\API\v1\Subject;
 use App\Models\Chapter;
 use App\Models\Session;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Models\ChapterProgression;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class ChapterProgressionController extends Controller
@@ -62,12 +64,13 @@ class ChapterProgressionController extends Controller
 
         $canProceed = false;
 
-        $user->hasRole('director') === true ? $canProceed = true : false;
-
+        
         if ($user->hasRole('teacher') === true) {
             $canProceed = $chapter->subject->teachers()->get()->contains('user_id', $user->id);
         }
 
+        $user->hasRole('director') === true ? $canProceed = true : false;
+        
         if ($canProceed == false) {
             return response([
                 'header' => 'Forbidden',
@@ -112,7 +115,7 @@ class ChapterProgressionController extends Controller
      */
     public function show(ChapterProgression $chapterProgression)
     {
-        //
+        return $chapterProgression;
     }
 
     /**
@@ -124,7 +127,55 @@ class ChapterProgressionController extends Controller
      */
     public function update(Request $request, ChapterProgression $chapterProgression)
     {
-        //
+        $user = Auth::user();
+        if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
+        $this->validate($request, [
+            'status' => [
+                'required',
+                Rule::in(['start', 'complete'])
+            ],
+        ]);
+
+        $chapter = $chapterProgression->chapter;
+
+        $canProceed = false;
+
+        if ($user->hasRole('teacher') === true) {
+            $canProceed = $chapter->subject->teachers()->get()->contains('user_id', $user->id);
+        }
+
+        $user->hasRole('director') === true ? $canProceed = true : false;
+
+        if ($canProceed == false) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
+        $status = $request->status;
+
+        if($status == 'start'){
+            $chapterProgression->update([
+                'started_by' => $user->teacher->id,
+                'started_at' => Carbon::now(),
+            ]);
+        }
+
+        if($status == 'complete'){
+            $chapterProgression->update([
+                'completed_by' => $user->teacher->id,
+                'completed_at' => Carbon::now(),
+            ]);
+        }
+
+        return $chapterProgression;
     }
 
     /**
