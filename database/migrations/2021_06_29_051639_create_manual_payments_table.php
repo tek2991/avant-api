@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateChequesTable extends Migration
+class CreateManualPaymentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateChequesTable extends Migration
      */
     public function up()
     {
-        Schema::create('cheques', function (Blueprint $table) {
+        Schema::create('manual_payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('amount_in_cent');
-            $table->string('cheque_no');
-            $table->string('cheque_date');
-            $table->foreignId('bank_id')->constrained('banks');
+            $table->string('transaction_no')->nullable();
+            $table->dateTime('transaction_date');
+            $table->foreignId('bank_id')->nullable()->constrained('banks');
             $table->string('remarks')->nullable();
             $table->timestamps();
         });
@@ -31,6 +31,6 @@ class CreateChequesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cheques');
+        Schema::dropIfExists('manual_payments');
     }
 }

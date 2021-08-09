@@ -34,6 +34,13 @@ class RazorpayFeeInvoiceController extends Controller
         }
 
         if ($feeInvoice->payment()->count() > 0) {
+            if ($feeInvoice->payment->status === 'verified') {
+                return response([
+                    'header' => 'Payment error',
+                    'message' => 'Payment verified. Please contact admin.'
+                ], 401);
+            }
+
             if ($feeInvoice->payment->status === 'authorised') {
                 return response([
                     'header' => 'Payment error',

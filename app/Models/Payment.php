@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\FeeInvoice;
+use App\Models\ManualPayment;
 use App\Models\PaymentMethod;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,19 +28,11 @@ class Payment extends Model
     }
 
     /**
-     * Get all of the cheques that are assigned this payment.
+     * Get all of the manual payments that are assigned this payment.
      */
-    public function cheques()
+    public function manualPayments()
     {
-        return $this->morphedByMany(Cheque::class, 'paymentable');
-    }
-
-    /**
-     * Get all of the cashs that are assigned this payment.
-     */
-    public function cashs()
-    {
-        return $this->morphedByMany(Cash::class, 'paymentable');
+        return $this->morphedByMany(ManualPayment::class, 'paymentable');
     }
 
     /**

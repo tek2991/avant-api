@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Cash extends Model
+class ManualPayment extends Model
 {
     use HasFactory;
 
     /**
-     * Get all of the payments for the cash entry.
+     * Get all of the payments for manual payment.
      */
     public function payments()
     {
