@@ -41,7 +41,7 @@ class ManualPaymentController extends Controller
             }
         }
 
-        $manualPayment;
+        $manualPayment = null;
 
         if ($feeInvoice->payment()->count() > 0){
             if ($feeInvoice->payment->manualPayments()->count() > 0){
