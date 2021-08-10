@@ -15,7 +15,7 @@ class PaymentMethodSeeder extends Seeder
      */
     public function run()
     {
-        $methods = array("Cash","Cheque","Razorpay");
+        $methods = array("Manual","Razorpay");
 
         foreach($methods as $method){
             PaymentMethod::create([

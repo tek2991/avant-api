@@ -44,6 +44,13 @@ class ManualPaymentController extends Controller
         $manualPayment = null;
         $razorPay = null;
 
+        $payment_method_id = PaymentMethod::where('name', 'Manual')->firstOrFail()->id;
+
+        $payment = Payment::updateOrCreate(
+            ['fee_invoice_id' => $feeInvoice->id],
+            ['payment_method_id' => $payment_method_id]
+        );
+
         if ($feeInvoice->payment()->count() > 0){
             if ($feeInvoice->payment->manualPayments()->count() > 0){
                 $manualPayment = $feeInvoice->payment->manualPayments->first();
@@ -51,8 +58,14 @@ class ManualPaymentController extends Controller
             if ($feeInvoice->payment->razorpays()->count() > 0) {
                 $razorPay = $feeInvoice->payment->razorpays->first();
             }
+            return response(compact('feeInvoice', 'manualPayment', 'razorPay'));
         }
 
+        $manualPayment = ManualPayment::create([
+            'remarks' => "Opted for manual payment method"
+        ]);
+
+        $manualPayment->payments()->attach($payment->id);
         return response(compact('feeInvoice', 'manualPayment', 'razorPay'));
     }
 

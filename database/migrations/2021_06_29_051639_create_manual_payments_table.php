@@ -15,10 +15,10 @@ class CreateManualPaymentsTable extends Migration
     {
         Schema::create('manual_payments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('amount_in_cent');
+            $table->unsignedBigInteger('amount_in_cent')->nullable();
             $table->foreignId('instrument_id')->constrained();
             $table->string('transaction_no')->nullable();
-            $table->dateTime('transaction_date');
+            $table->dateTime('transaction_date')->nullable();
             $table->foreignId('bank_id')->nullable()->constrained('banks');
             $table->string('remarks')->nullable();
             $table->timestamps();

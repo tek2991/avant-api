@@ -15,6 +15,7 @@ use App\Http\Controllers\API\v1\Setup\SessionController;
 use App\Http\Controllers\API\v1\Fee\ChargeableController;
 use App\Http\Controllers\API\v1\Setup\StandardController;
 use App\Http\Controllers\API\v1\Subject\StreamController;
+use App\Http\Controllers\API\v1\Attributes\BankController;
 use App\Http\Controllers\API\v1\Bill\FeeInvoiceController;
 use App\Http\Controllers\API\v1\Event\EventTypeController;
 use App\Http\Controllers\API\v1\Student\StudentController;
@@ -25,6 +26,7 @@ use App\Http\Controllers\API\v1\Appeal\CloseAppealController;
 use App\Http\Controllers\API\v1\Subject\SubjectGroupController;
 use App\Http\Controllers\API\v1\Attendance\AttendanceController;
 use App\Http\Controllers\API\v1\Attributes\BloodGroupController;
+use App\Http\Controllers\API\v1\Instrument\InstrumentController;
 use App\Http\Controllers\API\v1\Setup\SectionStandardController;
 use App\Http\Controllers\API\v1\Student\EnrollStudentController;
 use App\Http\Controllers\API\v1\Appeal\RecommendAppealController;
@@ -75,6 +77,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('gender', GenderController::class)->only(['index'])->middleware(['can:gender_read']);
     Route::apiResource('blood-group', BloodGroupController::class)->only(['index'])->middleware(['can:blood_group_read']);
+    Route::apiResource('bank', BankController::class)->only(['index'])->middleware(['can:blood_group_read']);
+    Route::apiResource('instrument', InstrumentController::class)->only(['index'])->middleware(['can:blood_group_read']);
     
     Route::apiResource('fee', FeeController::class)->middleware(['can:bill_crud']);
     Route::get('fee-all', [FeeController::class, 'all'])->middleware(['can:bill_read']);
@@ -98,7 +102,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('razorpay-fee-invoice/{fee_invoice}', [RazorpayFeeInvoiceController::class, 'show']);
     Route::post('razorpay-verify-payment/{fee_invoice}', [RazorpayFeeInvoiceController::class, 'verifyPayment']);
     
-    Route::get('instrument-all', [InstrumentController::class, 'all']);
     Route::get('manual-payment/{fee_invoice}', [ManualPaymentController::class, 'show']);
     
     Route::apiResource('appeal', AppealController::class);
