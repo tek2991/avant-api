@@ -41,7 +41,13 @@ class ManualPaymentController extends Controller
             }
         }
 
-        $manualPayment = $feeInvoice->payment->manualPayments->first();
+        $manualPayment;
+
+        if ($feeInvoice->payment()->count() > 0){
+            if ($feeInvoice->payment->manualPayments()->count() > 0){
+                $manualPayment = $feeInvoice->payment->manualPayments->first();
+            }
+        }
 
         return response(compact('feeInvoice', 'manualPayment'));
     }
