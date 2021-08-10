@@ -15,6 +15,7 @@ use Database\Seeders\TeacherSeeder;
 use Database\Seeders\StandardSeeder;
 use Database\Seeders\AppealTypeSeeder;
 use Database\Seeders\ChargeableSeeder;
+use Database\Seeders\InstrumentSeeder;
 use Database\Seeders\UserDetailSeeder;
 use Database\Seeders\AppealStateSeeder;
 use Database\Seeders\BloodGroupsSeeder;
@@ -57,6 +58,7 @@ class DatabaseSeeder extends Seeder
             AppealTypeSeeder::class,
             PaymentMethodSeeder::class,
             BankSeeder::class,
+            InstrumentSeeder::class,
             EventTypeSeeder::class,
         ]);
     }

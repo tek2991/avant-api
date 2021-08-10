@@ -98,6 +98,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('razorpay-fee-invoice/{fee_invoice}', [RazorpayFeeInvoiceController::class, 'show']);
     Route::post('razorpay-verify-payment/{fee_invoice}', [RazorpayFeeInvoiceController::class, 'verifyPayment']);
     
+    Route::get('instrument-all', [InstrumentController::class, 'all']);
     Route::get('manual-payment/{fee_invoice}', [ManualPaymentController::class, 'show']);
     
     Route::apiResource('appeal', AppealController::class);

@@ -16,4 +16,11 @@ class ManualPayment extends Model
     {
         return $this->morphToMany(Payment::class, 'paymentable');
     }
+    /**
+     * Get the payment instrument type.
+     */
+    public function instrument()
+    {
+        return $this->belongsTo(Instrument::class);
+    }
 }

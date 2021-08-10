@@ -16,6 +16,7 @@ class CreateManualPaymentsTable extends Migration
         Schema::create('manual_payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('amount_in_cent');
+            $table->foreignId('instrument_id')->constrained();
             $table->string('transaction_no')->nullable();
             $table->dateTime('transaction_date');
             $table->foreignId('bank_id')->nullable()->constrained('banks');
