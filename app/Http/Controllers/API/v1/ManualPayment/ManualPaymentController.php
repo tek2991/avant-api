@@ -42,14 +42,18 @@ class ManualPaymentController extends Controller
         }
 
         $manualPayment = null;
+        $razorPay = null;
 
         if ($feeInvoice->payment()->count() > 0){
             if ($feeInvoice->payment->manualPayments()->count() > 0){
                 $manualPayment = $feeInvoice->payment->manualPayments->first();
             }
+            if ($feeInvoice->payment->razorpays()->count() > 0) {
+                $razorPay = $feeInvoice->payment->razorpays->first();
+            }
         }
 
-        return response(compact('feeInvoice', 'manualPayment'));
+        return response(compact('feeInvoice', 'manualPayment', 'razorPay'));
     }
 
     public function store(FeeInvoice $feeInvoice)
