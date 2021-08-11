@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\v1\ManualPayment;
 use App\Models\Payment;
 use App\Models\FeeInvoice;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use App\Models\ManualPayment;
 use App\Models\PaymentMethod;
 use App\Http\Controllers\Controller;
@@ -12,6 +13,10 @@ use Illuminate\Support\Facades\Auth;
 
 class ManualPaymentController extends Controller
 {
+    /**
+     * Display the specified resource.
+     *
+     */
     public function show(FeeInvoice $feeInvoice)
     {
         if (Auth::user()->id !== $feeInvoice->user_id && Auth::user()->hasRole('director') !== true) {
@@ -73,7 +78,15 @@ class ManualPaymentController extends Controller
         return response(compact('feeInvoice', 'manualPayment', 'razorPay'));
     }
 
-    public function store(FeeInvoice $feeInvoice)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\ManualPayment  $manualPayment
+     * @return \Illuminate\Http\Response
+     */
+
+    public function store(ManualPayment $manualPayment)
     {
         if (Auth::user()->id !== $feeInvoice->user_id && Auth::user()->hasRole('director') !== true) {
             return response([
@@ -82,29 +95,16 @@ class ManualPaymentController extends Controller
             ], 401);
         }
 
-        if ($feeInvoice->payment()->count() > 0) {
-            if ($feeInvoice->payment->status === 'verified') {
-                return response([
-                    'header' => 'Payment error',
-                    'message' => 'Payment verified. Please contact admin.'
-                ], 401);
-            }
 
-            if ($feeInvoice->payment->status === 'authorised') {
-                return response([
-                    'header' => 'Payment error',
-                    'message' => 'Payment authorired. Please contact admin.'
-                ], 401);
-            }
+        $this->validate($request, [
+            'amount' => 'required|integer|min:1|max:9999999999',
+            'instrument_id' => 'required|exists:instruments,id',
+            'transaction_no' => Rule::requiredIf($request->instrument_id != '1'),
+            'transaction_date' => [Rule::requiredIf($request->instrument_id != '1'), 'date'],
+            'bank_id' => [Rule::requiredIf($request->instrument_id != '1'), 'exists:banks,id'],
+            'remarks' => Rule::requiredIf($request->instrument_id == '1'),
+        ]);
 
-            if ($feeInvoice->payment->status === 'captured') {
-                return response([
-                    'header' => 'Payment error',
-                    'message' => 'Payment credited. Please contact admin.'
-                ], 401);
-            }
-        }
-
-        
+        return $manualPayment;
     }
 }
