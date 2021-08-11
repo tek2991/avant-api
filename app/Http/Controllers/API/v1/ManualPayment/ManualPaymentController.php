@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\API\v1\ManualPayment;
 
+use App\Models\Payment;
 use App\Models\FeeInvoice;
 use Illuminate\Http\Request;
+use App\Models\ManualPayment;
+use App\Models\PaymentMethod;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 

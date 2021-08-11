@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\API\v1\Attributes;
 
-use App\Http\Controllers\Controller;
+use App\Models\Bank;
 use App\Models\Gender;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class BankController extends Controller
 {

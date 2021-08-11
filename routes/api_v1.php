@@ -26,7 +26,7 @@ use App\Http\Controllers\API\v1\Appeal\CloseAppealController;
 use App\Http\Controllers\API\v1\Subject\SubjectGroupController;
 use App\Http\Controllers\API\v1\Attendance\AttendanceController;
 use App\Http\Controllers\API\v1\Attributes\BloodGroupController;
-use App\Http\Controllers\API\v1\Instrument\InstrumentController;
+use App\Http\Controllers\API\v1\Attributes\InstrumentController;
 use App\Http\Controllers\API\v1\Setup\SectionStandardController;
 use App\Http\Controllers\API\v1\Student\EnrollStudentController;
 use App\Http\Controllers\API\v1\Appeal\RecommendAppealController;
