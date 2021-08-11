@@ -86,7 +86,7 @@ class ManualPaymentController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function store(ManualPayment $manualPayment)
+    public function update(ManualPayment $manualPayment)
     {
         if (Auth::user()->id !== $feeInvoice->user_id && Auth::user()->hasRole('director') !== true) {
             return response([
