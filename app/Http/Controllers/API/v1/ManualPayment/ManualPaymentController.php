@@ -107,7 +107,7 @@ class ManualPaymentController extends Controller
 
         $amount_in_cent = ($request->amount) * 100;
 
-        ManualPayment::update([
+        $manualPayment->update([
             'amount_in_cent' => $amount_in_cent,
             'instrument_id' => $request->instrument_id,
             'transaction_no' => $request->transaction_no,
