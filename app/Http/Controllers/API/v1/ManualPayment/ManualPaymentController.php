@@ -99,10 +99,10 @@ class ManualPaymentController extends Controller
         $this->validate($request, [
             'amount' => 'required|integer|min:1|max:9999999999',
             'instrument_id' => 'required|exists:instruments,id',
-            'transaction_no' => Rule::requiredIf($request->instrument_id != '1'),
-            'transaction_date' => [Rule::requiredIf($request->instrument_id != '1'), 'date'],
-            'bank_id' => [Rule::requiredIf($request->instrument_id != '1'), 'exists:banks,id'],
-            'remarks' => Rule::requiredIf($request->instrument_id == '1'),
+            'transaction_no' => ['nullable', Rule::requiredIf($request->instrument_id != '1')],
+            'transaction_date' => ['nullable', Rule::requiredIf($request->instrument_id != '1'), 'date'],
+            'bank_id' => ['nullable', Rule::requiredIf($request->instrument_id != '1'), 'exists:banks,id'],
+            'remarks' => ['nullable', Rule::requiredIf($request->instrument_id == '1')],
         ]);
 
         return $manualPayment;
