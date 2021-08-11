@@ -86,7 +86,7 @@ class ManualPaymentController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function update(ManualPayment $manualPayment)
+    public function update(ManualPayment $manualPayment, Request $request)
     {
         if (Auth::user()->hasRole('director') !== true) {
             return response([
