@@ -103,6 +103,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('razorpay-verify-payment/{fee_invoice}', [RazorpayFeeInvoiceController::class, 'verifyPayment']);
     
     Route::get('manual-payment/{fee_invoice}', [ManualPaymentController::class, 'show']);
+    Route::put('manual-payment/{manual_payment}', [ManualPaymentController::class, 'update']);
     
     Route::apiResource('appeal', AppealController::class);
     Route::post('recommend-appeal/{appeal}', [RecommendAppealController::class, 'store'])->middleware(['can:appeal_crud']);
