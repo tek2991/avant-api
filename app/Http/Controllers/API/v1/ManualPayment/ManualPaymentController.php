@@ -105,6 +105,17 @@ class ManualPaymentController extends Controller
             'remarks' => ['nullable', Rule::requiredIf($request->instrument_id == '1')],
         ]);
 
+        $amount_in_cent = ($request->amount) * 100;
+
+        ManualPayment::update([
+            'amount_in_cent' => $amount_in_cent,
+            'instrument_id' => $request->instrument_id,
+            'transaction_no' => $request->transaction_no,
+            'transaction_date' => $request->transaction_date,
+            'bank_id' => $request->bank_id,
+            'remarks' => $request->remarks,
+        ]);
+
         return $manualPayment;
     }
 }
