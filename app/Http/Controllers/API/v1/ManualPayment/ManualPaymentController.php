@@ -55,13 +55,13 @@ class ManualPaymentController extends Controller
         );
 
         if ($feeInvoice->payment()->count() > 0){
-            if ($feeInvoice->payment->manualPayments()->count() > 0){
-                $manualPayment = $feeInvoice->payment->manualPayments->first();
-            }
             if ($feeInvoice->payment->razorpays()->count() > 0) {
                 $razorPay = $feeInvoice->payment->razorpays->first();
             }
-            return response(compact('feeInvoice', 'manualPayment', 'razorPay'));
+            if ($feeInvoice->payment->manualPayments()->count() > 0){
+                $manualPayment = $feeInvoice->payment->manualPayments->first();
+                return response(compact('feeInvoice', 'manualPayment', 'razorPay'));
+            }
         }
 
         $manualPayment = ManualPayment::create([
@@ -69,6 +69,7 @@ class ManualPaymentController extends Controller
         ]);
 
         $manualPayment->payments()->attach($payment->id);
+
         return response(compact('feeInvoice', 'manualPayment', 'razorPay'));
     }
 
