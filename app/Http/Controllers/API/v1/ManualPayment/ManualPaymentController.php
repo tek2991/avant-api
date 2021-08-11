@@ -19,7 +19,7 @@ class ManualPaymentController extends Controller
      */
     public function show(FeeInvoice $feeInvoice)
     {
-        if (Auth::user()->id !== $feeInvoice->user_id && Auth::user()->hasRole('director') !== true) {
+        if (Auth::user()->hasRole('director') !== true) {
             return response([
                 'header' => 'Forbidden',
                 'message' => 'Please Logout and Login again.'
@@ -88,7 +88,7 @@ class ManualPaymentController extends Controller
 
     public function update(ManualPayment $manualPayment)
     {
-        if (Auth::user()->id !== $feeInvoice->user_id && Auth::user()->hasRole('director') !== true) {
+        if (Auth::user()->hasRole('director') !== true) {
             return response([
                 'header' => 'Forbidden',
                 'message' => 'Please Logout and Login again.'
