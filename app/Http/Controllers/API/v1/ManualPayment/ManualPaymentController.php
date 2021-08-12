@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\API\v1\ManualPayment;
 
 use App\Models\Payment;
+use App\Models\Receipt;
 use App\Models\FeeInvoice;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Models\ManualPayment;
 use App\Models\PaymentMethod;
+use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -114,6 +115,16 @@ class ManualPaymentController extends Controller
             'transaction_date' => $request->transaction_date,
             'bank_id' => $request->bank_id,
             'remarks' => $request->remarks,
+        ]);
+
+        $payment = $manualPayment->payments->first();
+
+        $payment->update([
+            'status' => 'captured'
+        ]);
+
+        Receipt::create([
+            'fee_invoice_id' => $payment->fee_invoice_id,
         ]);
 
         return $manualPayment;

@@ -38,6 +38,7 @@
         .receipt-box table tr td:nth-child(3) {
             text-align: right;
         }
+
         .receipt-box table tr td:nth-child(4) {
             text-align: right;
         }
@@ -118,8 +119,7 @@
                     <table>
                         <tr>
                             <td class="title">
-                                <img src="{{ env('LOGO') }}"
-                                    style="width: 100%; max-width: 200px" />
+                                <img src="{{ env('LOGO') }}" style="width: 100%; max-width: 200px" />
                             </td>
 
                             <td>
@@ -127,10 +127,15 @@
 
                                 Invoice #: {{ $data->id }}<br />
 
-                                Order #: {{ $receipt->feeInvoice->payment->razorpays->first()->order_id }} <br />
-
-                                Payment #: {{ $receipt->feeInvoice->payment->razorpays->first()->payment_id }} <br />
-
+                                @if ($data->payment->payment_method_id == '2')
+                                    Order #: {{ $receipt->feeInvoice->payment->razorpays->first()->order_id }} <br />
+                                    Payment #: {{ $receipt->feeInvoice->payment->razorpays->first()->payment_id }} <br />
+                                @else
+                                    Payment Mode: {{ $receipt->feeInvoice->payment->manualPayments->first()->instrument->name }} <br />
+                                    Amount Paid: Rs {{ ($receipt->feeInvoice->payment->manualPayments->first()->amount_in_cent)/100 }}/- <br />
+                                    Tnx/Instrument #: {{ $receipt->feeInvoice->payment->manualPayments->first()->transaction_no }} <br />
+                                    Tnx/Instrument date: {{ $receipt->feeInvoice->payment->manualPayments->first()->transaction_date->toDateString() }} <br />
+                                @endif
                                 Payment Date: {{ $receipt->created_at->toDateTimeString() }} <br />
                             </td>
                         </tr>
@@ -180,11 +185,11 @@
                     </td>
 
                     <td>
-                        {{ $item->amount_in_cent/100 }}/-
+                        {{ $item->amount_in_cent / 100 }}/-
                     </td>
 
                     <td>
-                        {{ ($item->amount_in_cent/100)*$item->tax_rate/100 }}/-
+                        {{ (($item->amount_in_cent / 100) * $item->tax_rate) / 100 }}/-
                     </td>
 
                     <td>
@@ -201,17 +206,17 @@
             </tr>
 
         </table>
-		<table>
-			<tr>
-				<td></td>
-				<td>
-					<br />
-					<br />
-					<br />
-					For: Avant SMS<br />
-				</td>
-			</tr>
-		</table>
+        <table>
+            <tr>
+                <td></td>
+                <td>
+                    <br />
+                    <br />
+                    <br />
+                    For: Avant SMS<br />
+                </td>
+            </tr>
+        </table>
     </div>
 </body>
 
