@@ -34,10 +34,11 @@ class ChargeableController extends Controller
             'name' => 'required|max:255|string',
             'description' => 'required|max:255|string',
             'is_mandatory' => 'required|boolean',
+            'assign_students' => 'required|boolean',
             'amount' => 'required|integer|min:1|max:9999999999',
             'tax_rate' => [
                 'required', 'integer',
-                Rule::in([5, 12, 18, 28])
+                Rule::in([0, 5, 12, 18, 28])
             ]
         ]);
 
@@ -53,7 +54,7 @@ class ChargeableController extends Controller
             'gross_amount_in_cent' => $gross_amount_in_cent
         ]);
 
-        if ($request->boolean('is_mandatory')) {
+        if ($request->boolean('is_mandatory') || $request->boolean('assign_students')) {
             $students = Student::all()->modelKeys();
             AttachStudentToChargeableJob::dispatch($chargeable, $students);
         }
@@ -96,6 +97,7 @@ class ChargeableController extends Controller
             'name' => 'required|max:255|string',
             'description' => 'required|max:255|string',
             'is_mandatory' => 'required|boolean',
+            'assign_students' => Rule::requiredIf(!$request->boolean('is_mandatory')),
             'amount' => 'required|integer|min:1|max:9999999999',
             'tax_rate' => [
                 'required', 'integer',
@@ -106,11 +108,6 @@ class ChargeableController extends Controller
         $amount_in_cent = ($request->amount) * 100;
         $gross_amount_in_cent = (($request->amount) * 100) * ((($request->tax_rate) / 100) + 1);
 
-        if ($request->boolean('is_mandatory') !== $chargeable->is_mandatory) {
-            $students = $request->boolean('is_mandatory') ? Student::all()->modelKeys() : [];
-            AttachStudentToChargeableJob::dispatch($chargeable, $students);
-        }
-
         $chargeable->update([
             'name' => $request->name,
             'description' => $request->description,
@@ -120,6 +117,11 @@ class ChargeableController extends Controller
             'gross_amount_in_cent' => $gross_amount_in_cent
         ]);
 
+        $students = [];
+        if ($request->boolean('is_mandatory') || $request->boolean('assign_students')) {
+            $students = Student::all()->modelKeys();
+        }
+        AttachStudentToChargeableJob::dispatch($chargeable, $students);
 
         return $chargeable;
     }

@@ -40,6 +40,7 @@ use App\Http\Controllers\API\v1\ManualPayment\ManualPaymentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
 use App\Http\Controllers\API\v1\Fee\AttachStudentToChargeableController;
+use App\Http\Controllers\API\v1\Fee\ChargeableStudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -89,10 +90,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('student', StudentController::class)->only(['index', 'store', 'update', 'destroy'])->middleware(['can:student_crud']);
     Route::get('unallocated-student', [UnallocatedStudentController::class, 'index'])->middleware(['can:student_read']);
     Route::post('enroll-student', [EnrollStudentController::class, 'store'])->middleware(['can:student_crud']);
-
+    
     Route::post('attach-chargeable-to-fee', [AttachChargeableToFeeController::class, 'store'])->middleware(['can:bill_crud']);
     Route::post('attach-standard-to-fee', [AttachStandardToFeeController::class, 'store'])->middleware(['can:bill_crud']);
     Route::post('attach-student-to-chargeable', [AttachStudentToChargeableController::class, 'store'])->middleware(['can:bill_crud']);
+    Route::apiResource('chargeable-student', ChargeableStudentController::class)->middleware(['can:session_crud']);
 
     Route::apiResource('bill', BillController::class)->only(['index', 'store', 'show'])->middleware(['can:bill_crud']);
     Route::get('bill-all', [BillController::class, 'all'])->middleware(['can:bill_read']);
