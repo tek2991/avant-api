@@ -22,7 +22,7 @@ class ChargeableStudentController extends Controller
         ]);
 
         return Chargeable::find($request->chargeable_id)->students()->with([
-            'user:id','user.userDetail:user_id,name', 'sectionStandard:id,section_id', 'sectionStandard.section:id,name'
+            'user:id','user.userDetail:user_id,name', 'sectionStandard.standard:id,name', 'sectionStandard.section:id,name'
         ])->orderBy('section_standard_id')->orderBy('roll_no')->paginate();
     }
 
@@ -35,13 +35,12 @@ class ChargeableStudentController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'chargeable_id' => 'required|min:1|exists:chargeables,id',
-            'student_id' => 'required|min:1|exists:students,id',
+            'chargeable_id' => 'required|exists:chargeables,id',
+            'student_ids' => 'exists:students,id'
         ]);
-
-        $student = [$request->student_id];
-
-        return Chargeable::find($request->chargeable_id)->students()->syncWithoutDetaching($student);
+        $chargeable = Chargeable::find($request->chargeable_id)->students()->syncWithoutDetaching($request->student_ids);
+        
+        return $chargeable;
     }
 
     /**

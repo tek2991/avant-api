@@ -41,6 +41,7 @@ use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
 use App\Http\Controllers\API\v1\Fee\AttachStudentToChargeableController;
 use App\Http\Controllers\API\v1\Fee\ChargeableStudentController;
+use App\Models\Standard;
 
 /*
 |--------------------------------------------------------------------------
@@ -95,6 +96,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('attach-standard-to-fee', [AttachStandardToFeeController::class, 'store'])->middleware(['can:bill_crud']);
     Route::post('attach-student-to-chargeable', [AttachStudentToChargeableController::class, 'store'])->middleware(['can:bill_crud']);
     Route::apiResource('chargeable-student', ChargeableStudentController::class)->middleware(['can:session_crud']);
+    Route::get('student-by-standard/{standard}', [StandardController::class, 'studentByStandard']);
 
     Route::apiResource('bill', BillController::class)->only(['index', 'store', 'show'])->middleware(['can:bill_crud']);
     Route::get('bill-all', [BillController::class, 'all'])->middleware(['can:bill_read']);

@@ -30,6 +30,12 @@ class StandardController extends Controller
         Return Standard::orderBy('hierachy')->get();
     }
 
+    public function studentByStandard(Standard $standard){
+        return $standard->students()->with([
+            'user:id','user.userDetail:user_id,name', 'sectionStandard.standard:id,name', 'sectionStandard.section:id,name'
+        ])->orderBy('section_standard_id')->orderBy('roll_no')->get();
+    }
+
     /**
      * Store a newly created resource in storage.
      *
