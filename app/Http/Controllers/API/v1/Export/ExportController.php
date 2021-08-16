@@ -16,6 +16,7 @@ class ExportController extends Controller
     }
 
     public function billFee(BillFee $billFee){
-        return Excel::download(new BillFeeExport($billFee), 'billFee.xlsx');
+        $id = $billFee->id;
+        return Excel::download(new BillFeeExport($id), 'billFee.xlsx');
     }
 }
