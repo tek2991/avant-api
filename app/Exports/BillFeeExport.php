@@ -6,8 +6,9 @@ use App\Models\BillFee;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
-class BillFeeExport implements FromCollection, WithMapping, WithHeadings
+class BillFeeExport implements FromCollection, WithMapping, WithHeadings, WithColumnFormatting
 {
     protected $billFee;
     function __construct($billFee) {
@@ -31,6 +32,7 @@ class BillFeeExport implements FromCollection, WithMapping, WithHeadings
         $payment = $feeInvoice->payment()->exists() ? $feeInvoice->payment : null;
         $payment_method = $payment ? $payment->paymentMethod->name : 'Not Paid';
         $payment_status = $payment ? $payment->status : 'N/A';
+        $payment_date = $payment ? $payment->updated_at->toDateString() : 'N/A';
 
         return [
             $feeInvoice->id,
@@ -41,6 +43,7 @@ class BillFeeExport implements FromCollection, WithMapping, WithHeadings
             ($feeInvoice->gross_amount_in_cent)/100,
             $payment_status,
             $payment_method,
+            $payment_date,
             $feeInvoice->user->userDetail->name,
             $feeInvoice->user->userDetail->fathers_name,
             $feeInvoice->user->userDetail->phone,
@@ -59,10 +62,18 @@ class BillFeeExport implements FromCollection, WithMapping, WithHeadings
             'Amount with tax',
             'Payment status',
             'Payment method',
+            'Payment date',
             'Student name',
             'Fathers name',
             'Phone',
             'Phone alternate',
+        ];
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            'I' => NumberFormat::FORMAT_DATE_DDMMYYYY,
         ];
     }
 }
