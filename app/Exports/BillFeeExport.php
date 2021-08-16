@@ -7,11 +7,16 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 
 class BillFeeExport implements FromCollection
 {
+    protected $billFee;
+    function __construct($billFee) {
+            $this->billFee = $billFee;
+    }
+
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
-        return BillFee::all();
+        return $billFee;
     }
 }

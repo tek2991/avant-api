@@ -141,7 +141,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::get('fee-invoice-print/{fee_invoice}', [FeeInvoiceController::class, 'print']);
 Route::get('fee-invoice-receipt/{fee_invoice}', [FeeInvoiceController::class, 'printReceipt']);
 Route::get('user-export', [ExportController::class, 'user']);
-Route::get('bill-fee-export', [ExportController::class, 'billFee']);
+
+Route::get('bill-fee-export/{bill_fee}', [ExportController::class, 'billFee']);
 
 // Route::post('/razorpay-callback', function () {
 //     return response('OK', 200);

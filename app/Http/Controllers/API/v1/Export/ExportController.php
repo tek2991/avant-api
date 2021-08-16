@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\v1\Export;
 
+use App\Models\BillFee;
 use App\Exports\UsersExport;
 use Illuminate\Http\Request;
 use App\Exports\BillFeeExport;
@@ -14,7 +15,7 @@ class ExportController extends Controller
         return Excel::download(new UsersExport, 'users.xlsx');
     }
 
-    public function billFee(){
-        return Excel::download(new BillFeeExport, 'billFee.xlsx');
+    public function billFee(BillFee $billFee){
+        return Excel::download(new BillFeeExport($billFee), 'billFee.xlsx');
     }
 }
