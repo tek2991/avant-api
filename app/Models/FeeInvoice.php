@@ -43,4 +43,8 @@ class FeeInvoice extends Model
     public function payment(){
         return $this->hasOne(Payment::class);
     }
+
+    public function receipt(){
+        return $this->hasOne(Receipt::class);
+    }
 }
