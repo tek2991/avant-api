@@ -4,8 +4,9 @@ namespace App\Exports;
 
 use App\Models\BillFee;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
-class BillFeeExport implements FromCollection
+class BillFeeExport implements FromCollection, WithMapping
 {
     protected $billFee;
     function __construct($billFee) {
@@ -17,7 +18,17 @@ class BillFeeExport implements FromCollection
     */
     public function collection()
     {
-        $loadedBillFee = BillFee::where('id', $this->billFee)->get();
-        return $loadedBillFee;
+        $feeInvoices = BillFee::where('id', $this->billFee)->feeInvoices()->get();
+        return $feeInvoices;
     }
+
+    //     /**
+    // * @var FeeInvoice $feeInvoice
+    // */
+    // public function map($feeInvoice): array
+    // {
+    //     return [
+
+    //     ];
+    // }
 }
