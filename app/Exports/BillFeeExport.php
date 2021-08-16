@@ -4,9 +4,9 @@ namespace App\Exports;
 
 use App\Models\BillFee;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithMapping;
+// use Maatwebsite\Excel\Concerns\WithMapping;
 
-class BillFeeExport implements FromCollection, WithMapping
+class BillFeeExport implements FromCollection
 {
     protected $billFee;
     function __construct($billFee) {
@@ -22,16 +22,16 @@ class BillFeeExport implements FromCollection, WithMapping
         return $feeInvoices;
     }
 
-        /**
-    * @var FeeInvoice $feeInvoice
-    */
-    public function map($feeInvoice): array
-    {
-        return [
-            $feeInvoice->id,
-            $feeInvoice->name,
-            $feeInvoice->user->userDetail->name,
-            $feeInvoice->amount_in_cent,
-        ];
-    }
+    //     /**
+    // * @var FeeInvoice $feeInvoice
+    // */
+    // public function map($feeInvoice): array
+    // {
+    //     return [
+    //         $feeInvoice->id,
+    //         $feeInvoice->name,
+    //         $feeInvoice->user->userDetail->name,
+    //         $feeInvoice->amount_in_cent,
+    //     ];
+    // }
 }
