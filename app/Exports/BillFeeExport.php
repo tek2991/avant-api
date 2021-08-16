@@ -17,6 +17,7 @@ class BillFeeExport implements FromCollection
     */
     public function collection()
     {
-        return $billFee;
+        $loadedBillFee = $this->billFee;
+        return $loadedBillFee;
     }
 }
