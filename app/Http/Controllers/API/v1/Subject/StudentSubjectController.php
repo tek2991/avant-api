@@ -20,7 +20,6 @@ class StudentSubjectController extends Controller
         $this->validate($request, [
             'subject_id' => 'required|min:1|exists:subjects,id',
         ]);
-
         return Subject::find($request->subject_id)->standard->students()->with([
             'subjects' => function ($query) use ($request) {
                 $query->select('subject_id')->where('subject_id', $request->subject_id);
@@ -41,9 +40,7 @@ class StudentSubjectController extends Controller
             'subject_id' => 'required|min:1|exists:subjects,id',
             'student_id' => 'required|min:1|exists:students,id',
         ]);
-
         $student = [$request->student_id];
-
         return Subject::find($request->subject_id)->students()->syncWithoutDetaching($student);
     }
 
@@ -86,7 +83,6 @@ class StudentSubjectController extends Controller
                 'message' => 'Other resources depend on this record.'
             ], 418);
         }
-
         return response('', 204);
     }
 }
