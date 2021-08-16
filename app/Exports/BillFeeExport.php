@@ -5,8 +5,9 @@ namespace App\Exports;
 use App\Models\BillFee;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class BillFeeExport implements FromCollection, WithMapping
+class BillFeeExport implements FromCollection, WithMapping, WithHeadings
 {
     protected $billFee;
     function __construct($billFee) {
@@ -28,17 +29,36 @@ class BillFeeExport implements FromCollection, WithMapping
     public function map($feeInvoice): array
     {
         $payment = $feeInvoice->payment()->exists() ? $feeInvoice->payment : null;
-        $payment_method = $payment ? $payment->paymentMethod->name : 'Not Paid'; 
-        $payment_status = $payment ? $payment->status.'('.$payment->status_source.')' : 'Not Paid'; 
+        $payment_method = $payment ? $payment->paymentMethod->name : 'Not Paid';
+        $payment_status = $payment ? $payment->status.'('.$payment->status_source.')' : 'N/A';
+
         return [
             $feeInvoice->id,
             $feeInvoice->name,
-            $feeInvoice->amount_in_cent,
-            $feeInvoice->gross_amount_in_cent,
+            $feeInvoice->standard->name,
+            $feeInvoice->billFee->session->name,
+            ($feeInvoice->amount_in_cent)/100,
+            ($feeInvoice->gross_amount_in_cent)/100,
             $payment_status,
             $payment_method,
             $feeInvoice->user->userDetail->name,
-            $feeInvoice->standard->name,
+            $feeInvoice->user->userDetail->fathers_name,
+        ];
+    }
+
+    public function headings(): array
+    {
+        return [
+            'Invoice #',
+            'Fee name',
+            'Standard name',
+            'Academic session',
+            'Net amount',
+            'Amount with tax',
+            'Payment status',
+            'Payment method',
+            'Student name',
+            'Fathers name',
         ];
     }
 }
