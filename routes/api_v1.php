@@ -1,4 +1,5 @@
 <?php
+use App\Models\Standard;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\ApiLoginController;
 use App\Http\Controllers\API\v1\Fee\FeeController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\API\v1\Event\EventController;
 use App\Http\Controllers\API\v1\Bill\BillFeeController;
 use App\Http\Controllers\API\v1\User\TeacherController;
 use App\Http\Controllers\API\v1\Appeal\AppealController;
+use App\Http\Controllers\API\v1\Export\ExportController;
 use App\Http\Controllers\API\v1\Setup\SectionController;
 use App\Http\Controllers\API\v1\Setup\SessionController;
 use App\Http\Controllers\API\v1\Fee\ChargeableController;
@@ -27,6 +29,7 @@ use App\Http\Controllers\API\v1\Subject\SubjectGroupController;
 use App\Http\Controllers\API\v1\Attendance\AttendanceController;
 use App\Http\Controllers\API\v1\Attributes\BloodGroupController;
 use App\Http\Controllers\API\v1\Attributes\InstrumentController;
+use App\Http\Controllers\API\v1\Fee\ChargeableStudentController;
 use App\Http\Controllers\API\v1\Setup\SectionStandardController;
 use App\Http\Controllers\API\v1\Student\EnrollStudentController;
 use App\Http\Controllers\API\v1\Appeal\RecommendAppealController;
@@ -40,8 +43,6 @@ use App\Http\Controllers\API\v1\ManualPayment\ManualPaymentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
 use App\Http\Controllers\API\v1\Fee\AttachStudentToChargeableController;
-use App\Http\Controllers\API\v1\Fee\ChargeableStudentController;
-use App\Models\Standard;
 
 /*
 |--------------------------------------------------------------------------
@@ -139,6 +140,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::get('fee-invoice-print/{fee_invoice}', [FeeInvoiceController::class, 'print']);
 Route::get('fee-invoice-receipt/{fee_invoice}', [FeeInvoiceController::class, 'printReceipt']);
+Route::get('user-export', [ExportController::class, 'user']);
 
 // Route::post('/razorpay-callback', function () {
 //     return response('OK', 200);
