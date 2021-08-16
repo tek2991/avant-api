@@ -31,8 +31,8 @@ class BillFeeExport implements FromCollection, WithMapping, WithHeadings, WithCo
     public function map($feeInvoice): array
     {
         $payment = $feeInvoice->payment()->exists() ? $feeInvoice->payment : null;
-        $payment_method = $payment ? $payment->paymentMethod->name : 'Not Paid';
-        $payment_status = $payment ? $payment->status : 'N/A';
+        $payment_status = $payment ? $payment->status : 'Not Paid';
+        $payment_method = $payment ? $payment->paymentMethod->name : 'N/A';
         $payment_date = $payment ? $payment->updated_at->toDateString() : 'N/A';
 
         return [
