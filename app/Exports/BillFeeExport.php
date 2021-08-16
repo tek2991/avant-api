@@ -30,7 +30,7 @@ class BillFeeExport implements FromCollection, WithMapping, WithHeadings
     {
         $payment = $feeInvoice->payment()->exists() ? $feeInvoice->payment : null;
         $payment_method = $payment ? $payment->paymentMethod->name : 'Not Paid';
-        $payment_status = $payment ? $payment->status.'('.$payment->status_source.')' : 'N/A';
+        $payment_status = $payment ? $payment->status : 'N/A';
 
         return [
             $feeInvoice->id,
@@ -43,6 +43,8 @@ class BillFeeExport implements FromCollection, WithMapping, WithHeadings
             $payment_method,
             $feeInvoice->user->userDetail->name,
             $feeInvoice->user->userDetail->fathers_name,
+            $feeInvoice->user->userDetail->phone,
+            $feeInvoice->user->userDetail->phone_alternate,
         ];
     }
 
@@ -59,6 +61,8 @@ class BillFeeExport implements FromCollection, WithMapping, WithHeadings
             'Payment method',
             'Student name',
             'Fathers name',
+            'Phone',
+            'Phone alternate',
         ];
     }
 }
