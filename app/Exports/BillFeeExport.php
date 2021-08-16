@@ -18,7 +18,7 @@ class BillFeeExport implements FromCollection
     */
     public function collection()
     {
-        $feeInvoices = BillFee::where('id', $this->billFee)->feeInvoices()->get();
+        $feeInvoices = BillFee::where('id', $this->billFee)->first()->feeInvoices()->get();
         return $feeInvoices;
     }
 
