@@ -36,7 +36,7 @@ class BillFeeExport implements FromCollection, WithMapping, WithHeadings
             $feeInvoice->id,
             $feeInvoice->name,
             $feeInvoice->standard->name,
-            $feeInvoice->billFee->session->name,
+            $feeInvoice->billFee->bill->session->name,
             ($feeInvoice->amount_in_cent)/100,
             ($feeInvoice->gross_amount_in_cent)/100,
             $payment_status,
