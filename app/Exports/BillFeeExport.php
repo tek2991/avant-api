@@ -22,13 +22,16 @@ class BillFeeExport implements FromCollection, WithMapping
         return $feeInvoices;
     }
 
-    //     /**
-    // * @var FeeInvoice $feeInvoice
-    // */
-    // public function map($feeInvoice): array
-    // {
-    //     return [
-
-    //     ];
-    // }
+        /**
+    * @var FeeInvoice $feeInvoice
+    */
+    public function map($feeInvoice): array
+    {
+        return [
+            $feeInvoice->id,
+            $feeInvoice->name,
+            $feeInvoice->user->userDetail->name,
+            $feeInvoice->amount_in_cent,
+        ];
+    }
 }
