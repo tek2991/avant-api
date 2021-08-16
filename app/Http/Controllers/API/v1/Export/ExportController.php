@@ -17,6 +17,8 @@ class ExportController extends Controller
 
     public function billFee(BillFee $billFee){
         $id = $billFee->id;
-        return Excel::download(new BillFeeExport($id), 'billFee.xlsx');
+        $timeStamp = Carbon::now()->format('u');
+        $name = $billFee->name.'_'.$timeStamp;
+        return Excel::download(new BillFeeExport($id), $name);
     }
 }
