@@ -116,7 +116,7 @@ class FeeInvoiceController extends Controller
         if (Auth::user()->hasRole('director') !== true && $feeInvoice->user->id != Auth::user()->id) {
             return response([
                 'header' => 'Forbidden',
-                'message' => 'Please Logout and Login again.'
+                'message' => 'You are not authorised to read this resource!'
             ], 401);
         }
 
@@ -158,7 +158,7 @@ class FeeInvoiceController extends Controller
         if (strpos($request->pat, '|') === false) {
             return response([
                 'header' => 'Forbidden',
-                'message' => 'Please Logout and Login again.'
+                'message' => 'You are not authorised to read this resource!'
             ], 401);
         }
 
@@ -170,7 +170,7 @@ class FeeInvoiceController extends Controller
         if(!hash_equals($pas->token, hash('sha256', $token))){
             return response([
                 'header' => 'Forbidden',
-                'message' => 'Please Logout and Login again.'
+                'message' => 'You are not authorised to read this resource!'
             ], 401);
         }
 
@@ -179,7 +179,7 @@ class FeeInvoiceController extends Controller
         if ($user->hasRole('director') !== true && $feeInvoice->user->id != $user->id) {
             return response([
                 'header' => 'Forbidden',
-                'message' => 'Please Logout and Login again.'
+                'message' => 'You are not authorised to read this resource!'
             ], 401);
         }
 
@@ -200,7 +200,7 @@ class FeeInvoiceController extends Controller
         if (strpos($request->pat, '|') === false) {
             return response([
                 'header' => 'Forbidden',
-                'message' => 'Please Logout and Login again.'
+                'message' => 'You are not authorised to read this resource!'
             ], 401);
         }
 
@@ -212,7 +212,7 @@ class FeeInvoiceController extends Controller
         if(!hash_equals($pas->token, hash('sha256', $token))){
             return response([
                 'header' => 'Forbidden',
-                'message' => 'Please Logout and Login again.'
+                'message' => 'You are not authorised to read this resource!'
             ], 401);
         }
 
@@ -221,7 +221,7 @@ class FeeInvoiceController extends Controller
         if ($user->hasRole('director') !== true && $feeInvoice->user->id != $user->id) {
             return response([
                 'header' => 'Forbidden',
-                'message' => 'Please Logout and Login again.'
+                'message' => 'You are not authorised to read this resource!'
             ], 401);
         }
 
