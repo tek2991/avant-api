@@ -128,7 +128,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('subject-group', SubjectGroupController::class)->middleware(['can:subject_crud']);
     Route::get('subject-group-all', [SubjectGroupController::class, 'all'])->middleware(['can:subject_read']);
 
-    Route::apiResource('subject', SubjectController::class)->middleware(['can:subject_crud']);
+    Route::apiResource('subject', SubjectController::class)->except(['index'])->middleware(['can:subject_crud']);
+    Route::get('subject', [SubjectController::class, 'index'])->middleware(['can:subject_read']);
+    
     Route::apiResource('subject-teacher', SubjectTeacherController::class)->middleware(['can:subject_crud']);
     Route::apiResource('student-subject', StudentSubjectController::class)->middleware(['can:subject_crud']);
     Route::apiResource('chapter', ChapterController::class)->middleware(['can:subject_crud']);
