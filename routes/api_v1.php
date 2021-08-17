@@ -139,7 +139,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     Route::get('subject-for-teacher', [StudentSubjectController::class, 'index'])->middleware(['can:subject_read']);
 
-    Route::apiResource('chapter', ChapterController::class)->middleware(['can:subject_crud']);
+    Route::apiResource('chapter', ChapterController::class)->except(['index'])->middleware(['can:subject_crud']);
+    Route::get('chapter', [ChapterController::class, 'index'])->middleware(['can:subject_read']);
+
     Route::apiResource('chapter-progression', ChapterProgressionController::class);
     
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
