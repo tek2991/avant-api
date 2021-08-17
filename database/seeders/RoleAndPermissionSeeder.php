@@ -78,6 +78,7 @@ class RoleAndPermissionSeeder extends Seeder
         $role->givePermissionTo('teacher_read');
         $role->givePermissionTo('student_read');
         $role->givePermissionTo('appeal_read');
+        $role->givePermissionTo('subject_read');
 
 
         // create student roles and assign permissions
@@ -89,7 +90,7 @@ class RoleAndPermissionSeeder extends Seeder
         $role->givePermissionTo('teacher_read');
         $role->givePermissionTo('student_read');
         $role->givePermissionTo('appeal_read');
-
+        $role->givePermissionTo('subject_read');
 
 
         // create disables roles
