@@ -78,10 +78,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('teacher', TeacherController::class)->only(['index', 'store'])->middleware(['can:teacher_crud']);
     Route::get('teacher-all', [TeacherController::class, 'all'])->middleware(['can:teacher_read']);
 
-    Route::apiResource('gender', GenderController::class)->only(['index'])->middleware(['can:gender_read']);
-    Route::apiResource('blood-group', BloodGroupController::class)->only(['index'])->middleware(['can:blood_group_read']);
-    Route::apiResource('bank', BankController::class)->only(['index'])->middleware(['can:blood_group_read']);
-    Route::apiResource('instrument', InstrumentController::class)->only(['index'])->middleware(['can:blood_group_read']);
+    Route::apiResource('gender', GenderController::class)->only(['index']);
+    Route::apiResource('blood-group', BloodGroupController::class)->only(['index']);
+    Route::apiResource('bank', BankController::class)->only(['index']);
+    Route::apiResource('instrument', InstrumentController::class)->only(['index']);
     
     Route::apiResource('fee', FeeController::class)->middleware(['can:bill_crud']);
     Route::get('fee-all', [FeeController::class, 'all'])->middleware(['can:bill_read']);
@@ -95,9 +95,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     Route::post('attach-chargeable-to-fee', [AttachChargeableToFeeController::class, 'store'])->middleware(['can:bill_crud']);
     Route::post('attach-standard-to-fee', [AttachStandardToFeeController::class, 'store'])->middleware(['can:bill_crud']);
-    Route::post('attach-student-to-chargeable', [AttachStudentToChargeableController::class, 'store'])->middleware(['can:bill_crud']);
-    Route::apiResource('chargeable-student', ChargeableStudentController::class)->middleware(['can:session_crud']);
-    Route::get('student-by-standard/{standard}', [StandardController::class, 'studentByStandard']);
+    Route::apiResource('chargeable-student', ChargeableStudentController::class)->middleware(['can:bill_crud']);
+    Route::get('student-by-standard/{standard}', [StandardController::class, 'studentByStandard'])->middleware(['can:student_read']);
 
     Route::apiResource('bill', BillController::class)->only(['index', 'store', 'show'])->middleware(['can:bill_crud']);
     Route::get('bill-all', [BillController::class, 'all'])->middleware(['can:bill_read']);
@@ -107,8 +106,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('razorpay-fee-invoice/{fee_invoice}', [RazorpayFeeInvoiceController::class, 'show']);
     Route::post('razorpay-verify-payment/{fee_invoice}', [RazorpayFeeInvoiceController::class, 'verifyPayment']);
     
-    Route::get('manual-payment/{fee_invoice}', [ManualPaymentController::class, 'show']);
-    Route::put('manual-payment/{manual_payment}', [ManualPaymentController::class, 'update']);
+    Route::get('manual-payment/{fee_invoice}', [ManualPaymentController::class, 'show'])->middleware(['can:manual_payment_crud']);
+    Route::put('manual-payment/{manual_payment}', [ManualPaymentController::class, 'update'])->middleware(['can:manual_payment_crud']);
     
     Route::apiResource('appeal', AppealController::class);
     Route::post('recommend-appeal/{appeal}', [RecommendAppealController::class, 'store'])->middleware(['can:appeal_crud']);
@@ -116,24 +115,24 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     Route::get('attendance/{section_standard}', [AttendanceController::class, 'show']);
     Route::put('attendance/{attendance}', [AttendanceController::class, 'update']);
-    Route::post('attendance', [AttendanceController::class, 'store']);
+    Route::post('attendance', [AttendanceController::class, 'store'])->middleware(['can:attendance_crud']);
 
     Route::get('student-attendance', [StudentAttendanceController::class, 'index']);
 
     Route::apiResource('event', EventController::class);
     Route::get('event-type', [EventTypeController::class, 'index']);
 
-    Route::apiResource('stream', StreamController::class)->middleware(['can:session_crud']);
-    Route::get('stream-all', [StreamController::class, 'all'])->middleware(['can:session_read']);
+    Route::apiResource('stream', StreamController::class)->middleware(['can:subject_crud']);
+    Route::get('stream-all', [StreamController::class, 'all'])->middleware(['can:subject_read']);
 
-    Route::apiResource('subject-group', SubjectGroupController::class)->middleware(['can:session_crud']);
-    Route::get('subject-group-all', [SubjectGroupController::class, 'all'])->middleware(['can:session_read']);
+    Route::apiResource('subject-group', SubjectGroupController::class)->middleware(['can:subject_crud']);
+    Route::get('subject-group-all', [SubjectGroupController::class, 'all'])->middleware(['can:subject_read']);
 
-    Route::apiResource('subject', SubjectController::class)->middleware(['can:session_crud']);
-    Route::apiResource('subject-teacher', SubjectTeacherController::class)->middleware(['can:session_crud']);
-    Route::apiResource('student-subject', StudentSubjectController::class)->middleware(['can:session_crud']);
-    Route::apiResource('chapter', ChapterController::class)->middleware(['can:session_crud']);
-    Route::apiResource('chapter-progression', ChapterProgressionController::class)->middleware(['can:session_crud']);
+    Route::apiResource('subject', SubjectController::class)->middleware(['can:subject_crud']);
+    Route::apiResource('subject-teacher', SubjectTeacherController::class)->middleware(['can:subject_crud']);
+    Route::apiResource('student-subject', StudentSubjectController::class)->middleware(['can:subject_crud']);
+    Route::apiResource('chapter', ChapterController::class)->middleware(['can:subject_crud']);
+    Route::apiResource('chapter-progression', ChapterProgressionController::class);
     
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });
