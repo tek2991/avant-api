@@ -37,6 +37,7 @@ use App\Http\Controllers\API\v1\Subject\StudentSubjectController;
 use App\Http\Controllers\API\v1\Subject\SubjectTeacherController;
 use App\Http\Controllers\API\v1\Fee\AttachStandardToFeeController;
 use App\Http\Controllers\API\v1\Fee\AttachChargeableToFeeController;
+use App\Http\Controllers\API\v1\Subject\SubjectForTeacherController;
 use App\Http\Controllers\API\v1\Student\UnallocatedStudentController;
 use App\Http\Controllers\API\v1\Subject\ChapterProgressionController;
 use App\Http\Controllers\API\v1\ManualPayment\ManualPaymentController;
@@ -128,8 +129,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('subject-group', SubjectGroupController::class)->middleware(['can:subject_crud']);
     Route::get('subject-group-all', [SubjectGroupController::class, 'all'])->middleware(['can:subject_read']);
 
-    Route::apiResource('subject', SubjectController::class)->except(['index'])->middleware(['can:subject_crud']);
-    Route::get('subject', [SubjectController::class, 'index'])->middleware(['can:subject_read']);
+    Route::apiResource('subject', SubjectController::class)->middleware(['can:subject_crud']);
+    Route::get('subject-for-teacher/{user}', [SubjectForTeacherController::class, 'index'])->middleware(['can:subject_read']);
     Route::apiResource('subject-teacher', SubjectTeacherController::class)->middleware(['can:subject_crud']);
     Route::apiResource('student-subject', StudentSubjectController::class)->middleware(['can:subject_crud']);
     Route::apiResource('chapter', ChapterController::class)->middleware(['can:subject_crud']);
