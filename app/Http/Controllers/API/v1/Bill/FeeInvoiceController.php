@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\API\v1\Bill;
 
+use App\Models\Fee;
 use App\Models\User;
 use App\Models\Receipt;
 use App\Models\FeeInvoice;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Http\Controllers\Controller;
-use App\Models\Fee;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class FeeInvoiceController extends Controller
 {
@@ -112,6 +113,13 @@ class FeeInvoiceController extends Controller
      */
     public function show(FeeInvoice $feeInvoice)
     {
+        if (Auth::user()->hasRole('director') !== true && $feeInvoice->user->id != Auth::user()->id) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
         return $feeInvoice->load('billFee:id,bill_id,fee_id', 'billFee.bill', 'billFee.bill.session', 'feeInvoiceItems', 'payment', 'standard', 'user:id,email', 'user.userDetail:id,user_id,name');
     }
 
@@ -144,8 +152,37 @@ class FeeInvoiceController extends Controller
      * @param  \App\Models\FeeInvoice  $feeInvoice
      * @return \Illuminate\Http\Response
      */
-    public function print(FeeInvoice $feeInvoice)
+    public function print(Request $request, FeeInvoice $feeInvoice)
     {
+
+        if (strpos($request->pat, '|') === false) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
+        $patArray = explode("|", $request->pat);
+        $model_id = $patArray[0];
+        $token = $patArray[1];
+        $pas = PersonalAccessToken::findOrFail($model_id);
+
+        if(!hash_equals($pas->token, hash('sha256', $token))){
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
+        $user = $pas->tokenable;
+
+        if ($user->hasRole('director') !== true && $feeInvoice->user->id != $user->id) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
         $data = $feeInvoice->load('billFee:id,bill_id,fee_id', 'billFee.bill', 'billFee.bill.session', 'feeInvoiceItems', 'standard', 'user:id,email', 'user.userDetail:id,user_id,name');
 
         $pdf = PDF::loadView('documents.fee-invoice', ['data' => $data]);
@@ -158,8 +195,36 @@ class FeeInvoiceController extends Controller
      * @param  \App\Models\FeeInvoice  $feeInvoice
      * @return \Illuminate\Http\Response
      */
-    public function printReceipt(FeeInvoice $feeInvoice)
+    public function printReceipt(Request $request, FeeInvoice $feeInvoice)
     {
+        if (strpos($request->pat, '|') === false) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
+        $patArray = explode("|", $request->pat);
+        $model_id = $patArray[0];
+        $token = $patArray[1];
+        $pas = PersonalAccessToken::findOrFail($model_id);
+
+        if(!hash_equals($pas->token, hash('sha256', $token))){
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
+        $user = $pas->tokenable;
+
+        if ($user->hasRole('director') !== true && $feeInvoice->user->id != $user->id) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
         $data = $feeInvoice->load('billFee:id,bill_id,fee_id', 'billFee.bill', 'billFee.bill.session', 'feeInvoiceItems', 'standard', 'payment', 'user:id,email', 'user.userDetail:id,user_id,name');
 
         $receipt = Receipt::where('fee_invoice_id', $feeInvoice->id)->firstOrFail();
