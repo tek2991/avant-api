@@ -34,4 +34,8 @@ class Standard extends Model
     public function students(){
         return $this->hasManyThrough(Student::class, SectionStandard::class, 'standard_id', 'section_standard_id');
     }
+
+    public function subjects(){
+        return $this->hasMany(Subject::class);
+    }
 }
