@@ -60,7 +60,7 @@ class EnrollStudentController extends Controller
 
         $section_standard_id = SectionStandard::where('section_id', $request->section_id)->where('standard_id', $request->standard_id)->first()->id;
 
-        $user->student->create([
+        $user->student()->create([
             'section_standard_id' => $section_standard_id,
             'roll_no' => $request->roll_no,
         ]);
