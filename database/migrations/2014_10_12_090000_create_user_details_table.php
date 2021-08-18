@@ -20,8 +20,8 @@ class CreateUserDetailsTable extends Migration
             $table->string('phone');
             $table->string('phone_alternate')->nullable();
             $table->date('dob')->nullable();
-            $table->foreignId('gender_id')->constrained();
-            $table->foreignId('blood_group_id')->constrained('blood_groups');
+            $table->foreignId('gender_id')->nullable()->constrained();
+            $table->foreignId('blood_group_id')->nullable()->constrained('blood_groups');
             $table->string('fathers_name')->nullable();
             $table->string('mothers_name')->nullable();
             $table->string('address')->nullable();
