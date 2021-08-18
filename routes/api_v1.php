@@ -37,6 +37,7 @@ use App\Http\Controllers\API\v1\Subject\StudentSubjectController;
 use App\Http\Controllers\API\v1\Subject\SubjectTeacherController;
 use App\Http\Controllers\API\v1\Fee\AttachStandardToFeeController;
 use App\Http\Controllers\API\v1\Fee\AttachChargeableToFeeController;
+use App\Http\Controllers\API\v1\Subject\SubjectForStudentController;
 use App\Http\Controllers\API\v1\Subject\SubjectForTeacherController;
 use App\Http\Controllers\API\v1\Student\UnallocatedStudentController;
 use App\Http\Controllers\API\v1\Subject\ChapterProgressionController;
@@ -131,6 +132,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('subject', SubjectController::class)->middleware(['can:subject_crud']);
     Route::get('subject-for-teacher/{user}', [SubjectForTeacherController::class, 'index'])->middleware(['can:subject_read']);
+    Route::get('subject-for-student/{user}', [SubjectForStudentController::class, 'index'])->middleware(['can:subject_read']);
     
     Route::apiResource('subject-teacher', SubjectTeacherController::class)->middleware(['can:subject_crud']);
 
