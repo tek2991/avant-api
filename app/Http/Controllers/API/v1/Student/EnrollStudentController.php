@@ -65,6 +65,10 @@ class EnrollStudentController extends Controller
             'roll_no' => $request->roll_no,
         ]);
 
+        $subjects = Standard::find($request->standard_id)->subjects()->get()->modelKeys();
+
+        $user->student->subjects()->sync($subjects);
+
         return $user;
     }
 }

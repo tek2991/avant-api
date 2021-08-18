@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\v1\Student;
 
 use App\Models\User;
+use App\Models\Standard;
 use Illuminate\Http\Request;
 use App\Models\SectionStandard;
 use Illuminate\Validation\Rule;
@@ -66,6 +67,10 @@ class UpdateStudentController extends Controller
             'section_standard_id' => $section_standard_id,
             'roll_no' => $request->roll_no,
         ]);
+
+        $subjects = Standard::find($request->standard_id)->subjects()->get()->modelKeys();
+
+        $user->student->subjects()->sync($subjects);
 
         return $user;
     }
