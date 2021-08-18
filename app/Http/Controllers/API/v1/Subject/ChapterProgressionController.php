@@ -20,14 +20,6 @@ class ChapterProgressionController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::user();
-        if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
-            return response([
-                'header' => 'Forbidden',
-                'message' => 'Please Logout and Login again.'
-            ], 401);
-        }
-        
         $this->validate($request, [
             'chapter_id' => 'required|exists:chapters,id',
         ]);
