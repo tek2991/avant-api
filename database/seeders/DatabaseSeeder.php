@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
             StreamSeeder::class,
             SubjectGroupSeeder::class,
             SubjectSeeder::class,
+            ChapterSeeder::class,
         ]);
     }
 }

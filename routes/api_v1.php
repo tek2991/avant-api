@@ -116,7 +116,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     Route::get('attendance/{section_standard}', [AttendanceController::class, 'show']);
     Route::put('attendance/{attendance}', [AttendanceController::class, 'update']);
-    Route::post('attendance', [AttendanceController::class, 'store'])->middleware(['can:attendance_crud']);
+    Route::post('attendance', [AttendanceController::class, 'store']);
 
     Route::get('student-attendance', [StudentAttendanceController::class, 'index']);
 
