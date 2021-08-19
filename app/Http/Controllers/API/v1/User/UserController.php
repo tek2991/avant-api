@@ -86,13 +86,14 @@ class UserController extends Controller
             'email' => $request->email,
         ]);
 
+        if(!empty($request->password)){
+            $user->update(['password' => Hash::make($request->password)]);
+        }
+
         $user->userDetail()->update($request->only([
             'name', 'phone', 'phone_alternate', 'dob', 'gender_id', 'blood_group_id', 'address', 'pincode', 'fathers_name', 'mothers_name', 'pan_no', 'passport_no', 'voter_id', 'aadhar_no', 'dl_no'
         ]));
 
-        if(!empty($request->password)){
-            $user->update(['password' => Hash::make($request->password)]);
-        }
 
         $profile = $user->where('id', $user->id)->with('userDetail')->first();
 

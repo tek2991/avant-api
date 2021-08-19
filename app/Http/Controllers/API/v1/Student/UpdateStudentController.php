@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UpdateStudentController extends Controller
 {
-    public function store(Request $request, User $user){
+    public function update(Request $request, User $user){
 
         if (Auth::user()->hasRole('director') !== true) {
             return response([
@@ -23,11 +23,11 @@ class UpdateStudentController extends Controller
         }
 
         $this->validate($request, [
+            'name' => 'required|max:255',
             'email' => [
                 'required', 'email', 'max:255',
                 Rule::unique('users')->ignore($user)
             ],
-            'name' => 'required|max:255',
             'phone' => 'required|max:255',
             'phone_alternate' => 'nullable|max:255',
             'dob' => 'nullable|date',

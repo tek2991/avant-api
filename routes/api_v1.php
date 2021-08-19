@@ -32,6 +32,7 @@ use App\Http\Controllers\API\v1\Attributes\InstrumentController;
 use App\Http\Controllers\API\v1\Fee\ChargeableStudentController;
 use App\Http\Controllers\API\v1\Setup\SectionStandardController;
 use App\Http\Controllers\API\v1\Student\EnrollStudentController;
+use App\Http\Controllers\API\v1\Student\UpdateStudentController;
 use App\Http\Controllers\API\v1\Appeal\RecommendAppealController;
 use App\Http\Controllers\API\v1\Subject\StudentSubjectController;
 use App\Http\Controllers\API\v1\Subject\SubjectTeacherController;
@@ -94,6 +95,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('student', StudentController::class)->only(['index', 'store', 'update', 'destroy'])->middleware(['can:student_crud']);
     Route::get('unallocated-student', [UnallocatedStudentController::class, 'index'])->middleware(['can:student_read']);
     Route::post('enroll-student', [EnrollStudentController::class, 'store'])->middleware(['can:student_crud']);
+    Route::put('update-student/{user}', [UpdateStudentController::class, 'update'])->middleware(['can:student_crud']);
     
     Route::post('attach-chargeable-to-fee', [AttachChargeableToFeeController::class, 'store'])->middleware(['can:bill_crud']);
     Route::post('attach-standard-to-fee', [AttachStandardToFeeController::class, 'store'])->middleware(['can:bill_crud']);
