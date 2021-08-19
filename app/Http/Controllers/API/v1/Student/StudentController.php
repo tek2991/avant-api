@@ -22,7 +22,7 @@ class StudentController extends Controller
         ]);
 
         return User::role('student')->whereHas('userDetail', function ($query) use ($request) {
-            $query->where('name', 'like', '%' . $request->search_string . '%');
+            $query->where('name', 'ILIKE', '%' . $request->search_string . '%');
         })->with([
             'student',
             'userDetail',
