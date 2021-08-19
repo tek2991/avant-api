@@ -55,7 +55,13 @@ class StudentController extends Controller
             ], 418);
         }
 
-        return Student::create($request->only(['user_id', 'section_standard_id', 'roll_no']));
+        $student = Student::create($request->only(['user_id', 'section_standard_id', 'roll_no']));
+
+        $subjects = $student->sectionStandard->standard->subjects()->get()->modelKeys();
+
+        $student->subjects()->sync($subjects);
+
+        return $student;
     }
 
     /**
@@ -99,6 +105,7 @@ class StudentController extends Controller
     public function destroy(Student $student)
     {
         try {
+            $student->subjects()->sync([]);
             $student->delete();
         } catch (Exception $ex) {
             return response([
