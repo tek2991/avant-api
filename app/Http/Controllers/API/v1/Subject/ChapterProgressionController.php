@@ -161,14 +161,17 @@ class ChapterProgressionController extends Controller
 
         $status = $request->status;
 
-        if($status == 'start'){
+        $started = $chapterProgression->started_by ? true : false;
+        $completed = $chapterProgression->completed_by ? true : false;
+
+        if($status == 'start' && !$started){
             $chapterProgression->update([
                 'started_by' => $user->teacher->id,
                 'started_at' => Carbon::now(),
             ]);
         }
 
-        if($status == 'complete'){
+        if($status == 'complete' && $started && !$completed){
             $chapterProgression->update([
                 'completed_by' => $user->teacher->id,
                 'completed_at' => Carbon::now(),
