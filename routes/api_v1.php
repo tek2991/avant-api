@@ -122,6 +122,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('attendance', [AttendanceController::class, 'store']);
 
     Route::get('student-attendance', [StudentAttendanceController::class, 'index']);
+    Route::get('student-attendance-for-session/{user}', [StudentAttendanceController::class, 'forSession']);
 
     Route::apiResource('event', EventController::class);
     Route::get('event-type', [EventTypeController::class, 'index']);
