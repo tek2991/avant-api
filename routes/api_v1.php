@@ -45,6 +45,7 @@ use App\Http\Controllers\API\v1\Subject\ChapterProgressionController;
 use App\Http\Controllers\API\v1\ManualPayment\ManualPaymentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
+use App\Http\Controllers\API\v1\Chart\ChartController;
 use App\Http\Controllers\API\v1\Fee\AttachStudentToChargeableController;
 
 /*
@@ -122,7 +123,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('attendance', [AttendanceController::class, 'store']);
 
     Route::get('student-attendance', [StudentAttendanceController::class, 'index']);
-    Route::get('student-attendance-for-session/{user}', [StudentAttendanceController::class, 'forSession']);
+
+    Route::get('student-attendance-for-session/{user}', [ChartController::class, 'attendanceForSession']);
+    Route::get('all-user-invoice/{user}', [ChartController::class, 'allUserInvoices']);
 
     Route::apiResource('event', EventController::class);
     Route::get('event-type', [EventTypeController::class, 'index']);
