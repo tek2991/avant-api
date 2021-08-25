@@ -31,7 +31,13 @@ class ChartController extends Controller
 
     public function allChaptersInProgress(User $user)
     {
-        $chapters = $user->student->chapters()->with('chapterProgressions')->get();
+
+        $chapters = $user->student->chapters()->whereHas(
+            'chapterProgressions',
+            function($query) use ($user) {
+                $query->where('session_id', $user->student->sectionStandard->section->id);
+            }
+        )->with('chapterProgressions')->get();
 
         return $chapters;
     }
