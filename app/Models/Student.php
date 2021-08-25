@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Chapter;
 use App\Models\Chargeable;
+use App\Models\StudentSubject;
 use App\Models\SectionStandard;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -40,5 +42,9 @@ class Student extends Model
 
     public function subjects(){
         return $this->belongsToMany(Subject::class)->withPivot('id');
+    }
+
+    public function chapters(){
+        return $this->hasManyThrough(Chapter::class, StudentSubject::class, "student_id", "subject_id", "id", "subject_id");
     }
 }

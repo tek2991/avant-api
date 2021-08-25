@@ -28,4 +28,11 @@ class ChartController extends Controller
 
         return $invoices;
     }
+
+    public function allChaptersInProgress(User $user)
+    {
+        $chapters = $user->student->chapters()->with('chapterProgressions')->get();
+
+        return $chapters;
+    }
 }
