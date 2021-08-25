@@ -40,7 +40,8 @@ class ChartController extends Controller
         )->with([
             'chapterProgressions' => function($query) use ($user) {
                 $query->where('section_id', $user->student->sectionStandard->section->id);
-            }
+            },
+            'subject'
         ])->get();
 
         return $chapters;
