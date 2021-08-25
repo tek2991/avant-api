@@ -37,7 +37,11 @@ class ChartController extends Controller
             function($query) use ($user) {
                 $query->where('section_id', $user->student->sectionStandard->section->id);
             }
-        )->with('chapterProgressions')->get();
+        )->with([
+            'chapterProgressions' => function($query) use ($user) {
+                $query->where('section_id', $user->student->sectionStandard->section->id);
+            }
+        ])->get();
 
         return $chapters;
     }
