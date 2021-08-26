@@ -25,6 +25,7 @@ use App\Http\Controllers\API\v1\Subject\SubjectController;
 use App\Http\Controllers\API\v1\Attributes\GenderController;
 use App\Http\Controllers\API\v1\Appeal\CloseAppealController;
 use App\Http\Controllers\API\v1\Chart\StudentChartController;
+use App\Http\Controllers\API\v1\Chart\DirectorChartController;
 use App\Http\Controllers\API\v1\Subject\SubjectGroupController;
 use App\Http\Controllers\API\v1\Attendance\AttendanceController;
 use App\Http\Controllers\API\v1\Attributes\BloodGroupController;
@@ -125,6 +126,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('student-attendance-for-session/{user}', [StudentChartController::class, 'attendanceForSession']);
     Route::get('all-user-invoice/{user}', [StudentChartController::class, 'allUserInvoices']);
     Route::get('all-user-chapter-in-progress/{user}', [StudentChartController::class, 'allChaptersInProgress']);
+
+    Route::get('all-invoice-stat', [DirectorChartController::class, 'allInvoiceStat']);
 
     Route::apiResource('event', EventController::class);
     Route::get('event-type', [EventTypeController::class, 'index']);
