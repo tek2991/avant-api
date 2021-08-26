@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use Carbon\Carbon;
 use App\Models\Session;
 use App\Models\Student;
 use Carbon\CarbonPeriod;
 use App\Models\Attendance;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
 
 class AttendanceSeeder extends Seeder
@@ -17,29 +17,42 @@ class AttendanceSeeder extends Seeder
      * @return void
      */
     public function run()
-    {   
-        $student = Student::first();
-        $user = $student->user;
+    {
+        $students = Student::where('id', '<', 320)->get();
 
         $admin = 2;
 
         $session = $session = Session::where('is_active', true)->firstOrFail();
+        $session_id = $session->id;
 
-        $start = new Carbon($session->created_at);
-        $end = new Carbon($session->created_at);
+        $start = Carbon::parse($session->created_at)->startOfDay();
+        $end = Carbon::parse($session->created_at)->startOfDay();
         $end = $end->addYear();
         $period = CarbonPeriod::create($start, $end);
 
-        foreach ($period as $date) {
-            Attendance::create([
-                'user_id' => $user->id,
-                'attendance_date' => $date,
-                'attendance_state_id' => random_int(2, 3),
-                'section_standard_id' => $student->sectionStandard->id,
-                'session_id' => $session->id,
-                'created_by' => $admin,
-                'updated_by' => $admin,
-            ]);
+        $data = [];
+
+        foreach($students as $student){
+            $user_id = $student->user->id;
+            $section_standard_id = $student->sectionStandard->id;
+            foreach ($period as $date) {
+                $data[] = [
+                    'user_id' => $user_id,
+                    'attendance_state_id' => rand(2, 3),
+                    'attendance_date' => $date,
+                    'section_standard_id' => $section_standard_id,
+                    'session_id' => $session_id,
+                    'created_by' => $admin,
+                    'updated_by' => $admin,
+                    'created_at' => now()->toDateTimeString(),
+                    'updated_at' => now()->toDateTimeString(),
+                ];
+            }
+        }
+
+        $chunks = array_chunk($data, 5000);
+        foreach($chunks as $chunk){
+            Attendance::insert($chunk);
         }
     }
 }

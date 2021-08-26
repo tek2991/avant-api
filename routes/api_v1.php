@@ -128,6 +128,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('all-user-chapter-in-progress/{user}', [StudentChartController::class, 'allChaptersInProgress']);
 
     Route::get('all-invoice-stat', [DirectorChartController::class, 'allInvoiceStat']);
+    Route::get('all-attendance-record', [DirectorChartController::class, 'allAttendanceRecord']);
 
     Route::apiResource('event', EventController::class);
     Route::get('event-type', [EventTypeController::class, 'index']);
