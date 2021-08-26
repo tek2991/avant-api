@@ -21,23 +21,29 @@ class DirectorChartController extends Controller
     {
         $today = Carbon::now()->startOfDay();
 
-        $present_today = User::has('student')->whereHas(
-            'attendances',
-            function($query) use($today){
-                $query->where('attendance_date', $today);
-                $query->where('attendance_state_id', 2);
-            }
-        )->get()->count('id');
+        $present_today = cache()->remember('director_dashboard_present_today', 60 * 60 * 24, function () use ($today) {
+            return User::has('student')->whereHas(
+                'attendances',
+                function ($query) use ($today) {
+                    $query->where('attendance_date', $today);
+                    $query->where('attendance_state_id', 2);
+                }
+            )->get()->count('id');
+        });
 
-        $absent_today = User::has('student')->whereHas(
-            'attendances',
-            function($query) use($today){
-                $query->where('attendance_date', $today);
-                $query->where('attendance_state_id', '<>', 2);
-            }
-        )->get()->count('id');
+        $absent_today = cache()->remember('director_dashboard_absent_today', 60 * 60 * 24, function () use ($today) {
+            return User::has('student')->whereHas(
+                'attendances',
+                function ($query) use ($today) {
+                    $query->where('attendance_date', $today);
+                    $query->where('attendance_state_id', '<>', 2);
+                }
+            )->get()->count('id');
+        });
 
-        $total_students = User::has('student')->count('id');
+        $total_students = cache()->remember('director_dashboard_total_students', 60 * 60 * 24, function () {
+            return User::has('student')->count('id');
+        });
 
         $today = [
             "present" => $present_today,
