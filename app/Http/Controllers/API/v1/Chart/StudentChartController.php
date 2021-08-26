@@ -8,7 +8,7 @@ use App\Models\Session;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class ChartController extends Controller
+class StudentChartController extends Controller
 {
 
     public function attendanceForSession(User $user)

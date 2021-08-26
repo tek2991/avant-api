@@ -1,5 +1,4 @@
 <?php
-use App\Models\Standard;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\ApiLoginController;
 use App\Http\Controllers\API\v1\Fee\FeeController;
@@ -25,6 +24,7 @@ use App\Http\Controllers\API\v1\Subject\ChapterController;
 use App\Http\Controllers\API\v1\Subject\SubjectController;
 use App\Http\Controllers\API\v1\Attributes\GenderController;
 use App\Http\Controllers\API\v1\Appeal\CloseAppealController;
+use App\Http\Controllers\API\v1\Chart\StudentChartController;
 use App\Http\Controllers\API\v1\Subject\SubjectGroupController;
 use App\Http\Controllers\API\v1\Attendance\AttendanceController;
 use App\Http\Controllers\API\v1\Attributes\BloodGroupController;
@@ -45,8 +45,6 @@ use App\Http\Controllers\API\v1\Subject\ChapterProgressionController;
 use App\Http\Controllers\API\v1\ManualPayment\ManualPaymentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
-use App\Http\Controllers\API\v1\Chart\ChartController;
-use App\Http\Controllers\API\v1\Fee\AttachStudentToChargeableController;
 
 /*
 |--------------------------------------------------------------------------
@@ -124,9 +122,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('student-attendance', [StudentAttendanceController::class, 'index']);
 
-    Route::get('student-attendance-for-session/{user}', [ChartController::class, 'attendanceForSession']);
-    Route::get('all-user-invoice/{user}', [ChartController::class, 'allUserInvoices']);
-    Route::get('all-user-chapter-in-progress/{user}', [ChartController::class, 'allChaptersInProgress']);
+    Route::get('student-attendance-for-session/{user}', [StudentChartController::class, 'attendanceForSession']);
+    Route::get('all-user-invoice/{user}', [StudentChartController::class, 'allUserInvoices']);
+    Route::get('all-user-chapter-in-progress/{user}', [StudentChartController::class, 'allChaptersInProgress']);
 
     Route::apiResource('event', EventController::class);
     Route::get('event-type', [EventTypeController::class, 'index']);
