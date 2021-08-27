@@ -25,6 +25,7 @@ use App\Http\Controllers\API\v1\Subject\SubjectController;
 use App\Http\Controllers\API\v1\Attributes\GenderController;
 use App\Http\Controllers\API\v1\Appeal\CloseAppealController;
 use App\Http\Controllers\API\v1\Chart\StudentChartController;
+use App\Http\Controllers\API\v1\Chart\TeacherChartController;
 use App\Http\Controllers\API\v1\Chart\DirectorChartController;
 use App\Http\Controllers\API\v1\Subject\SubjectGroupController;
 use App\Http\Controllers\API\v1\Attendance\AttendanceController;
@@ -129,6 +130,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('all-invoice-stat', [DirectorChartController::class, 'allInvoiceStat']);
     Route::get('all-attendance-record', [DirectorChartController::class, 'allAttendanceRecord']);
+
+    Route::get('attendance-for-assigned-class/{user}', [TeacherChartController::class, 'attendanceForAssignedClasses']);
 
     Route::apiResource('event', EventController::class);
     Route::get('event-type', [EventTypeController::class, 'index']);
