@@ -26,7 +26,7 @@ class DirectorChartController extends Controller
     {
         $today = Carbon::now()->startOfDay();
 
-        $present_today = cache()->remember('director_dashboard_present_today', 60 * 60 * 24, function () use ($today) {
+        $present_today = cache()->remember('director_dashboard_present_today', 60*2, function () use ($today) {
             return User::has('student')->whereHas(
                 'attendances',
                 function ($query) use ($today) {
@@ -36,7 +36,7 @@ class DirectorChartController extends Controller
             )->get()->count('id');
         });
 
-        $absent_today = cache()->remember('director_dashboard_absent_today', 60 * 60 * 24, function () use ($today) {
+        $absent_today = cache()->remember('director_dashboard_absent_today', 60*2, function () use ($today) {
             return User::has('student')->whereHas(
                 'attendances',
                 function ($query) use ($today) {
@@ -46,7 +46,7 @@ class DirectorChartController extends Controller
             )->get()->count('id');
         });
 
-        $total_students = cache()->remember('director_dashboard_total_students', 60 * 60 * 24, function () {
+        $total_students = cache()->remember('director_dashboard_total_students', 60*2, function () {
             return User::has('student')->count('id');
         });
 
