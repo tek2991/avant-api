@@ -16,7 +16,7 @@ class TeacherChartController extends Controller
         $key = 'teacher_dashboard_attendances_' . $user->id;
         $today = Carbon::now()->startOfDay();
 
-        $attendances = cache()->remember($key, 1, function () use ($user, $today) {
+        $attendances = cache()->remember($key, 60*2, function () use ($user, $today) {
 
             $present_today = $user->teacher->classStudents()->whereHas(
                 'user',
