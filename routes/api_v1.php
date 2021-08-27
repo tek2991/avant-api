@@ -132,6 +132,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('all-attendance-record', [DirectorChartController::class, 'allAttendanceRecord']);
 
     Route::get('attendance-for-assigned-class/{user}', [TeacherChartController::class, 'attendanceForAssignedClasses']);
+    Route::get('assigned-user-chapter-in-progress/{user}', [TeacherChartController::class, 'assignedChaptersInProgress']);
 
     Route::apiResource('event', EventController::class);
     Route::get('event-type', [EventTypeController::class, 'index']);

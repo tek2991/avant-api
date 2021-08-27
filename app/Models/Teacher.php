@@ -35,4 +35,8 @@ class Teacher extends Model
     public function subjects(){
         return $this->belongsToMany(Subject::class)->withPivot('id');
     }
+
+    public function chapters(){
+        return $this->hasManyThrough(Chapter::class, SubjectTeacher::class, "teacher_id", "subject_id", "id", "subject_id");
+    }
 }

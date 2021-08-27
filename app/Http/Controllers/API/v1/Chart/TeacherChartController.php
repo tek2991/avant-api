@@ -57,4 +57,26 @@ class TeacherChartController extends Controller
 
         return $attendances;
     }
+
+    public function assignedChaptersInProgress(User $user){
+        $key = 'teacher_dashboard_chapter_progress_' . $user->id;
+
+        $chapters = cache()->remember($key, 60, function () use ($user) {
+            return $user->teacher->chapters()->whereHas(
+                'chapterProgressions',
+                function ($query) use ($user) {
+                    $query->where('started_by', $user->teacher->id);
+                }
+            )->with([
+                'chapterProgressions' => function ($query) use ($user) {
+                    $query->where('started_by', $user->teacher->id);
+                },
+                'subject.standard',
+                'chapterProgressions.section'
+            ])->get();
+        });
+
+        return $chapters;
+        
+    }
 }

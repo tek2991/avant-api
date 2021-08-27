@@ -42,4 +42,8 @@ class ChapterProgression extends Model
     public function completedBy(){
         return $this->belongsTo(Teacher::class, 'completed_by', 'id');
     }
+
+    public function section(){
+        return $this->belongsTo(Section::class);
+    }
 }
