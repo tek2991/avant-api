@@ -11,11 +11,11 @@ class DirectorChartController extends Controller
 {
     public function allInvoiceStat()
     {
-        $invoices_with_payment = cache()->remember('director_dashboard_invoices_with_payment', 60 * 60 * 24, function () {
+        $invoices_with_payment = cache()->remember('director_dashboard_invoices_with_payment', 60 * 60, function () {
             return FeeInvoice::has('payment')->with('payment')->get();
         });
 
-        $amount_not_paid = cache()->remember('director_dashboard_amount_not_paid', 60 * 60 * 24, function () {
+        $amount_not_paid = cache()->remember('director_dashboard_amount_not_paid', 60 * 60, function () {
             return FeeInvoice::doesntHave('payment')->get()->sum('gross_amount_in_cent');
         });
 
