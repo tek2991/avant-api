@@ -17,7 +17,7 @@ class StreamSeeder extends Seeder
         if(env('APP_ENV') !== 'local'){
             return;
         }
-        $streams = ['Genaral', 'Optional'];
+        $streams = ['General', 'Optional'];
 
         foreach($streams as $stream){
             Stream::factory()->create([

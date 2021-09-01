@@ -14,10 +14,6 @@ class InstrumentSeeder extends Seeder
      */
     public function run()
     {   
-        if(env('APP_ENV') !== 'local'){
-            return;
-        }
-
         $Instruments = ['Cash', 'Cheque/Draft', 'NEFT/IMPS/UPI', 'Others'];
 
         foreach($Instruments as $Instrument){

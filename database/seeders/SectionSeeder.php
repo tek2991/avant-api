@@ -17,7 +17,7 @@ class SectionSeeder extends Seeder
         if(env('APP_ENV') !== 'local'){
             return;
         }
-        $sections = ['A', 'B', 'C', 'D', 'E'];
+        $sections = ['A', 'B', 'C'];
 
         foreach($sections as $section){
             Section::factory()->create([
