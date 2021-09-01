@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Gender;
+use App\Models\Language;
+use App\Models\BloodGroup;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -16,6 +19,8 @@ class UserDetail extends Model
         'phone_alternate',
         'dob',
         'gender_id',
+        'language_id',
+        'religion_id',
         'blood_group_id',
         'fathers_name',
         'mothers_name',
@@ -48,5 +53,13 @@ class UserDetail extends Model
 
     public function gender(){
         return $this->hasOne(Gender::class);
+    }
+
+    public function language(){
+        return $this->hasOne(Language::class);
+    }
+
+    public function religion(){
+        return $this->hasOne(Religion::class);
     }
 }

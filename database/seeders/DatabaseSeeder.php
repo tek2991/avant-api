@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
             RoleAndPermissionSeeder::class,
             BloodGroupsSeeder::class,
             GenderSeeder::class,
+            LanguageSeeder::class,
+            ReligionSeeder::class,
             UserSeeder::class,
             UserDetailSeeder::class,
             SessionSeeder::class,

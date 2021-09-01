@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Gender;
+use App\Models\Language;
+use App\Models\Religion;
 use App\Models\BloodGroup;
 use App\Models\UserDetail;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -24,6 +26,8 @@ class UserDetailFactory extends Factory
     public function definition()
     {
         $genders = collect(Gender::all()->modelKeys());
+        $languages = collect(Language::all()->modelKeys());
+        $religions = collect(Religion::all()->modelKeys());
         $bloodGroups = collect(BloodGroup::all()->modelKeys());
         
         return [
@@ -33,6 +37,8 @@ class UserDetailFactory extends Factory
             'dob' => $this->faker->date,
             'gender_id' => $genders->random(),
             'blood_group_id' => $bloodGroups->random(),
+            'language_id' => $languages->random(),
+            'religion_id' => $religions->random(),
             'fathers_name' => $this->faker->name('male'),
             'mothers_name' => $this->faker->name('female'),
             'address' => $this->faker->address,
