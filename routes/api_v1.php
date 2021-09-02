@@ -26,6 +26,8 @@ use App\Http\Controllers\API\v1\Attributes\GenderController;
 use App\Http\Controllers\API\v1\Appeal\CloseAppealController;
 use App\Http\Controllers\API\v1\Chart\StudentChartController;
 use App\Http\Controllers\API\v1\Chart\TeacherChartController;
+use App\Http\Controllers\API\v1\Attributes\LanguageController;
+use App\Http\Controllers\API\v1\Attributes\ReligionController;
 use App\Http\Controllers\API\v1\Chart\DirectorChartController;
 use App\Http\Controllers\API\v1\Subject\SubjectGroupController;
 use App\Http\Controllers\API\v1\Attendance\AttendanceController;
@@ -83,6 +85,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('teacher-all', [TeacherController::class, 'all'])->middleware(['can:teacher_read']);
 
     Route::apiResource('gender', GenderController::class)->only(['index']);
+    Route::apiResource('language', LanguageController::class)->only(['index']);
+    Route::apiResource('religion', ReligionController::class)->only(['index']);
     Route::apiResource('blood-group', BloodGroupController::class)->only(['index']);
     Route::apiResource('bank', BankController::class)->only(['index']);
     Route::apiResource('instrument', InstrumentController::class)->only(['index']);
