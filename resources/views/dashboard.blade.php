@@ -6,32 +6,19 @@
     </x-slot>
 
     <div class="py-12">
-        <a href="{{ url('/telescope') }}" target="_blank">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 my-5">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 bg-white border-b border-gray-200">
-                        Telescope
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a href="{{ url('/horizon') }}" target="_blank">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 my-5">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 bg-white border-b border-gray-200">
-                        Horizon
-                    </div>
-                </div>
-            </div>
-        </a>
-        <a href="{{ url('/phpinfo') }}" target="_blank">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 my-5">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 bg-white border-b border-gray-200">
-                        PHP INFO
-                    </div>
-                </div>
-            </div>
-        </a>
+        <div class="flex-auto flex space-x-3">
+            <button class="w-1/3 h-16 flex items-center justify-center rounded-md border border-gray-300"> <a
+                    href="{{ url('/telescope') }}" target="_blank">
+                    Telescope
+                </a></button>
+            <button class="w-1/3 h-16 flex items-center justify-center rounded-md border border-gray-300"><a
+                    href="{{ url('/horizon') }}" target="_blank">
+                    Horizon
+                </a></button>
+            <button class="w-1/3 h-16 flex items-center justify-center rounded-md border bg-black text-white"><a
+                    href="{{ url('/phpinfo') }}" target="_blank">
+                    PHP INFO
+                </a></button>
+        </div>
     </div>
 </x-app-layout>
