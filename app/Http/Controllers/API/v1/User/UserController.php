@@ -69,6 +69,9 @@ class UserController extends Controller
             'phone_alternate' => 'nullable|max:255',
             'dob' => 'nullable|date',
             'gender_id' => 'nullable|exists:genders,id',
+            'language_id' => 'nullable|exists:languages,id',
+            'religion_id' => 'nullable|exists:religions,id',
+            'caste_id' => 'nullable|exists:castes,id',
             'blood_group_id' => 'nullable|exists:blood_groups,id',
             'address' => 'nullable|max:255',
             'pincode' => 'nullable|max:255',
@@ -91,7 +94,7 @@ class UserController extends Controller
         }
 
         $user->userDetail()->update($request->only([
-            'name', 'phone', 'phone_alternate', 'dob', 'gender_id', 'blood_group_id', 'address', 'pincode', 'fathers_name', 'mothers_name', 'pan_no', 'passport_no', 'voter_id', 'aadhar_no', 'dl_no'
+            'name', 'phone', 'phone_alternate', 'dob', 'gender_id', 'language_id', 'religion_id','caste_id', 'blood_group_id', 'address', 'pincode', 'fathers_name', 'mothers_name', 'pan_no', 'passport_no', 'voter_id', 'aadhar_no', 'dl_no'
         ]));
 
 
