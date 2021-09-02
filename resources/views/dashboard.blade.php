@@ -7,18 +7,18 @@
 
     <div class="py-12">
         <div class="flex-auto flex space-x-3">
-            <button class="w-1/3 h-16 flex items-center justify-center rounded-md border border-gray-300"> <a
-                    href="{{ url('/telescope') }}" target="_blank">
-                    Telescope
-                </a></button>
-            <button class="w-1/3 h-16 flex items-center justify-center rounded-md border border-gray-300"><a
-                    href="{{ url('/horizon') }}" target="_blank">
-                    Horizon
-                </a></button>
-            <button class="w-1/3 h-16 flex items-center justify-center rounded-md border bg-black text-white"><a
-                    href="{{ url('/phpinfo') }}" target="_blank">
-                    PHP INFO
-                </a></button>
+            <a href="{{ url('/telescope') }}" target="_blank"
+                class="w-1/3 h-16 flex items-center justify-center rounded-md border border-gray-300">
+                Telescope
+            </a>
+            <a href="{{ url('/horizon') }}" target="_blank"
+                class="w-1/3 h-16 flex items-center justify-center rounded-md border border-gray-300">
+                Horizon
+            </a>
+            <a href="{{ url('/phpinfo') }}" target="_blank"
+                class="w-1/3 h-16 flex items-center justify-center rounded-md border bg-black text-white">
+                PHP INFO
+            </a>
         </div>
     </div>
 </x-app-layout>
