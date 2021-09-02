@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             GenderSeeder::class,
             LanguageSeeder::class,
             ReligionSeeder::class,
+            CasteSeeder::class,
             UserSeeder::class,
             UserDetailSeeder::class,
             SessionSeeder::class,

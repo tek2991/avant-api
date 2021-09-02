@@ -23,6 +23,7 @@ class CreateUserDetailsTable extends Migration
             $table->foreignId('gender_id')->nullable()->constrained();
             $table->foreignId('language_id')->nullable()->constrained();
             $table->foreignId('religion_id')->nullable()->constrained();
+            $table->foreignId('caste_id')->nullable()->constrained();
             $table->foreignId('blood_group_id')->nullable()->constrained('blood_groups');
             $table->string('fathers_name')->nullable();
             $table->string('mothers_name')->nullable();

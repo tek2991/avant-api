@@ -21,6 +21,7 @@ class UserDetail extends Model
         'gender_id',
         'language_id',
         'religion_id',
+        'caste_id',
         'blood_group_id',
         'fathers_name',
         'mothers_name',
@@ -61,5 +62,9 @@ class UserDetail extends Model
 
     public function religion(){
         return $this->hasOne(Religion::class);
+    }
+
+    public function caste(){
+        return $this->hasOne(Caste::class);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Caste;
 use App\Models\Gender;
 use App\Models\Language;
 use App\Models\Religion;
@@ -28,6 +29,7 @@ class UserDetailFactory extends Factory
         $genders = collect(Gender::all()->modelKeys());
         $languages = collect(Language::all()->modelKeys());
         $religions = collect(Religion::all()->modelKeys());
+        $castes = collect(Caste::all()->modelKeys());
         $bloodGroups = collect(BloodGroup::all()->modelKeys());
         
         return [
@@ -39,6 +41,7 @@ class UserDetailFactory extends Factory
             'blood_group_id' => $bloodGroups->random(),
             'language_id' => $languages->random(),
             'religion_id' => $religions->random(),
+            'caste_id' => $castes->random(),
             'fathers_name' => $this->faker->name('male'),
             'mothers_name' => $this->faker->name('female'),
             'address' => $this->faker->address,
