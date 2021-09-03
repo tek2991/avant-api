@@ -37,6 +37,7 @@ Route::get('/import', function () {
     return view('import');
 })->middleware(['auth'])->name('import');
 
+Route::get('/student-import', [StudentImportController::class, 'store'])->middleware(['auth'])->name('student.import');
 Route::get('/student-template', [TemplateExportController::class, 'studentTemplate'])->middleware(['auth'])->name('student.template');
 Route::get('/attribute-export', [TemplateExportController::class, 'attributeExport'])->middleware(['auth'])->name('attribute.export');
 
