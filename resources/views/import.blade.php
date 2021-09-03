@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="py-12">
-        Import Students
+        <h5>Import Students</h5>
         <a href="{{ route('student.template') }}" target="_blank">Download Template</a>
         <a href="{{ route('attribute.export') }}" target="_blank">Download Attributes</a>
         <form action="">
