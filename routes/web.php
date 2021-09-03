@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\API\v1\Export\TemplateExportController;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\SpaLoginController;
 use App\Http\Controllers\Auth\SpaLogoutController;
 use App\Http\Controllers\Auth\SpaRegisterController;
+use App\Http\Controllers\API\v1\Import\StudentImportController;
+use App\Http\Controllers\API\v1\Export\TemplateExportController;
 
 /*
 |--------------------------------------------------------------------------
