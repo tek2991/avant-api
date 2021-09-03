@@ -16,7 +16,7 @@
                 </div>
             @endif
         </div>
-        <form action="/student-import" method="post" enctype="multipart/form-data">
+        <form action="{{ url('/student-import') }}" method="post" enctype="multipart/form-data">
             @csrf
             <input type="file" name="file" id="">
             <button type="submit">Submit</button>
