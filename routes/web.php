@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\v1\Export\TemplateExportController;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\SpaLoginController;
@@ -31,6 +32,13 @@ Route::get('invoice', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::get('/import', function () {
+    return view('import');
+})->middleware(['auth'])->name('import');
+
+Route::get('/student-template', [TemplateExportController::class, 'studentTemplate'])->middleware(['auth'])->name('student.template');
+Route::get('/attribute-export', [TemplateExportController::class, 'attributeExport'])->middleware(['auth'])->name('attribute.export');
 
 Route::get('/phpinfo', function () {
     return view('phpinfo');
