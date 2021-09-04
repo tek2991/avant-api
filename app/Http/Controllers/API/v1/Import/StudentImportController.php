@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\v1\Import;
 use Illuminate\Http\Request;
 use App\Imports\StudentImport;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StudentImportController extends Controller
 {
