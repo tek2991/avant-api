@@ -9,9 +9,14 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class StudentImportController extends Controller
 {
-    public function store(Request $request){
+    public function store(Request $request)
+    {
+        set_time_limit(600);
         $file = $request->file('file')->store('import');
-        Excel::import(new StudentImport, $file);
+
+        $import = new StudentImport;
+        $import->import($file);
+
         return back()->withStatus('excel file imported');
     }
 }

@@ -10,9 +10,19 @@
         <a href="{{ route('student.template') }}" target="_blank">Download Template</a>
         <a href="{{ route('attribute.export') }}" target="_blank">Download Attributes</a>
         <div>
-            @if(session('status'))
+            @if (session('status'))
                 <div>
                     {{ session('status') }}
+                </div>
+            @endif
+
+            @if (isset($errors) && $errors->any())
+                <div>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
             @endif
         </div>

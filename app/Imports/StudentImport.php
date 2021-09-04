@@ -2,26 +2,26 @@
 
 namespace App\Imports;
 
+use App\Models\User;
+use App\Models\Standard;
+use App\Models\SectionStandard;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
+// use Maatwebsite\Excel\Concerns\WithChunkReading;
 
 class StudentImport implements ToCollection, WithHeadingRow, WithValidation
 {
-    /**
-    * @param Collection $collection
-    */
-    public function collection(Collection $collection)
-    {
-        //
-    }
+    use Importable;
 
     public function rules(): array
     {
         return [
-            '*.username' => 'required|alpha_num|max:255',
-            '*.email' => 'required|email|max:255',
+            '*.username' => 'required|alpha_num|unique:users|max:255',
+            '*.email' => 'required|email|unique:users|max:255',
             '*.password' => 'nullable|min:8|max:24',
 
             '*.name' => 'required|max:255',
@@ -44,5 +44,55 @@ class StudentImport implements ToCollection, WithHeadingRow, WithValidation
             '*.standard_id' => 'required|min:1|exists:standards,id',
             '*.roll_no' => 'required|max:255',
         ];
+    }
+
+    // public function chunkSize(): int
+    // {
+    //     return 20;
+    // }
+
+    /**
+     * @param Collection $collection
+     */
+    public function collection(Collection $collection)
+    {
+        foreach ($collection as $row) {
+            $user = User::create([
+                'username' => $row['username'],
+                'email' => $row['email'],
+                'password' => Hash::make($row['password']),
+            ]);
+
+            $user->userDetail()->create([
+                'name' => $row['name'],
+                'phone' => $row['phone'],
+                'phone_alternate' => $row['phone_alternate'],
+                'dob' => $row['dob'],
+                'gender_id' => $row['gender_id'],
+                'blood_group_id' => $row['blood_group_id'],
+                'address' => $row['address'],
+                'pincode' => $row['pincode'],
+                'fathers_name' => $row['fathers_name'],
+                'mothers_name' => $row['mothers_name'],
+                'pan_no' => $row['pan_no'],
+                'passport_no' => $row['passport_no'],
+                'voter_id' => $row['voter_id'],
+                'aadhar_no' => $row['aadhar_no'],
+                'dl_no' => $row['dl_no']
+            ]);
+
+            $user->assignRole('student');
+
+            $section_standard_id = SectionStandard::where('section_id', $row['section_id'])->where('standard_id', $row['standard_id'])->first()->id;
+
+            $user->student()->create([
+                'section_standard_id' => $section_standard_id,
+                'roll_no' => $row['roll_no'],
+            ]);
+
+            $subjects = Standard::find($row['standard_id'])->subjects()->get()->modelKeys();
+
+            $user->student->subjects()->sync($subjects);
+        }
     }
 }
