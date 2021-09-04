@@ -8,6 +8,10 @@ use App\Http\Controllers\Controller;
 
 class StudentImportController extends Controller
 {
+    public function index(){
+        return view('importStudent');
+    }
+
     public function store(Request $request)
     {
         set_time_limit(600);
