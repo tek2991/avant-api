@@ -9,9 +9,9 @@ use App\Imports\TeacherImport;
 class TeacherImportController extends Controller
 {
     public function index(){
-        return view('importStudent');
+        return view('importTeacher');
     }
-    
+
     public function store(Request $request)
     {
         set_time_limit(600);
