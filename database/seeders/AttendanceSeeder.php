@@ -50,7 +50,7 @@ class AttendanceSeeder extends Seeder
             }
         }
 
-        $chunks = array_chunk($data, 5000);
+        $chunks = array_chunk($data, 1000);
         foreach($chunks as $chunk){
             Attendance::insert($chunk);
         }
