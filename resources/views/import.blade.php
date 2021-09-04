@@ -7,7 +7,7 @@
 
     <div class="py-12">
         <div class="flex-auto flex space-x-3">
-            <a href="{{ route('insert.student') }}"
+            <a href="{{ route('import.student') }}"
                 class="w-1/3 h-16 flex items-center justify-center rounded-md border border-gray-300">
                 Upload Student Data
             </a>
