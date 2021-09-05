@@ -4,7 +4,7 @@ Laravel backend for Avant School Management System.
 
 ## Prequisites
  - Ubuntu 20.04 LTS: Other Linux distros will do fine. However this was developed and tested on Ubuntu 20.04 LTS.
- - PHP 8.0: Other PHP should work. 
+ - PHP 8.0: Other PHP versions may work. 
  - PHP extensions: php-bcmath, php-curl, php-gd, php-mbstring, php-pgsql, php-redis, php-xml, php-zip
  - PostgreSQL 13: Other RDBMS like MYSQL may require some changes to the database migration files.
  - REDIS: Cache server.
