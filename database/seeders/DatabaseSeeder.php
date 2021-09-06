@@ -43,6 +43,7 @@ class DatabaseSeeder extends Seeder
             SubjectGroupSeeder::class,
             SubjectSeeder::class,
             ChapterSeeder::class,
+            VariableSeeder::class,
         ]);
     }
 }
