@@ -118,7 +118,7 @@
                     <table>
                         <tr>
                             <td class="title">
-                                <img src="{{ env('LOGO') }}"
+                                <img src="{{ $variables['LOGO'] }}"
                                     style="width: 100%; max-width: 200px" />
                             </td>
 
@@ -144,10 +144,10 @@
                     <table>
                         <tr>
                             <td>
-                                Avant SMS.<br />
-                                Webrefiner Pvt Ltd<br />
-                                Guwahati, Assam, India 781001 <br />
-                                GST: 18HAGTS5485RT
+                                {{ $variables['ADDRESS_LINE_1'] }}<br />
+                                {{ $variables['ADDRESS_LINE_2'] }}<br />
+                                {{ $variables['ADDRESS_LINE_3'] }} <br />
+                                GST:  {{ $variables['GST'] }}
                             </td>
 
                             <td>
@@ -209,7 +209,7 @@
 					<br />
 					<br />
 					<br />
-					For: Avant SMS<br />
+					For: {{ $variables['ADDRESS_LINE_1'] }}<br />
 				</td>
 			</tr>
 		</table>

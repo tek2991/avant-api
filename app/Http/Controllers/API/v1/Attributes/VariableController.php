@@ -7,14 +7,10 @@ use App\Models\Variable;
 use Illuminate\Http\Request;
 
 class VariableController extends Controller
-{   
-    public static function get($key){
-        $variables = Variable::select('key','value')->get()->pluck('value','key')->toArray();
-        $var = $variables[$key];
-        return $var;
-    }
-    public static function getAll(){
-        $variables = Variable::select('key','value')->get()->pluck('value','key')->toArray();
+{
+    public static function keyPairs()
+    {
+        $variables = Variable::select('key', 'value')->get()->pluck('value', 'key')->toArray();
         return $variables;
     }
     /**

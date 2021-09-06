@@ -186,7 +186,7 @@ class FeeInvoiceController extends Controller
 
         $data = $feeInvoice->load('billFee:id,bill_id,fee_id', 'billFee.bill', 'billFee.bill.session', 'feeInvoiceItems', 'standard', 'user:id,email', 'user.userDetail:id,user_id,name');
 
-        $variables = VariableController::getAll();
+        $variables = VariableController::keyPairs();
 
         $pdf = PDF::loadView('documents.fee-invoice', ['data' => $data, 'variables' => $variables]);
         return $pdf->download('fee_invoice_' . $feeInvoice->id . '.pdf');
