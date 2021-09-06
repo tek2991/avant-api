@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\v1\Razorpay;
 
 use Exception;
 use App\Models\Payment;
+use App\Models\Receipt;
 use App\Models\FeeInvoice;
 use App\Models\RazorpayLogs;
 use Illuminate\Http\Request;
@@ -14,7 +15,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Razorpay as ModelsRazorpay;
-use App\Models\Receipt;
+use App\Http\Controllers\API\v1\Attributes\VariableController;
 
 class RazorpayFeeInvoiceController extends Controller
 {
@@ -25,6 +26,7 @@ class RazorpayFeeInvoiceController extends Controller
      */
     public function show(FeeInvoice $feeInvoice)
     {
+        $variables = VariableController::keyPairs();
 
         if (Auth::user()->id !== $feeInvoice->user_id && Auth::user()->hasRole('director') !== true) {
             return response([
@@ -58,7 +60,7 @@ class RazorpayFeeInvoiceController extends Controller
 
         $user = Auth::user()->load('userDetail');
         $amount = $feeInvoice->gross_amount_in_cent;
-        $currency = env('RAZORPAY_CURRENCY', 'INR');
+        $currency = $variables['RAZORPAY_CURRENCY'];
         $receipt = $feeInvoice->id;
 
         $orderData = [
@@ -75,10 +77,10 @@ class RazorpayFeeInvoiceController extends Controller
             'currency' => $currency,
             'amount' => $amount,
 
-            'key' => env('RAZORPAY_KEY_ID'),
+            'key' => $variables['RAZORPAY_KEY_ID'],
             'name' => $feeInvoice->name,
             'description' => $feeInvoice->name . ' for ' . $feeInvoice->user->userDetail->name . ' of Class: ' . $feeInvoice->standard->name . ' of Session: ' . $feeInvoice->billFee->bill->session->name,
-            'image' => env('LOGO'),
+            'image' => $variables['LOGO'],
         ];
 
         $payment_method_id = PaymentMethod::where('name', 'Razorpay')->firstOrFail()->id;
@@ -95,7 +97,7 @@ class RazorpayFeeInvoiceController extends Controller
             }
         }
 
-        $razorpay = new Razorpay(env('RAZORPAY_KEY_ID'), env('RAZORPAY_KEY_SECRET'));
+        $razorpay = new Razorpay($variables['RAZORPAY_KEY_ID'], $variables['RAZORPAY_KEY_SECRET']);
         $razorpayOrder = $razorpay->order->create($orderData);
         $razorpayData['order_id'] = $razorpayOrder['id'];
 
@@ -116,6 +118,7 @@ class RazorpayFeeInvoiceController extends Controller
 
     public function verifyPayment(Request $request, FeeInvoice $feeInvoice)
     {
+        $variables = VariableController::keyPairs();
 
         if (Auth::user()->id !== $feeInvoice->user_id && Auth::user()->hasRole('director') !== true) {
             return response([
@@ -158,7 +161,7 @@ class RazorpayFeeInvoiceController extends Controller
             ], 401);
         }
 
-        $razorpay = new Razorpay(env('RAZORPAY_KEY_ID'), env('RAZORPAY_KEY_SECRET'));
+        $razorpay = new Razorpay($variables['RAZORPAY_KEY_ID'], $variables['RAZORPAY_KEY_SECRET']);
 
         $order_id = $feeInvoice->payment->razorpays->first()->order_id;
 
@@ -182,11 +185,13 @@ class RazorpayFeeInvoiceController extends Controller
 
     public function webhook(Request $request)
     {
+        $variables = VariableController::keyPairs();
+
         $webhookBody = $request->getContent();
         $webhookSignature = $request->header('X-Razorpay-Signature');
-        $webhookSecret = env('RAZORPAY_WEBHOOK_SECRET');
+        $webhookSecret = $variables['RAZORPAY_WEBHOOK_SECRET'];
 
-        $razorpay = new Razorpay(env('RAZORPAY_KEY_ID'), env('RAZORPAY_KEY_SECRET'));
+        $razorpay = new Razorpay($variables['RAZORPAY_KEY_ID'], $variables['RAZORPAY_KEY_SECRET']);
 
         $now = Carbon::now()->format('u');
         $ip = $request->ip();
