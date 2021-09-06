@@ -11,6 +11,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\PersonalAccessToken;
+use App\Http\Controllers\API\v1\Attributes\VariableController;
 
 class FeeInvoiceController extends Controller
 {
@@ -185,7 +186,9 @@ class FeeInvoiceController extends Controller
 
         $data = $feeInvoice->load('billFee:id,bill_id,fee_id', 'billFee.bill', 'billFee.bill.session', 'feeInvoiceItems', 'standard', 'user:id,email', 'user.userDetail:id,user_id,name');
 
-        $pdf = PDF::loadView('documents.fee-invoice', ['data' => $data]);
+        $variables = VariableController::getAll();
+
+        $pdf = PDF::loadView('documents.fee-invoice', ['data' => $data, 'variables' => $variables]);
         return $pdf->download('fee_invoice_' . $feeInvoice->id . '.pdf');
     }
 
