@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\v1\Attendance;
 
 use App\Models\User;
 use App\Models\Session;
+use App\Models\Student;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -136,6 +137,36 @@ class AttendanceController extends Controller
         $sectionStandard = $sectionStandard->with(['section', 'standard', 'teacher:id,user_id', 'teacher.user:id', 'teacher.user.userDetail:id,user_id,name'])->find($sectionStandard->id);
 
         return response(compact('sectionStandard', 'students'));
+    }
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Attendance  $attendance
+     * @return \Illuminate\Http\Response
+     */
+    public function showAll(Request $request)
+    {
+        $user = Auth::user();
+        if ($user->hasRole('director') !== true) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
+        $this->validate($request, [
+            // 'section_standard_id' => 'required|min:1|exists:section_standard,id',
+            'attendance_date' => 'required|date',
+        ]);
+
+        $students = Student::with([
+            'user:id', 'user.userDetail:id,user_id,name',
+            'user.attendances' => function ($query) use ($request) {
+                $query->where('attendance_date', 'like', '%' . $request->attendance_date . '%');
+            }
+        ])->select(['id', 'user_id', 'section_standard_id', 'roll_no'])->orderBy('roll_no')->paginate();
+
+        return response(compact('students'));
     }
 
     /**
