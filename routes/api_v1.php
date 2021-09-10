@@ -50,6 +50,7 @@ use App\Http\Controllers\API\v1\Subject\ChapterProgressionController;
 use App\Http\Controllers\API\v1\ManualPayment\ManualPaymentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
+use App\Http\Controllers\API\v1\SMS\StudentBySectionStandard;
 
 /*
 |--------------------------------------------------------------------------
@@ -164,6 +165,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('chapter', [ChapterController::class, 'index'])->middleware(['can:subject_read']);
 
     Route::apiResource('chapter-progression', ChapterProgressionController::class);
+
+    Route::get('student-by-section-standard', [StudentBySectionStandard::class, 'index']);
     
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });
