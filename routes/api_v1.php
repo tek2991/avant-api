@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\v1\SMS\SendSms;
 use App\Http\Controllers\Auth\ApiLoginController;
 use App\Http\Controllers\API\v1\Fee\FeeController;
 use App\Http\Controllers\Auth\ApiLogoutController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\API\v1\Attributes\GenderController;
 use App\Http\Controllers\API\v1\Appeal\CloseAppealController;
 use App\Http\Controllers\API\v1\Chart\StudentChartController;
 use App\Http\Controllers\API\v1\Chart\TeacherChartController;
+use App\Http\Controllers\API\v1\SMS\StudentBySectionStandard;
 use App\Http\Controllers\API\v1\Attributes\LanguageController;
 use App\Http\Controllers\API\v1\Attributes\ReligionController;
 use App\Http\Controllers\API\v1\Chart\DirectorChartController;
@@ -50,7 +52,6 @@ use App\Http\Controllers\API\v1\Subject\ChapterProgressionController;
 use App\Http\Controllers\API\v1\ManualPayment\ManualPaymentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
-use App\Http\Controllers\API\v1\SMS\StudentBySectionStandard;
 
 /*
 |--------------------------------------------------------------------------
@@ -167,6 +168,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('chapter-progression', ChapterProgressionController::class);
 
     Route::get('student-by-section-standard', [StudentBySectionStandard::class, 'index']);
+    Route::post('send-holiday-sms', [SendSms::class, 'holidaySms']);
     
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });
