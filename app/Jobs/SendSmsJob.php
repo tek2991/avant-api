@@ -2,12 +2,15 @@
 
 namespace App\Jobs;
 
+use App\Models\SmsError;
+use App\Models\SmsRecord;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 
 class SendSmsJob implements ShouldQueue
 {
@@ -15,16 +18,26 @@ class SendSmsJob implements ShouldQueue
 
     public $variables;
     public $numbers;
+    public $user_ids;
+    public $template;
+    public $route;
+    public $url;
+    public $key;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($variables, $numbers)
+    public function __construct($variables, $numbers, $user_ids, $template, $route, $url, $key)
     {
         $this->variables = $variables;
         $this->numbers = $numbers;
+        $this->user_ids = $user_ids;
+        $this->template = $template;
+        $this->route = $route;
+        $this->url = $url;
+        $this->key = $key;
     }
 
     /**
@@ -35,17 +48,17 @@ class SendSmsJob implements ShouldQueue
     public function handle()
     {
         $fields = [
-            "sender_id" => "DLT_SENDER_ID",
-            "message" => "YOUR_MESSAGE_ID",
-            "variables_values" => "12345|asdaswdx",
-            "route" => "dlt",
-            "numbers" => "9999999999,8888888888,7777777777",
+            "sender_id" => $this->template->sender_id,
+            "message" => $this->template->message_id,
+            "variables_values" => implode("|", $this->variables),
+            "route" => $this->route,
+            "numbers" => implode(",", $this->numbers),
         ];
 
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://www.fast2sms.com/dev/bulkV2",
+            CURLOPT_URL => $this->url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -56,22 +69,43 @@ class SendSmsJob implements ShouldQueue
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => json_encode($fields),
             CURLOPT_HTTPHEADER => array(
-                "authorization: YOUR_API_KEY",
+                "authorization: " . $this->key,
                 "accept: */*",
                 "cache-control: no-cache",
                 "content-type: application/json"
             ),
         ));
 
-        $response = curl_exec($curl);
+        $res = curl_exec($curl);
         $err = curl_error($curl);
-
         curl_close($curl);
 
         if ($err) {
-            echo "cURL Error #:" . $err;
+            Storage::put('sms_error.txt', $err);
         } else {
-            echo $response;
+            $response = json_decode($res);
+            
+            if ($response->return == true) {
+                $data = [];
+                foreach ($this->user_ids as $key => $value) {
+                    $data[] = [
+                        'sms_template_id' => $this->template->id,
+                        'user_id' => $value,
+                        'variables' => implode("|", $this->variables),
+                        'number' => $this->numbers[$key],
+                        'request_id' => $response->request_id,
+                        'created_at' => now()->toDateTimeString(),
+                        'updated_at' => now()->toDateTimeString(),
+                    ];
+                }
+                SmsRecord::insert($data);
+            } else {
+                SmsError::create([
+                    'sms_template_id' => $this->template->id,
+                    'status_code' => $response->status_code,
+                    'message' => $response->message,
+                ]);
+            }
         }
     }
 }

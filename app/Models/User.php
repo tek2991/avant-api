@@ -77,4 +77,8 @@ class User extends Authenticatable
     public function teacher(){
         return $this->hasOne(Teacher::class);
     }
+
+    public function smsRecords(){
+        return $this->hasMany(SmsRecord::class);
+    }
 }

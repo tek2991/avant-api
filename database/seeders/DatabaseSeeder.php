@@ -44,6 +44,7 @@ class DatabaseSeeder extends Seeder
             SubjectSeeder::class,
             ChapterSeeder::class,
             VariableSeeder::class,
+            SmsTemplateSeeder::class,
         ]);
     }
 }

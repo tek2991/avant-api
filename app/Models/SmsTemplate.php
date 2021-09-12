@@ -12,4 +12,12 @@ class SmsTemplate extends Model
         'message',
         'variable_count',
     ];
+
+    public function smsRecords(){
+        return $this->hasMany(SmsRecord::class);
+    }
+
+    public function smsErrors(){
+        return $this->hasMany(SmsError::class);
+    }
 }

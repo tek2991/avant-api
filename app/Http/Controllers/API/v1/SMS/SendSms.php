@@ -4,9 +4,11 @@ namespace App\Http\Controllers\API\v1\SMS;
 
 use App\Models\User;
 use App\Jobs\SendSmsJob;
+use App\Models\SmsTemplate;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\API\v1\Attributes\VariableController;
 
 class SendSms extends Controller
 {
@@ -34,7 +36,13 @@ class SendSms extends Controller
             $numbers[] = $user->userDetail->phone;
         }
 
-        // SendSmsJob::dispatch($variables, $numbers);
+        $template = SmsTemplate::where('message_id', '111043')->firstOrFail();
+        $route = 'dlt';
+        $db_variables = VariableController::keyPairs();
+        $url = $db_variables['FAST2SMS_URL'];
+        $key = $db_variables['FAST2SMS_KEY'];
+
+        SendSmsJob::dispatch($variables, $numbers, $request->user_ids, $template, $route, $url, $key);
 
         return response($numbers, 200);
     }
