@@ -9,5 +9,7 @@ $keyValues= [
     'ADDRESS_LINE_2' => "Webrefiner Pvt Ltd",
     'ADDRESS_LINE_3' => "Guwahati, Assam, India 781001",
     'GST' => "18HAGTS5485RT",
-    'LOGO' => "https://resources.ap-south-1.linodeobjects.com/logo.png"
+    'LOGO' => "https://resources.ap-south-1.linodeobjects.com/logo.png",
+    'FAST2SMS_URL' => "https://www.fast2sms.com/dev/bulkV2",
+    'FAST2SMS_KEY' => "jQvTC3AO126q5l8yEHz9VrwbFRmDZfU0eP7ouihasSKXGIJtBWehCMnVdxa0P2XcAkDU7pfEGSmyvzqw",
 ];
