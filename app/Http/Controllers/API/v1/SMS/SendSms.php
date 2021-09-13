@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Jobs\SendSmsJob;
 use App\Models\SmsTemplate;
 use Illuminate\Http\Request;
+use App\Jobs\SendMultipleSmsJob;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\API\v1\Attributes\VariableController;
@@ -45,5 +46,43 @@ class SendSms extends Controller
         SendSmsJob::dispatch($variables, $numbers, $request->user_ids, $template, $route, $url, $key);
 
         return response($numbers, 200);
+    }
+
+    public function absenteeSms(Request $request){
+        $user = Auth::user();
+        if ($user->hasRole('director') !== true) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
+        $this->validate($request, [
+            'attendance_date' => 'required|date',
+            'user_ids' => 'exists:users,id'
+        ]);
+
+        $users = User::whereIn('id', $request->user_ids)->get();
+        $sms_objects = [];
+
+        foreach ($users as $user) {
+            $sms_object = [
+                "user_id" => $user->id,
+                "number" => $user->userDetail->phone,
+                "variables" => [$user->userDetail->name, $request->attendance_date]
+            ];
+
+            $sms_objects[] = $sms_object;
+        }
+
+        $template = SmsTemplate::where('message_id', '111044')->firstOrFail();
+        $route = 'dlt';
+        $db_variables = VariableController::keyPairs();
+        $url = $db_variables['FAST2SMS_URL'];
+        $key = $db_variables['FAST2SMS_KEY'];
+
+        SendMultipleSmsJob::dispatch($sms_objects, $template, $route, $url, $key);
+
+        return response($sms_objects, 200);
     }
 }
