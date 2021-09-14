@@ -18,7 +18,7 @@ class AttendanceSeeder extends Seeder
      */
     public function run()
     {
-        $students = Student::where('id', '<', 320)->get();
+        $students = Student::get();
 
         $admin = 2;
 
@@ -50,7 +50,7 @@ class AttendanceSeeder extends Seeder
             }
         }
 
-        $chunks = array_chunk($data, 1000);
+        $chunks = array_chunk($data, 50);
         foreach($chunks as $chunk){
             Attendance::insert($chunk);
         }
