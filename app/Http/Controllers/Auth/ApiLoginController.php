@@ -12,7 +12,7 @@ class ApiLoginController extends Controller
     public function directorLogin(Request $request)
     {
         $this->validate($request, [
-            'username' => 'required|alpha_num',
+            'username' => 'required|alpha_num|exists:users,username',
             'password' => 'required|string',
         ]);
 
@@ -47,7 +47,7 @@ class ApiLoginController extends Controller
     public function studentLogin(Request $request)
     {
         $this->validate($request, [
-            'username' => 'required|alpha_num',
+            'username' => 'required|alpha_num|exists:users,username',
             'password' => 'required|string',
         ]);
 
@@ -83,7 +83,7 @@ class ApiLoginController extends Controller
     public function teacherLogin(Request $request)
     {
         $this->validate($request, [
-            'username' => 'required|alpha_num',
+            'username' => 'required|alpha_num|exists:users,username',
             'password' => 'required|string',
         ]);
 
