@@ -52,6 +52,7 @@ use App\Http\Controllers\API\v1\Subject\ChapterProgressionController;
 use App\Http\Controllers\API\v1\ManualPayment\ManualPaymentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
+use App\Http\Controllers\API\v1\SMS\SmsRecordController;
 use App\Http\Controllers\API\v1\SMS\StudentBySectionStandardWithAttendance;
 
 /*
@@ -180,6 +181,7 @@ Route::get('fee-invoice-print/{fee_invoice}', [FeeInvoiceController::class, 'pri
 Route::get('fee-invoice-receipt/{fee_invoice}', [FeeInvoiceController::class, 'printReceipt']);
 
 Route::get('bill-fee-export/{bill_fee}', [ExportController::class, 'billFee']);
+Route::get('sms-report', [SmsRecordController::class, 'index']);
 
 // Route::post('/razorpay-callback', function () {
 //     return response('OK', 200);

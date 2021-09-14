@@ -12,22 +12,23 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 class BillFeeExport implements FromCollection, WithMapping, WithHeadings, WithColumnFormatting
 {
     protected $billFee;
-    function __construct($billFee) {
-            $this->billFee = $billFee;
+    function __construct($billFee)
+    {
+        $this->billFee = $billFee;
     }
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
         $feeInvoices = BillFee::where('id', $this->billFee)->first()->feeInvoices()->get();
         return $feeInvoices;
     }
 
-        /**
-    * @var FeeInvoice $feeInvoice
-    */
+    /**
+     * @var FeeInvoice $feeInvoice
+     */
     public function map($feeInvoice): array
     {
         $payment = $feeInvoice->payment()->exists() ? $feeInvoice->payment : null;
@@ -40,8 +41,8 @@ class BillFeeExport implements FromCollection, WithMapping, WithHeadings, WithCo
             $feeInvoice->name,
             $feeInvoice->standard->name,
             $feeInvoice->billFee->bill->session->name,
-            ($feeInvoice->amount_in_cent)/100,
-            ($feeInvoice->gross_amount_in_cent)/100,
+            ($feeInvoice->amount_in_cent) / 100,
+            ($feeInvoice->gross_amount_in_cent) / 100,
             $payment_status,
             $payment_method,
             $payment_date,
