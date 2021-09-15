@@ -58,6 +58,10 @@ class BillController extends Controller
             'fee_ids' => 'required|min:1|exists:fees,id'
         ]);
 
+        TransactionLock::where("name", "Billing")->firstOrFail()->update([
+            'locked' => true
+        ]);
+
         $bill = Bill::create($request->only(['name', 'description', 'session_id', 'bill_from_date', 'bill_to_date', 'bill_due_date']));
 
         $bill->fees()->attach($request->fee_ids);

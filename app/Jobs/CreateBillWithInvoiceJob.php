@@ -6,6 +6,7 @@ use App\Models\Bill;
 use App\Models\BillFee;
 use App\Models\FeeInvoice;
 use Illuminate\Bus\Queueable;
+use App\Models\TransactionLock;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -89,5 +90,9 @@ class CreateBillWithInvoiceJob implements ShouldQueue
                 'gross_amount_in_cent' => $billFee->feeInvoices->sum('gross_amount_in_cent')
             ]);
         }
+
+        TransactionLock::where("name", "Billing")->firstOrFail()->update([
+            'locked' => false
+        ]);
     }
 }
