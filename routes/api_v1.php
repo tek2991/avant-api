@@ -103,7 +103,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('chargeable', ChargeableController::class)->middleware(['can:bill_crud']);
     Route::get('chargeable-all', [ChargeableController::class, 'all'])->middleware(['can:bill_read']);
 
-    Route::apiResource('student', StudentController::class)->only(['index', 'store', 'update', 'destroy'])->middleware(['can:student_crud']);
+    Route::apiResource('student', StudentController::class)->only(['index', 'update', 'destroy'])->middleware(['can:student_crud']);
     Route::get('unallocated-student', [UnallocatedStudentController::class, 'index'])->middleware(['can:student_read']);
     Route::post('enroll-student', [EnrollStudentController::class, 'store'])->middleware(['can:student_crud']);
     Route::put('update-student/{user}', [UpdateStudentController::class, 'update'])->middleware(['can:student_crud']);

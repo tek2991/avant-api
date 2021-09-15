@@ -74,6 +74,10 @@ class User extends Authenticatable
         return $this->hasOne(Student::class);
     }
 
+    public function studentWithTrashed(){
+        return $this->hasOne(Student::class)->withTrashed();
+    }
+
     public function teacher(){
         return $this->hasOne(Teacher::class);
     }

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API\v1\Student;
 use Exception;
 use App\Models\User;
 use App\Models\Student;
+use App\Models\Standard;
 use Illuminate\Http\Request;
+use App\Models\SectionStandard;
 use App\Http\Controllers\Controller;
 
 class StudentController extends Controller
@@ -32,37 +34,37 @@ class StudentController extends Controller
         ])->paginate();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $this->validate($request, [
-            'user_id' => 'required|min:1|exists:users,id',
-            'section_standard_id' => 'required|min:1|exists:section_standard,id',
-            'roll_no' => 'required|max:255',
-        ]);
+    // /**
+    //  * Store a newly created resource in storage.
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function store(Request $request)
+    // {
+    //     $this->validate($request, [
+    //         'user_id' => 'required|min:1|exists:users,id',
+    //         'section_standard_id' => 'required|min:1|exists:section_standard,id',
+    //         'roll_no' => 'required|max:255',
+    //     ]);
 
-        $studentExist = Student::where('user_id', $request->user_id)->first();
+    //     $studentExist = Student::where('user_id', $request->user_id)->first();
 
-        if($studentExist){
-            return response([
-                'header' => 'Already exists',
-                'message' => 'Student is already allocated.'
-            ], 418);
-        }
+    //     if($studentExist){
+    //         return response([
+    //             'header' => 'Already exists',
+    //             'message' => 'Student is already allocated.'
+    //         ], 418);
+    //     }
 
-        $student = Student::create($request->only(['user_id', 'section_standard_id', 'roll_no']));
+    //     $student = Student::create($request->only(['user_id', 'section_standard_id', 'roll_no']));
 
-        $subjects = $student->sectionStandard->standard->subjects()->get()->modelKeys();
+    //     $subjects = $student->sectionStandard->standard->subjects()->get()->modelKeys();
 
-        $student->subjects()->sync($subjects);
+    //     $student->subjects()->sync($subjects);
 
-        return $student;
-    }
+    //     return $student;
+    // }
 
     /**
      * Display the specified resource.
@@ -85,12 +87,20 @@ class StudentController extends Controller
     public function update(Request $request, Student $student)
     {
         $this->validate($request, [
+            'section_id' => 'required|min:1|exists:sections,id',
+            'standard_id' => 'required|min:1|exists:standards,id',
             'roll_no' => 'required|max:255',
         ]);
 
+        $section_standard_id = SectionStandard::where('section_id', $request->section_id)->where('standard_id', $request->standard_id)->first()->id;
+
         $student->update([
-            'roll_no' => $request->roll_no
+            'section_standard_id' => $section_standard_id,
+            'roll_no' => $request->roll_no,
         ]);
+
+        $subjects = Standard::find($request->standard_id)->subjects()->get()->modelKeys();
+        $student->subjects()->sync($subjects);
 
         return $student;
 
