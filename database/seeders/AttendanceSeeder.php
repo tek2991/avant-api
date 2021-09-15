@@ -18,6 +18,10 @@ class AttendanceSeeder extends Seeder
      */
     public function run()
     {
+        if(env('APP_ENV') !== 'local'){
+            return;
+        }
+        
         $students = Student::get();
 
         $admin = 2;

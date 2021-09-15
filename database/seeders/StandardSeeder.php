@@ -14,6 +14,9 @@ class StandardSeeder extends Seeder
      */
     public function run()
     {
+        if(env('APP_ENV') !== 'local'){
+            return;
+        }
         $standards = ['Nursery', 'LKG', 'UKG', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
         $hierachy = 10;
 

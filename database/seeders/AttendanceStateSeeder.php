@@ -14,7 +14,7 @@ class AttendanceStateSeeder extends Seeder
      */
     public function run()
     {
-        $attendanceStates = ['Not taken', 'Present', 'Absent', 'Leave applied', 'Leave approved', 'Leave rejected'];
+        $attendanceStates = ['Not taken', 'Present', 'Absent'];
 
         foreach ($attendanceStates as $attendanceState) {
             AttendanceState::create([
