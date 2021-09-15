@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Variable extends Model
+class TransactionLock extends Model
 {
     protected $fillable = [
-        'key',
-        'value',
+        'name',
+        'locked',
     ];
 
     protected $hidden = [

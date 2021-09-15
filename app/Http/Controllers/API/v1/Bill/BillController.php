@@ -7,6 +7,7 @@ use App\Models\Bill;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Jobs\CreateBillWithInvoiceJob;
+use App\Models\TransactionLock;
 
 class BillController extends Controller
 {
@@ -38,6 +39,15 @@ class BillController extends Controller
      */
     public function store(Request $request)
     {
+        $billing_locked = TransactionLock::where("name", "Billing")->firstOrFail()->locked;
+
+        if($billing_locked){
+            return response([
+                'header' => 'Transaction Locked',
+                'message' => 'Another process in queue, please try later!'
+            ], 401);
+        }
+
         $this->validate($request, [
             'name' => 'required|max:255|string',
             'description' => 'required|max:255|string',

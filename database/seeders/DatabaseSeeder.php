@@ -45,6 +45,7 @@ class DatabaseSeeder extends Seeder
             ChapterSeeder::class,
             VariableSeeder::class,
             SmsTemplateSeeder::class,
+            TransactionLockSeeder::class,
         ]);
     }
 }
