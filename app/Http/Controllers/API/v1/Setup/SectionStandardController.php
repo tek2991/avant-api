@@ -25,7 +25,7 @@ class SectionStandardController extends Controller
             ], 401);
         }
 
-        $teacher_id = Auth::user()->teacher->id;;
+        $teacher_id = Auth::user()->teacher->id;
 
         if (Auth::user()->hasRole('director') === true) {
             $teacher_id = '%%';

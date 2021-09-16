@@ -18,9 +18,6 @@ class StudentSeeder extends Seeder
      */
     public function run()
     {
-        if(env('APP_ENV') !== 'local'){
-            return;
-        }
         $students = User::role('student')->get()->modelKeys();
         $sectionStandard = collect(SectionStandard::all()->modelKeys());
 
