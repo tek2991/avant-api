@@ -8,4 +8,30 @@ use Illuminate\Database\Eloquent\Model;
 class ExamSubject extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'exam_id',
+        'subject_id',
+        'exam_date_time_id',
+        'full_mark',
+        'pass_mark',
+        'negative_percent',
+        'exam_subject_state_id',
+    ];
+
+    public function exam(){
+        return $this->belongsTo(Exam::class);
+    }
+
+    public function subject(){
+        return $this->belongsTo(Subject::class);
+    }
+
+    public function examDateTime(){
+        return $this->belongsTo(ExamDateTime::class);
+    }
+
+    public function examSubjectState(){
+        return $this->belongsTo(ExamSubjectState::class);
+    }
 }

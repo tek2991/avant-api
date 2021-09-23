@@ -14,6 +14,7 @@ class Exam extends Model
         'name',
         'description',
         'exam_type_id',
+        'created_by',
     ];
 
     public function session(){
@@ -22,5 +23,13 @@ class Exam extends Model
 
     public function examType(){
         return $this->belongsTo(ExamType::class);
+    }
+
+    public function examDateTimes(){
+        return $this->hasMany(ExamDateTime::class);
+    }
+
+    public function creator(){
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 }

@@ -9,4 +9,8 @@ class ExamSubjectState extends Model
     protected $fillable = [
         'name'
     ];
+
+    public function examSubject(){
+        return $this->hasMany(ExamSubject::class);
+    }
 }

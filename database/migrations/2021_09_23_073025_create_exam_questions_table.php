@@ -20,6 +20,7 @@ class CreateExamQuestionsTable extends Migration
             $table->string('description');
             $table->decimal('marks', $precision = 6, $scale = 2);
             $table->integer('max_time_in_seconds');
+            $table->foreignId('created_by')->constrained('users', 'id');
             $table->timestamps();
         });
     }

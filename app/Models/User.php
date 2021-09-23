@@ -85,4 +85,12 @@ class User extends Authenticatable
     public function smsRecords(){
         return $this->hasMany(SmsRecord::class);
     }
+
+    public function examAnswers(){
+        return $this->hasMany(ExamAnswer::class);
+    }
+
+    public function examSubjectScores(){
+        return $this->hasMany(ExamSubjectScore::class);
+    }
 }

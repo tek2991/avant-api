@@ -22,6 +22,7 @@ class CreateExamSubjectsTable extends Migration
             $table->integer('pass_mark');
             $table->integer('negative_percent');
             $table->foreignId('exam_subject_state_id')->constrained('exam_subject_states');
+            $table->boolean('auto_start');
             $table->timestamps();
         });
     }

@@ -8,4 +8,25 @@ use Illuminate\Database\Eloquent\Model;
 class ExamQuestion extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'exam_subject_id',
+        'exam_question_type_id',
+        'description',
+        'marks',
+        'max_time_in_seconds',
+        'created_by'
+    ];
+
+    public function examSubject(){
+        return $this->belongsTo(ExamSubject::class);
+    }
+
+    public function examQuestionType(){
+        return $this->belongsTo(ExamQuestionType::class);
+    }
+
+    public function creator(){
+        return $this->belongsTo(User::class, 'created_by', 'id');
+    }
 }

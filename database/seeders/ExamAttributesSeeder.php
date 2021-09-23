@@ -41,7 +41,7 @@ class ExamAttributesSeeder extends Seeder
             ]);
         }
 
-        $examAnswerStates = ['Created', 'Evaluated'];
+        $examAnswerStates = ['Created', 'Answered', 'Evaluated'];
 
         foreach($examAnswerStates as $examAnswerState){
             ExamAnswerState::create([

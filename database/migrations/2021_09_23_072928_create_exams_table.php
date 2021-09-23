@@ -19,6 +19,7 @@ class CreateExamsTable extends Migration
             $table->string('name');
             $table->string('description')->nullable();
             $table->foreignId('exam_type_id')->constrained('exam_types');
+            $table->foreignId('created_by')->constrained('users', 'id');
             $table->timestamps();
         });
     }
