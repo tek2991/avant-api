@@ -10,6 +10,10 @@ class EventType extends Model
     // use HasFactory;
     public $timestamps = false;
     protected $fillable = [
-        'name'
+        'name',
     ];
+
+    public function exams(){
+        return $this->hasMany(Exam::class);
+    }
 }
