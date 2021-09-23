@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder
             VariableSeeder::class,
             SmsTemplateSeeder::class,
             TransactionLockSeeder::class,
+            ExamAttributesSeeder::class,
         ]);
     }
 }
