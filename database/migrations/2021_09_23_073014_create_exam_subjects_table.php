@@ -15,6 +15,13 @@ class CreateExamSubjectsTable extends Migration
     {
         Schema::create('exam_subjects', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('exam_id')->constrained();
+            $table->foreignId('subject_id')->constrained();
+            $table->foreignId('exam_date_time_id')->constrained('exam_date_times');
+            $table->integer('full_mark');
+            $table->integer('pass_mark');
+            $table->integer('negative_percent');
+            $table->foreignId('exam_subject_state_id')->constrained('exam_subject_states');
             $table->timestamps();
         });
     }

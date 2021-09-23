@@ -15,6 +15,11 @@ class CreateExamQuestionsTable extends Migration
     {
         Schema::create('exam_questions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('exam_subject_id')->constrained('exam_subjects');
+            $table->foreignId('exam_question_type_id')->constrained('exam_question_types');
+            $table->string('description');
+            $table->decimal('marks', $precision = 6, $scale = 2);
+            $table->integer('max_time_in_seconds');
             $table->timestamps();
         });
     }

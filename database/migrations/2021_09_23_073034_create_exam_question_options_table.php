@@ -15,6 +15,9 @@ class CreateExamQuestionOptionsTable extends Migration
     {
         Schema::create('exam_question_options', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('exam_question_id')->constrained('exam_questions');
+            $table->string('description');
+            $table->boolean('is_correct');
             $table->timestamps();
         });
     }

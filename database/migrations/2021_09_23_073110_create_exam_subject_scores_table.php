@@ -15,6 +15,9 @@ class CreateExamSubjectScoresTable extends Migration
     {
         Schema::create('exam_subject_scores', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('exam_subject_id')->constrained('exam_subjects');
+            $table->foreignId('user_id')->constrained();
+            $table->decimal('marks_secured', $precision = 6, $scale = 2);
             $table->timestamps();
         });
     }
