@@ -14,12 +14,17 @@ class TransactionLockSeeder extends Seeder
      */
     public function run()
     {
-        $transactions = ["Billing"];
+        $transactions = [
+            "Billing" => false,
+            "Razorpay" => true,
+            "SMS" => true,
+            "OnlineExam" => true,
+        ];
 
-        foreach($transactions as $transaction){
+        foreach($transactions as $transaction => $status){
             TransactionLock::create([
                 "name" => $transaction,
-                "locked" => false,
+                "locked" => $status,
             ]);
         }
     }
