@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\User;
+use App\Models\Teacher;
 use App\Models\Standard;
 use App\Models\SectionStandard;
 use Illuminate\Support\Collection;
@@ -83,7 +84,22 @@ class StudentImport implements ToCollection, WithHeadingRow, WithValidation
 
             $user->assignRole('student');
 
-            $section_standard_id = SectionStandard::where('section_id', $row['section_id'])->where('standard_id', $row['standard_id'])->first()->id;
+            $section_standard = SectionStandard::where('section_id', $row['section_id'])->where('standard_id', $row['standard_id'])->get();
+
+            $section_standard_id = '';
+
+            if($section_standard->count() > 0 ){
+                $section_standard_id = $section_standard->first()->id;
+            }else{
+                SectionStandard::create([
+                    'section_id' => $row['section_id'],
+                    'standard_id' => $row['standard_id'],
+                    'teacher_id' => Teacher::first()->id,
+                ]);
+                $section_standard_id = SectionStandard::where('section_id', $row['section_id'])->where('standard_id', $row['standard_id'])->first()->id;
+            }
+
+            // dd($section_standard_id);
 
             $user->student()->create([
                 'section_standard_id' => $section_standard_id,
