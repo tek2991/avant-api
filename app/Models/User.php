@@ -90,7 +90,7 @@ class User extends Authenticatable
         return $this->hasMany(ExamAnswer::class);
     }
 
-    public function examSubjectScores(){
-        return $this->hasMany(ExamSubjectScore::class);
+    public function examSubjects(){
+        return $this->belongsToMany(ExamSubject::class, 'exam_subject_score', 'user_id', 'exam_subject_id')->withPivot('id', 'marks_secured')->withTimestamps();
     }
 }

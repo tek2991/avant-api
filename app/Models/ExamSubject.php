@@ -34,4 +34,8 @@ class ExamSubject extends Model
     public function examSubjectState(){
         return $this->belongsTo(ExamSubjectState::class);
     }
+
+    public function users(){
+        return $this->belongsToMany(User::class, 'exam_subject_score', 'exam_subject_id', 'user_id')->withPivot('id', 'marks_secured')->withTimestamps();
+    }
 }
