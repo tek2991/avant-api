@@ -14,10 +14,12 @@ class SectionSeeder extends Seeder
      */
     public function run()
     {   
-        if(env('APP_ENV') !== 'local'){
-            return;
+        $sections = [];
+
+        if (file_exists(__DIR__.'/../../keyValues.php')) {
+            require __DIR__.'/../../keyValues.php';
+            $sections = $sections_arr;
         }
-        $sections = ['A', 'B', 'C', 'Science', 'Commerce', 'Humanities'];
 
         foreach($sections as $section){
             Section::factory()->create([

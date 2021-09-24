@@ -13,3 +13,7 @@ $keyValues= [
     'FAST2SMS_URL' => "https://www.fast2sms.com/dev/bulkV2",
     'FAST2SMS_KEY' => "jQvTC3AO126q5l8yEHz9VrwbFRmDZfU0eP7ouihasSKXGIJtBWehCMnVdxa0P2XcAkDU7pfEGSmyvzqw",
 ];
+
+$standards_arr = ['Nursery', 'LKG', 'UKG', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+
+$sections_arr = ['A', 'B', 'C', 'Science', 'Commerce', 'Humanities'];
