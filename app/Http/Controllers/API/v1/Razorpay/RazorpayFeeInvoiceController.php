@@ -10,6 +10,7 @@ use App\Models\RazorpayLogs;
 use Illuminate\Http\Request;
 use App\Models\PaymentMethod;
 use Illuminate\Support\Carbon;
+use App\Models\TransactionLock;
 use Razorpay\Api\Api as Razorpay;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,15 @@ class RazorpayFeeInvoiceController extends Controller
      */
     public function show(FeeInvoice $feeInvoice)
     {
+        $razorpay_locked = TransactionLock::where("name", "Razorpay")->firstOrFail()->locked;
+
+        if($razorpay_locked){
+            return response([
+                'header' => 'Transaction Locked',
+                'message' => 'Please try later, or contact admin!'
+            ], 401);
+        }
+        
         $variables = VariableController::keyPairs();
 
         if (Auth::user()->id !== $feeInvoice->user_id && Auth::user()->hasRole('director') !== true) {
