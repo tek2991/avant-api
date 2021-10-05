@@ -92,7 +92,7 @@ class FeeInvoiceController extends Controller
             ->when(!empty($request->standard_id), function($query) use($request){$query->where('standard_id', $request->standard_id);})
             ->where('id', 'like', '%' . $request->invoice_id . '%')
             ->where('user_id', 'like', $user_id)
-            ->with(['user:id', 'user.userDetail:id,user_id,name', 'user.student:id,user_id,section_standard_id', 'user.student.sectionStandard.section', 'user.student.sectionStandard.standard', 'payment'])->paginate();
+            ->with(['user:id', 'user.userDetail:id,user_id,name', 'user.studentWithTrashed:id,user_id,section_standard_id', 'user.studentWithTrashed.sectionStandard.section', 'user.studentWithTrashed.sectionStandard.standard', 'payment'])->paginate();
     }
 
     /**

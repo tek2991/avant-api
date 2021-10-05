@@ -27,7 +27,7 @@ class SubjectForStudentController extends Controller
         $standard_id = empty($request->standard_id) ? '%%' : $request->standard_id;
         $subject_group_id = empty($request->subject_group_id) ? '%%' : $request->subject_group_id;
         
-        return $user->student->subjects()->select(['subjects.id', 'subjects.name', 'subjects.subject_group_id', 'subjects.standard_id', 'subjects.is_mandatory'])
+        return $user->studentWithTrashed->subjects()->select(['subjects.id', 'subjects.name', 'subjects.subject_group_id', 'subjects.standard_id', 'subjects.is_mandatory'])
         ->where('standard_id', 'like', $standard_id)
         ->where('subject_group_id', 'like', $subject_group_id)
         ->with('subjectGroup:id,name', 'standard')
