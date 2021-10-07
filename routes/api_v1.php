@@ -14,6 +14,7 @@ use App\Http\Controllers\API\v1\Appeal\AppealController;
 use App\Http\Controllers\API\v1\Export\ExportController;
 use App\Http\Controllers\API\v1\Setup\SectionController;
 use App\Http\Controllers\API\v1\Setup\SessionController;
+use App\Http\Controllers\API\v1\SMS\SmsRecordController;
 use App\Http\Controllers\API\v1\Fee\ChargeableController;
 use App\Http\Controllers\API\v1\Setup\StandardController;
 use App\Http\Controllers\API\v1\Subject\StreamController;
@@ -41,6 +42,7 @@ use App\Http\Controllers\API\v1\Setup\SectionStandardController;
 use App\Http\Controllers\API\v1\Student\EnrollStudentController;
 use App\Http\Controllers\API\v1\Student\UpdateStudentController;
 use App\Http\Controllers\API\v1\Appeal\RecommendAppealController;
+use App\Http\Controllers\API\v1\Student\StudentTrashedController;
 use App\Http\Controllers\API\v1\Subject\StudentSubjectController;
 use App\Http\Controllers\API\v1\Subject\SubjectTeacherController;
 use App\Http\Controllers\API\v1\Fee\AttachStandardToFeeController;
@@ -52,7 +54,6 @@ use App\Http\Controllers\API\v1\Subject\ChapterProgressionController;
 use App\Http\Controllers\API\v1\ManualPayment\ManualPaymentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
-use App\Http\Controllers\API\v1\SMS\SmsRecordController;
 use App\Http\Controllers\API\v1\SMS\StudentBySectionStandardWithAttendance;
 
 /*
