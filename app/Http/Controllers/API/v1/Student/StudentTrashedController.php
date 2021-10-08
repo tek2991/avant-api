@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Auth;
 
 class StudentTrashedController extends Controller
 {
@@ -39,7 +40,17 @@ class StudentTrashedController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (Auth::user()->hasRole('director') !== true) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+        $this->validate($request, [
+            'student_ids' => 'exists:students,id'
+        ]);
+        Student::destroy($request->student_ids);
+        return response('OK', 200);
     }
 
     /**
