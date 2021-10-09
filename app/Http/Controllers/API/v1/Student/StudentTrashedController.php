@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\API\v1\Student;
 
+use Auth;
 use App\Models\User;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Models\SectionStandard;
 use App\Http\Controllers\Controller;
-use Auth;
 
 class StudentTrashedController extends Controller
 {
@@ -71,9 +72,33 @@ class StudentTrashedController extends Controller
      * @param  \App\Models\Student  $student
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Student $student)
+    public function update(Request $request, User $user)
     {
-        //
+        if (Auth::user()->hasRole('director') !== true) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
+        $this->validate($request, [
+            'section_id' => 'required|min:1|exists:sections,id',
+            'standard_id' => 'required|min:1|exists:standards,id',
+            'roll_no' => 'required|max:255',
+        ]);
+
+        
+        $user->studentTrashed->restore();
+
+        $student = $user->student;
+        
+        $section_standard_id = SectionStandard::where('section_id', $request->section_id)->where('standard_id', $request->standard_id)->firstOrFail()->id;
+        $student->update([
+            'section_standard_id' => $section_standard_id,
+            'roll_no' => $request->roll_no,
+        ]);
+
+        return $student;
     }
 
     /**

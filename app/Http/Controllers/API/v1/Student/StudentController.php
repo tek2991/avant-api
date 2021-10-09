@@ -92,7 +92,7 @@ class StudentController extends Controller
             'roll_no' => 'required|max:255',
         ]);
 
-        $section_standard_id = SectionStandard::where('section_id', $request->section_id)->where('standard_id', $request->standard_id)->first()->id;
+        $section_standard_id = SectionStandard::where('section_id', $request->section_id)->where('standard_id', $request->standard_id)->firstOrFail()->id;
 
         $student->update([
             'section_standard_id' => $section_standard_id,
