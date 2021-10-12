@@ -46,6 +46,7 @@ use App\Http\Controllers\API\v1\Student\StudentTrashedController;
 use App\Http\Controllers\API\v1\Subject\StudentSubjectController;
 use App\Http\Controllers\API\v1\Subject\SubjectTeacherController;
 use App\Http\Controllers\API\v1\Fee\AttachStandardToFeeController;
+use App\Http\Controllers\API\v1\Student\TransferStudentController;
 use App\Http\Controllers\API\v1\Fee\AttachChargeableToFeeController;
 use App\Http\Controllers\API\v1\Subject\SubjectForStudentController;
 use App\Http\Controllers\API\v1\Subject\SubjectForTeacherController;
@@ -116,6 +117,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('attach-standard-to-fee', [AttachStandardToFeeController::class, 'store'])->middleware(['can:bill_crud']);
     Route::apiResource('chargeable-student', ChargeableStudentController::class)->middleware(['can:bill_crud']);
     Route::get('student-by-standard/{standard}', [StandardController::class, 'studentByStandard'])->middleware(['can:student_read']);
+    Route::get('students-by-section-standard', [TransferStudentController::class, 'studentBySectionStandard'])->middleware(['can:student_read']);
+    Route::put('transfer-student', [TransferStudentController::class, 'transferStudent'])->middleware(['can:student_crud']);
 
     Route::apiResource('bill', BillController::class)->only(['index', 'store', 'show'])->middleware(['can:bill_crud']);
     Route::get('bill-all', [BillController::class, 'all'])->middleware(['can:bill_read']);
