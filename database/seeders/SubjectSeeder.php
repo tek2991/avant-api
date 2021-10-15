@@ -21,13 +21,26 @@ class SubjectSeeder extends Seeder
             return;
         }
 
-        $subjectGroups = SubjectGroup::get();
-        $standards = Standard::all();
+        // $subjectGroups = SubjectGroup::get();
+        // $standards = Standard::all();
+
         $teachers = collect(Teacher::all()->modelKeys());
+        $subjects = [];
 
-        foreach($subjectGroups as $subjectGroup){
+        if (file_exists(__DIR__.'/../../keyValues.php')) {
+            require __DIR__.'/../../keyValues.php';
+            $subjects = $subjects_arr;
+        }
 
-            foreach($standards as $standard){
+        foreach($subjects as $subject => $standards_arr){
+            $subjectGroup = SubjectGroup::create([
+                'name' => $subject,
+                'stream_id' => 1,
+            ]);
+
+            $standards = Standard::whereIn('name', $standards_arr)->get();
+
+            foreach($standards as $standard){                
                 $subject = Subject::create([
                     'name' => $subjectGroup->name,
                     'subject_group_id' => $subjectGroup->id,

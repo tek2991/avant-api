@@ -14,6 +14,27 @@ $keyValues= [
     'FAST2SMS_KEY' => "jQvTC3AO126q5l8yEHz9VrwbFRmDZfU0eP7ouihasSKXGIJtBWehCMnVdxa0P2XcAkDU7pfEGSmyvzqw",
 ];
 
-$standards_arr = ['Nursery', 'LKG', 'UKG', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+$standards_arr = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
 
 $sections_arr = ['A', 'B', 'C', 'Science', 'Commerce', 'Humanities'];
+
+$subjects_arr = [
+    'English' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
+    'Assamese' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
+    'Hindi' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
+    'Sanskrit' => ['VI', 'VII', 'VIII', 'IX', 'X'],
+    'Maths' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
+    'Science' => ['VI', 'VII', 'VIII', 'IX', 'X'],
+    'EVS' => ['I', 'II', 'III', 'IV', 'V'],
+    'Social Science' => ['VI', 'VII', 'VIII', 'IX', 'X'],
+    'Computer' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
+    'Moral Science' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'],
+    'General Knowledge' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'],
+    'Music' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
+    'Art' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
+    'Yoga' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
+    'Games' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
+    'Craft' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'],
+    'Scout' => ['VI', 'VII', 'VIII', 'IX', 'X'],
+    'NCC' => ['VI', 'VII', 'VIII'],
+];
