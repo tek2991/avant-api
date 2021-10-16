@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API\v1\Subject;
 
 use Exception;
 use App\Models\Chapter;
-use App\Models\Session;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
