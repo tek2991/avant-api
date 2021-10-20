@@ -27,7 +27,6 @@ Route::get('/', function () {
 Route::get('invoice', function () {
     $pdf = PDF::loadView('documents.fee-invoice');
     return $pdf->download('invoice.pdf');
-    // return view('documents.fee-invoice');
 });
 
 
