@@ -13,6 +13,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
+            VariableSeeder::class,
+            TransactionLockSeeder::class,
             RoleAndPermissionSeeder::class,
             BloodGroupsSeeder::class,
             GenderSeeder::class,
@@ -43,9 +45,7 @@ class DatabaseSeeder extends Seeder
             SubjectGroupSeeder::class,
             SubjectSeeder::class,
             ChapterSeeder::class,
-            VariableSeeder::class,
             SmsTemplateSeeder::class,
-            TransactionLockSeeder::class,
             ExamAttributesSeeder::class,
         ]);
     }
