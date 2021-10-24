@@ -19,9 +19,9 @@ class ChargeableSeeder extends Seeder
             return;
         }
         // Chargeable::factory(5)->create();
-        Chargeable::factory(1)->create([
+        Chargeable::factory()->create([
             'is_mandatory' => true,
-            'name' => 'Outstandaing balance',
+            'name' => 'Outstanding balance',
             'description' => 'Outstanding balance upto Oct 2021',
         ]);
 

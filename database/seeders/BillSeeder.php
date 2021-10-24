@@ -21,7 +21,9 @@ class BillSeeder extends Seeder
             return;
         }
         $fee_ids = Fee::all()->modelKeys();
-        $bill = Bill::factory()->create();
+        $bill = Bill::factory()->create([
+            'name' => 'Outstanding bill'
+        ]);
         $bill->fees()->attach($fee_ids);
         $fees = Fee::whereIn('id', $fee_ids)->get();
         CreateBillWithInvoiceJob::dispatch($bill, $fees);
