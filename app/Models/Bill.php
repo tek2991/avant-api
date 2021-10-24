@@ -18,10 +18,6 @@ class Bill extends Model
         'bill_from_date',
         'bill_to_date',
         'bill_due_date',
-        'amount_in_cent',
-        'tax_in_cent',
-        'gross_amount_in_cent'
-
     ];
 
     protected $cast = [

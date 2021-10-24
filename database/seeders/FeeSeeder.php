@@ -17,6 +17,6 @@ class FeeSeeder extends Seeder
         if(env('APP_ENV') !== 'local'){
             return;
         }
-        Fee::factory(3)->create();
+        Fee::factory(1)->create();
     }
 }

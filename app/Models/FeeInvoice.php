@@ -24,27 +24,38 @@ class FeeInvoice extends Model
         'gross_amount_in_cent'
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function standard(){
+    public function standard()
+    {
         return $this->belongsTo(Standard::class);
     }
 
-    public function billFee(){
+    public function billFee()
+    {
         return $this->belongsTo(BillFee::class, 'bill_fee_id');
     }
 
-    public function feeInvoiceItems(){
-        return $this->belongsToMany(FeeInvoiceItem::class, 'fee_invoice_fee_invoice_item', 'fee_invoice_id', 'fee_invoice_item_id')->withPivot('id')->withTimestamps();
+    public function feeInvoiceItems()
+    {
+        return $this->belongsToMany(FeeInvoiceItem::class, 'fee_invoice_fee_invoice_item', 'fee_invoice_id', 'fee_invoice_item_id')->withPivot(
+            'id',
+            'set_amount_in_cent',
+            'set_tax_rate',
+            'set_gross_amount_in_cent'
+        )->withTimestamps();
     }
 
-    public function payment(){
+    public function payment()
+    {
         return $this->hasOne(Payment::class);
     }
 
-    public function receipt(){
+    public function receipt()
+    {
         return $this->hasOne(Receipt::class);
     }
 }

@@ -17,6 +17,9 @@ class CreateFeeInvoiceFeeInvoiceItemTable extends Migration
             $table->id();
             $table->foreignId('fee_invoice_id')->constrained('fee_invoices', 'id');
             $table->foreignId('fee_invoice_item_id')->constrained('fee_invoice_items', 'id');
+            $table->unsignedBigInteger('set_amount_in_cent')->nullable();
+            $table->unsignedBigInteger('set_tax_rate')->nullable();
+            $table->unsignedBigInteger('set_gross_amount_in_cent')->nullable();
             $table->timestamps();
         });
     }

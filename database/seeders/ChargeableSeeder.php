@@ -15,17 +15,19 @@ class ChargeableSeeder extends Seeder
      */
     public function run()
     {
-        if(env('APP_ENV') !== 'local'){
+        if (env('APP_ENV') !== 'local') {
             return;
         }
-        Chargeable::factory(5)->create();
-        Chargeable::factory(2)->create([
-            'is_mandatory' => false
+        // Chargeable::factory(5)->create();
+        Chargeable::factory(1)->create([
+            'is_mandatory' => true,
+            'name' => 'Outstandaing balance',
+            'description' => 'Outstanding balance upto Oct 2021',
         ]);
 
         $mandatoryChargeables = Chargeable::where('is_mandatory', true)->get();
 
-        foreach($mandatoryChargeables as $mandatoryChargeable){
+        foreach ($mandatoryChargeables as $mandatoryChargeable) {
             $mandatoryChargeable->students()->attach(Student::get());
         }
     }

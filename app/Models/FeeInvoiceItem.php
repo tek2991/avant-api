@@ -19,11 +19,18 @@ class FeeInvoiceItem extends Model
         'gross_amount_in_cent'
     ];
 
-    public function chargeables(){
+    public function chargeables()
+    {
         return $this->belongsTo(Chargeable::class);
     }
 
-    public function feeInvoices(){
-        return $this->belongsToMany(FeeInvoice::class, 'fee_invoice_fee_invoice_item', 'fee_invoice_item_id', 'fee_invoice_id')->withPivot('id')->withTimestamps();
+    public function feeInvoices()
+    {
+        return $this->belongsToMany(FeeInvoice::class, 'fee_invoice_fee_invoice_item', 'fee_invoice_item_id', 'fee_invoice_id')->withPivot(
+            'id',
+            'set_amount_in_cent',
+            'set_tax_rate',
+            'set_gross_amount_in_cent'
+        )->withTimestamps();
     }
 }
