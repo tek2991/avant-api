@@ -43,9 +43,9 @@ class FeeInvoice extends Model
     {
         return $this->belongsToMany(FeeInvoiceItem::class, 'fee_invoice_fee_invoice_item', 'fee_invoice_id', 'fee_invoice_item_id')->withPivot(
             'id',
-            'set_amount_in_cent',
-            'set_tax_rate',
-            'set_gross_amount_in_cent'
+            'amount_in_cent',
+            'tax_rate',
+            'gross_amount_in_cent'
         )->withTimestamps();
     }
 

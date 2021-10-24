@@ -181,15 +181,15 @@
                     </td>
 
                     <td>
-                        {{ $item->amount_in_cent/100 }}/-
+                        {{ $item->pivot->amount_in_cent/100 }}/-
                     </td>
 
                     <td>
-                        {{ ($item->amount_in_cent/100)*$item->tax_rate/100 }}/-
+                        {{ ($item->pivot->amount_in_cent/100)*$item->pivot->tax_rate/100 }}/-
                     </td>
 
                     <td>
-                        {{ $item->gross_amount_in_cent / 100 }}/-
+                        {{ $item->pivot->gross_amount_in_cent / 100 }}/-
                     </td>
                 </tr>
             @endforeach

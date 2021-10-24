@@ -72,9 +72,9 @@ class CreateBillWithInvoiceJob implements ShouldQueue
                         foreach($feeInvoiceItems as $feeInvoiceItem){
                             $feeInvoiceItem->feeInvoices()->attach($feeInvoice->id, [
                                 // Insert values here
-                                'set_amount_in_cent' => $feeInvoiceItem->amount_in_cent,
-                                'set_tax_rate' => $feeInvoiceItem->tax_rate,
-                                'set_gross_amount_in_cent' => $feeInvoiceItem->gross_amount_in_cent,
+                                'amount_in_cent' => $feeInvoiceItem->amount_in_cent,
+                                'tax_rate' => $feeInvoiceItem->tax_rate,
+                                'gross_amount_in_cent' => $feeInvoiceItem->gross_amount_in_cent,
                             ]);
                         }
                     }
