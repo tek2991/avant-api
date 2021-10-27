@@ -19,8 +19,8 @@ class CreateExamAnswersTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->longText('description')->nullable();
             $table->foreignId('exam_answer_state_id')->constrained('exam_answer_states');
-            $table->decimal('marks_secured', $precision = 6, $scale = 2);
-            $table->foreignId('evaluated_by')->constrained('users', 'id');
+            $table->decimal('marks_secured', $precision = 6, $scale = 2)->nullable();
+            $table->foreignId('evaluated_by')->nullable()->constrained('users', 'id');
             $table->timestamps();
         });
     }

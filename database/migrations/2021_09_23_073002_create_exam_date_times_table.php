@@ -16,9 +16,8 @@ class CreateExamDateTimesTable extends Migration
         Schema::create('exam_date_times', function (Blueprint $table) {
             $table->id();
             $table->foreignId('exam_id')->constrained();
-            $table->date('date');
-            $table->time('from');
-            $table->time('to');
+            $table->dateTime('from');
+            $table->dateTime('to');
             $table->timestamps();
         });
     }
