@@ -19,7 +19,7 @@ class Flushredis extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Flush Redis Database';
 
     /**
      * Create a new command instance.
