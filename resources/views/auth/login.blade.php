@@ -2,7 +2,7 @@
     <x-auth-card>
         <x-slot name="logo">
             <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                <img src="{{url('/img/webrefiner_logo.png')}}" alt="Webrefiner" class="w-48">
             </a>
         </x-slot>
 
