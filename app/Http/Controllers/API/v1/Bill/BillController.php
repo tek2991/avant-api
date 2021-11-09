@@ -52,7 +52,7 @@ class BillController extends Controller
             'name' => 'required|max:255|string',
             'description' => 'required|max:255|string',
             'session_id' => 'required|exists:sessions,id',
-            'bill_from_date' => 'required|date|after_or_equal:today',
+            'bill_from_date' => 'required|date',
             'bill_to_date' => 'required|date|after_or_equal:bill_date_from',
             'bill_due_date' => 'required|date|after_or_equal:bill_date_from',
             'fee_ids' => 'required|min:1|exists:fees,id'
