@@ -35,7 +35,7 @@ class ChargeableController extends Controller
             'description' => 'required|max:255|string',
             'is_mandatory' => 'required|boolean',
             'assign_students' => 'required|boolean',
-            'amount' => 'required|integer|min:1|max:9999999999',
+            'amount' => 'required|integer|min:0|max:9999999999',
             'tax_rate' => [
                 'required', 'integer',
                 Rule::in([0, 5, 12, 18, 28])
@@ -98,7 +98,7 @@ class ChargeableController extends Controller
             'description' => 'required|max:255|string',
             'is_mandatory' => 'required|boolean',
             'assign_students' => Rule::requiredIf(!$request->boolean('is_mandatory')),
-            'amount' => 'required|integer|min:1|max:9999999999',
+            'amount' => 'required|integer|min:0|max:9999999999',
             'tax_rate' => [
                 'required', 'integer',
                 Rule::in([0, 5, 12, 18, 28])
