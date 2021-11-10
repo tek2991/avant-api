@@ -19,6 +19,7 @@ class TransactionLockSeeder extends Seeder
             "Razorpay" => true,
             "SMS" => true,
             "OnlineExam" => true,
+            'UpdateOutstanding' => false,
         ];
 
         foreach($transactions as $transaction => $status){
