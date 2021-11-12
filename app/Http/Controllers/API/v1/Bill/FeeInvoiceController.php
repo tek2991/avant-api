@@ -188,14 +188,14 @@ class FeeInvoiceController extends Controller
 
         $variables = VariableController::keyPairs();
 
-        // $pdf = PDF::loadView('documents.fee-invoice', ['data' => $data, 'variables' => $variables]);
-        // return $pdf->download('fee_invoice_' . $feeInvoice->id . '.pdf');
+        $pdf = PDF::loadView('documents.fee-invoice', ['data' => $data, 'variables' => $variables]);
+        return $pdf->download('fee_invoice_' . $feeInvoice->id . '.pdf');
 
         // dd($feeInvoice->feeInvoiceItems->first()->pivot);
 
         // dd($data);
 
-        return view('documents.fee-invoice', ['data' => $data, 'variables' => $variables]);
+        // return view('documents.fee-invoice', ['data' => $data, 'variables' => $variables]);
     }
 
     /**
