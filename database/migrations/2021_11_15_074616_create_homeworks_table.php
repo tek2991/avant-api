@@ -19,7 +19,6 @@ class CreateHomeworksTable extends Migration
             $table->foreignId('section_standard_id')->constrained('section_standard');
             $table->foreignId('subject_id')->constrained();
             $table->foreignId('chapter_id')->nullable()->constrained();
-            $table->string('name');
             $table->string('description');
             $table->foreignId('created_by')->constrained('users', 'id');
             $table->dateTime('homework_from_date');

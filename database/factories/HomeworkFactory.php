@@ -33,7 +33,6 @@ class HomeworkFactory extends Factory
             'section_standard_id' => $section_standard->id,
             'subject_id' => $subject->id,
             'chapter_id' => $subject->chapters()->inRandomOrder()->first()->id,
-            'name' => $this->faker->sentence($nbWords = 3, $variableNbWords = true),
             'description' => $this->faker->sentence($nbWords = 12, $variableNbWords = true),
             'created_by' => $subject->teachers()->inRandomOrder()->first()->user->id,
             'homework_from_date' => Carbon::today(),

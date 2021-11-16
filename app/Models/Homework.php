@@ -16,7 +16,6 @@ class Homework extends Model
         'section_standard_id',
         'subject_id',
         'chapter_id',
-        'name',
         'descrioption',
         'created_by',
         'homework_from_date',
