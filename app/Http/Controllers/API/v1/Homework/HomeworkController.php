@@ -19,7 +19,7 @@ class HomeworkController extends Controller
         //     'subject_id' => 'required|exists:subjects,id',
         // ]);
 
-        return Homework::paginate();
+        return Homework::with('SectionStandard.section:id,name', 'SectionStandard.standard:id,name', 'subject:id,name', 'chapter:id,name', 'creator:id', 'creator.userDetail:user_id,name')->paginate();
     }
 
     /**
