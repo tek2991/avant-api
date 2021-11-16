@@ -15,7 +15,11 @@ class HomeworkController extends Controller
      */
     public function index()
     {
-        //
+        // $this->validate($request, [
+        //     'subject_id' => 'required|exists:subjects,id',
+        // ]);
+
+        return Homework::paginate();
     }
 
     /**

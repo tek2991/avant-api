@@ -55,6 +55,7 @@ use App\Http\Controllers\API\v1\Subject\ChapterProgressionController;
 use App\Http\Controllers\API\v1\ManualPayment\ManualPaymentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
+use App\Http\Controllers\API\v1\Homework\HomeworkController;
 use App\Http\Controllers\API\v1\SMS\StudentBySectionStandardWithAttendance;
 
 /*
@@ -150,6 +151,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('attendance-for-assigned-class/{user}', [TeacherChartController::class, 'attendanceForAssignedClasses']);
     Route::get('assigned-user-chapter-in-progress/{user}', [TeacherChartController::class, 'assignedChaptersInProgress']);
+
+    Route::get('homework', [HomeworkController::class, 'index'])->middleware(['can:subject_read']);
 
     Route::apiResource('event', EventController::class);
     Route::get('event-type', [EventTypeController::class, 'index']);
