@@ -47,4 +47,8 @@ class Student extends Model
     public function chapters(){
         return $this->hasManyThrough(Chapter::class, StudentSubject::class, "student_id", "subject_id", "id", "subject_id");
     }
+
+    public function homeworks(){
+        return $this->belongsToMany(Homework::class)->withPivot('id');
+    }
 }

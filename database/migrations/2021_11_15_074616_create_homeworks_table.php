@@ -22,7 +22,8 @@ class CreateHomeworksTable extends Migration
             $table->string('name');
             $table->string('description');
             $table->foreignId('created_by')->constrained('users', 'id');
-            $table->date('homework_date');
+            $table->dateTime('homework_from_date');
+            $table->dateTime('homework_to_date');
             $table->timestamps();
         });
     }
