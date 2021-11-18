@@ -46,8 +46,8 @@ class HomeworkController extends Controller
             'subject_id' => 'required|exists:subjects,id',
             'chapter_id' => 'nullable|exists:chapters,id',
             'description' => 'required|max:255',
-            'homework_from_date' => 'date',
-            'homework_to_date' => 'date',
+            'homework_from_date' => 'required|date',
+            'homework_to_date' => 'required|date',
         ]);
 
         $session = Session::where('is_active', true)->firstOrFail();
@@ -72,9 +72,30 @@ class HomeworkController extends Controller
      * @param  \App\Models\Homework  $homework
      * @return \Illuminate\Http\Response
      */
-    public function show(Homework $homework)
+    public function show(Homework $homework, Request $request)
     {
-        //
+        $user = Auth::user();
+        if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
+        $this->validate($request, [
+            'homework_from_date' => 'required|date',
+            'homewotk_to_date' => 'required|date',
+            'description' => 'required|max:255',
+        ]);
+
+        $homework->update([
+            'description' => $request->description,
+            'created_by' => $user->id,
+            'homework_from_date' => $request->homework_from_date,
+            'homework_to_date' => $request->homework_to_date,
+        ]);
+
+        return response('OK', 201);
     }
 
     /**
