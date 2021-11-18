@@ -177,7 +177,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('chapter', ChapterController::class)->except(['index'])->middleware(['can:subject_crud']);
     Route::get('chapter', [ChapterController::class, 'index'])->middleware(['can:subject_read']);
-    Route::get('chapter-all', [ChapterController::class, 'all'])->middleware(['can:subject_read']);
+    Route::get('chapter-all/{subject}', [ChapterController::class, 'all'])->middleware(['can:subject_read']);
 
     Route::apiResource('chapter-progression', ChapterProgressionController::class);
 
