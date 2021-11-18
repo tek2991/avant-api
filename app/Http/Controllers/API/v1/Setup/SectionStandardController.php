@@ -67,7 +67,7 @@ class SectionStandardController extends Controller
      */
     public function all()
     {
-        return SectionStandard::with(['section', 'standard'])->join('standards', 'section_standard.standard_id', 'standards.id')->join('sections', 'section_standard.section_id', 'sections.id')->orderby('standards.hierachy', 'asc')->orderby('sections.id', 'asc')->get();
+        return SectionStandard::with(['section', 'standard'])->select('*', 'section_standard.id as section_standard_id')->join('standards', 'section_standard.standard_id', 'standards.id')->join('sections', 'section_standard.section_id', 'sections.id')->orderby('standards.hierachy', 'asc')->orderby('sections.id', 'asc')->get();
     }
 
     /**
