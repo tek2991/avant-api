@@ -165,6 +165,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('subject', SubjectController::class)->middleware(['can:subject_crud']);
     Route::get('subject-for-teacher/{user}', [SubjectForTeacherController::class, 'index'])->middleware(['can:subject_read']);
+    Route::get('teacher-subject-by-section-standard/{section_standard}', [SubjectForTeacherController::class, 'teacherSubjectBySectionStandard'])->middleware(['can:subject_read']);
     Route::get('subject-for-student/{user}', [SubjectForStudentController::class, 'index'])->middleware(['can:subject_read']);
     
     Route::apiResource('subject-teacher', SubjectTeacherController::class)->middleware(['can:subject_crud']);
@@ -176,6 +177,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('chapter', ChapterController::class)->except(['index'])->middleware(['can:subject_crud']);
     Route::get('chapter', [ChapterController::class, 'index'])->middleware(['can:subject_read']);
+    Route::get('chapter-all', [ChapterController::class, 'all'])->middleware(['can:subject_read']);
 
     Route::apiResource('chapter-progression', ChapterProgressionController::class);
 

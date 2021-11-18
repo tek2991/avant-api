@@ -6,6 +6,7 @@ use Exception;
 use App\Models\Chapter;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Subject;
 
 class ChapterController extends Controller
 {
@@ -21,6 +22,11 @@ class ChapterController extends Controller
         ]);
 
         return Chapter::where('subject_id', $request->subject_id)->with('subject:id,name,standard_id', 'subject.standard')->paginate();
+    }
+
+    public function all(Subject $subject)
+    {
+        return $subject->chapters()->with('subject:id,name,standard_id', 'subject.standard')->get();
     }
 
     /**
