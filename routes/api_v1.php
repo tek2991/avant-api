@@ -154,6 +154,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('homework', [HomeworkController::class, 'index'])->middleware(['can:subject_read']);
     Route::post('homework', [HomeworkController::class, 'store'])->middleware(['can:subject_crud']);
+    Route::put('homework/{homework}', [HomeworkController::class, 'update'])->middleware(['can:subject_crud']);
     Route::delete('homework/{homework}', [HomeworkController::class, 'destroy'])->middleware(['can:subject_crud']);
 
     Route::apiResource('event', EventController::class);
