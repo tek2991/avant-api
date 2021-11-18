@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\v1\Homework;
 
 use Auth;
+use Exception;
 use App\Models\Session;
 use App\Models\Homework;
 use Illuminate\Http\Request;
@@ -96,6 +97,15 @@ class HomeworkController extends Controller
      */
     public function destroy(Homework $homework)
     {
-        //
+        try {
+            $homework->delete();
+        } catch (Exception $ex) {
+            return response([
+                'header' => 'Dependency error',
+                'message' => 'Other resources depend on this record.'
+            ], 418);
+        }
+
+        return response('', 204);
     }
 }
