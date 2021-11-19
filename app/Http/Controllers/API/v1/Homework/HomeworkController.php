@@ -22,7 +22,7 @@ class HomeworkController extends Controller
         //     'subject_id' => 'required|exists:subjects,id',
         // ]);
 
-        return Homework::with('SectionStandard.section:id,name', 'SectionStandard.standard:id,name', 'subject:id,name', 'chapter:id,name', 'creator:id', 'creator.userDetail:user_id,name')->orderBy('created_at', 'desc')->paginate();
+        return Homework::with('SectionStandard.section:id,name', 'SectionStandard.standard:id,name', 'subject:id,name', 'chapter:id,name', 'creator:id', 'creator.userDetail:user_id,name')->orderBy('updated_at', 'desc')->paginate();
     }
 
     /**
@@ -74,28 +74,7 @@ class HomeworkController extends Controller
      */
     public function show(Homework $homework, Request $request)
     {
-        $user = Auth::user();
-        if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
-            return response([
-                'header' => 'Forbidden',
-                'message' => 'Please Logout and Login again.'
-            ], 401);
-        }
-
-        $this->validate($request, [
-            'homework_from_date' => 'required|date',
-            'homewotk_to_date' => 'required|date',
-            'description' => 'required|max:255',
-        ]);
-
-        $homework->update([
-            'description' => $request->description,
-            'created_by' => $user->id,
-            'homework_from_date' => $request->homework_from_date,
-            'homework_to_date' => $request->homework_to_date,
-        ]);
-
-        return response('OK', 201);
+        //
     }
 
     /**
@@ -107,7 +86,28 @@ class HomeworkController extends Controller
      */
     public function update(Request $request, Homework $homework)
     {
-        //
+        $user = Auth::user();
+        if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
+        $this->validate($request, [
+            'homework_from_date' => 'required|date',
+            'homework_to_date' => 'required|date',
+            'description' => 'required|max:255',
+        ]);
+
+        $homework->update([
+            'description' => $request->description,
+            'created_by' => $user->id,
+            'homework_from_date' => $request->homework_from_date,
+            'homework_to_date' => $request->homework_to_date,
+        ]);
+
+        return response('OK', 201);
     }
 
     /**
