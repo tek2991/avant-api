@@ -50,6 +50,6 @@ class Homework extends Model
     }
 
     public function students(){
-        return $this->belongsToMany(Students::class)->withPivot('id');
+        return $this->belongsToMany(Student::class)->withPivot('id');
     }
 }

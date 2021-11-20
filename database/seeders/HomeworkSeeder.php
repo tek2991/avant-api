@@ -18,5 +18,12 @@ class HomeworkSeeder extends Seeder
             return;
         }
         Homework::factory(10)->create();
+
+        foreach(Homework::all() as $homework){
+            $subject = $homework->subject;
+            $students = $subject->students;
+
+            $homework->students()->sync($students);
+        }
     }
 }

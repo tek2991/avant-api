@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\v1\Homework;
 use Auth;
 use Exception;
 use App\Models\Session;
+use App\Models\Subject;
 use App\Models\Homework;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -63,7 +64,14 @@ class HomeworkController extends Controller
             'homework_to_date' => $request->homework_to_date,
         ]);
 
-        return response('OK', 201);
+        $subject = Subject::find($request->subject_id);
+        $students = $subject->students;
+        $subject->students()->sync($students);
+
+        return response([
+            'header' => 'Success',
+            'message' => 'Homework created successfully.'
+        ], 200);
     }
 
     /**
@@ -107,7 +115,10 @@ class HomeworkController extends Controller
             'homework_to_date' => $request->homework_to_date,
         ]);
 
-        return response('OK', 201);
+        return response([
+            'header' => 'Success',
+            'message' => 'Homework updated successfully.'
+        ], 200);
     }
 
     /**
@@ -127,6 +138,6 @@ class HomeworkController extends Controller
             ], 418);
         }
 
-        return response('', 204);
+        return response('Deleted', 204);
     }
 }
