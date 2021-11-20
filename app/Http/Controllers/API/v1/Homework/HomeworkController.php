@@ -24,7 +24,8 @@ class HomeworkController extends Controller
         if ($user->hasRole('director')) {
             return Homework::with('SectionStandard.section:id,name', 'SectionStandard.standard:id,name', 'subject:id,name', 'chapter:id,name', 'creator:id', 'creator.userDetail:user_id,name')->orderBy('updated_at', 'desc')->paginate();
         } else if($user->hasRole('teacher')) {
-            // 
+            $subject_ids = $user->teacher->subjects->pluck('id');
+            return Homework::whereIn('subject_id', $subject_ids)->with('SectionStandard.section:id,name', 'SectionStandard.standard:id,name', 'subject:id,name', 'chapter:id,name', 'creator:id', 'creator.userDetail:user_id,name')->whereIn('subject_id', $subject_ids)->orderBy('updated_at', 'desc')->paginate();
         }else{
             $section_standard_id = $user->student->section_standard_id;
 
