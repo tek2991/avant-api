@@ -19,11 +19,17 @@ class HomeworkController extends Controller
      */
     public function index()
     {
-        // $this->validate($request, [
-        //     'subject_id' => 'required|exists:subjects,id',
-        // ]);
+        $user = Auth::user();
 
-        return Homework::with('SectionStandard.section:id,name', 'SectionStandard.standard:id,name', 'subject:id,name', 'chapter:id,name', 'creator:id', 'creator.userDetail:user_id,name')->orderBy('updated_at', 'desc')->paginate();
+        if ($user->hasRole('director')) {
+            return Homework::with('SectionStandard.section:id,name', 'SectionStandard.standard:id,name', 'subject:id,name', 'chapter:id,name', 'creator:id', 'creator.userDetail:user_id,name')->orderBy('updated_at', 'desc')->paginate();
+        } else if($user->hasRole('teacher')) {
+            // 
+        }else{
+            $section_standard_id = $user->student->section_standard_id;
+
+            return $user->studentWithTrashed->homeworks()->where('section_standard_id', $section_standard_id)->with('SectionStandard.section:id,name', 'SectionStandard.standard:id,name', 'subject:id,name', 'chapter:id,name', 'creator:id', 'creator.userDetail:user_id,name')->orderBy('updated_at', 'desc')->paginate();
+        }
     }
 
     /**
@@ -52,7 +58,7 @@ class HomeworkController extends Controller
         ]);
 
         $session = Session::where('is_active', true)->firstOrFail();
-        
+
         Homework::create([
             'session_id' => $session->id,
             'section_standard_id' => $request->section_standard_id,

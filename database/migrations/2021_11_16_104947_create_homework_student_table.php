@@ -15,7 +15,7 @@ class CreateHomeworkStudentTable extends Migration
     {
         Schema::create('homework_student', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('homework_id')->constrained('homeworks');
+            $table->foreignId('homework_id')->constrained('homeworks')->onDelete('cascade');
             $table->foreignId('student_id')->constrained('students');
             $table->timestamps();
         });
