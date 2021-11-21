@@ -21,7 +21,7 @@ class HomeworkSeeder extends Seeder
 
         foreach(Homework::all() as $homework){
             $subject = $homework->subject;
-            $students = $subject->students;
+            $students = $subject->students()->where('section_standard_id', $homework->section_standard_id)->get();
 
             $homework->students()->sync($students);
         }

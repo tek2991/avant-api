@@ -152,10 +152,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('attendance-for-assigned-class/{user}', [TeacherChartController::class, 'attendanceForAssignedClasses']);
     Route::get('assigned-user-chapter-in-progress/{user}', [TeacherChartController::class, 'assignedChaptersInProgress']);
 
-    Route::get('homework', [HomeworkController::class, 'index'])->middleware(['can:subject_read']);
-    Route::post('homework', [HomeworkController::class, 'store'])->middleware(['can:subject_crud']);
-    Route::put('homework/{homework}', [HomeworkController::class, 'update'])->middleware(['can:subject_crud']);
-    Route::delete('homework/{homework}', [HomeworkController::class, 'destroy'])->middleware(['can:subject_crud']);
+    Route::get('homework', [HomeworkController::class, 'index'])->middleware(['can:homework_read']);
+    Route::post('homework', [HomeworkController::class, 'store'])->middleware(['can:homework_crud']);
+    Route::put('homework/{homework}', [HomeworkController::class, 'update'])->middleware(['can:homework_crud']);
+    Route::delete('homework/{homework}', [HomeworkController::class, 'destroy'])->middleware(['can:homework_crud']);
 
     Route::apiResource('event', EventController::class);
     Route::get('event-type', [EventTypeController::class, 'index']);

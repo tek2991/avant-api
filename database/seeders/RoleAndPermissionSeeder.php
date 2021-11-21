@@ -41,6 +41,9 @@ class RoleAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'subject_crud']);
         Permission::create(['name' => 'subject_read']);
 
+        Permission::create(['name' => 'homework_crud']);
+        Permission::create(['name' => 'homework_read']);
+
 
 
         // create director roles and assign permissions
@@ -58,6 +61,7 @@ class RoleAndPermissionSeeder extends Seeder
         $role->givePermissionTo('student_crud');
         $role->givePermissionTo('appeal_crud');
         $role->givePermissionTo('subject_crud');
+        $role->givePermissionTo('homework_crud');
 
         $role->givePermissionTo('bill_read');
         $role->givePermissionTo('session_read');
@@ -67,6 +71,7 @@ class RoleAndPermissionSeeder extends Seeder
         $role->givePermissionTo('student_read');
         $role->givePermissionTo('appeal_read');
         $role->givePermissionTo('subject_read');
+        $role->givePermissionTo('homework_read');
 
 
         // create teacher roles and assign permissions
@@ -79,6 +84,8 @@ class RoleAndPermissionSeeder extends Seeder
         $role->givePermissionTo('student_read');
         $role->givePermissionTo('appeal_read');
         $role->givePermissionTo('subject_read');
+        $role->givePermissionTo('homework_crud');
+        $role->givePermissionTo('homework_read');
 
 
         // create student roles and assign permissions
@@ -91,6 +98,7 @@ class RoleAndPermissionSeeder extends Seeder
         $role->givePermissionTo('student_read');
         $role->givePermissionTo('appeal_read');
         $role->givePermissionTo('subject_read');
+        $role->givePermissionTo('homework_read');
 
 
         // create disables roles

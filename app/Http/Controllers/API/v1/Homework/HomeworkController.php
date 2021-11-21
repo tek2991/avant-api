@@ -27,9 +27,7 @@ class HomeworkController extends Controller
             $subject_ids = $user->teacher->subjects->pluck('id');
             return Homework::whereIn('subject_id', $subject_ids)->with('SectionStandard.section:id,name', 'SectionStandard.standard:id,name', 'subject:id,name', 'chapter:id,name', 'creator:id', 'creator.userDetail:user_id,name')->whereIn('subject_id', $subject_ids)->orderBy('updated_at', 'desc')->paginate();
         }else{
-            $section_standard_id = $user->student->section_standard_id;
-
-            return $user->studentWithTrashed->homeworks()->where('section_standard_id', $section_standard_id)->with('SectionStandard.section:id,name', 'SectionStandard.standard:id,name', 'subject:id,name', 'chapter:id,name', 'creator:id', 'creator.userDetail:user_id,name')->orderBy('updated_at', 'desc')->paginate();
+            return $user->studentWithTrashed->homeworks()->with('SectionStandard.section:id,name', 'SectionStandard.standard:id,name', 'subject:id,name', 'chapter:id,name', 'creator:id', 'creator.userDetail:user_id,name')->orderBy('updated_at', 'desc')->paginate();
         }
     }
 
@@ -72,7 +70,7 @@ class HomeworkController extends Controller
         ]);
 
         $subject = Subject::find($request->subject_id);
-        $students = $subject->students;
+        $students = $subject->students()->where('section_standard_id', $request->section_standard_id)->get();
         $subject->students()->sync($students);
 
         return response([
@@ -107,6 +105,13 @@ class HomeworkController extends Controller
                 'header' => 'Forbidden',
                 'message' => 'Please Logout and Login again.'
             ], 401);
+        }
+
+        if($user->hasRole('teacher') !== true && $homework->created_by != $user->id){
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'You are not authorized to update this homework.'
+            ], 403);
         }
 
         $this->validate($request, [
