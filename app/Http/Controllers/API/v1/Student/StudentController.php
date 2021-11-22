@@ -23,15 +23,23 @@ class StudentController extends Controller
             'search_string' => 'max:255',
         ]);
 
-        return User::role('student')->whereHas('userDetail', function ($query) use ($request) {
+        return User::role('student')
+        ->whereHas('userDetail', function ($query) use ($request) {
             $query->where('name', 'ILIKE', '%' . $request->search_string . '%');
-        })->whereHas('student')->with([
-            'student',
+        })
+        ->select('users.*')->whereHas('student')
+        ->join('students', 'students.user_id', '=', 'users.id')
+        ->orderBy('students.section_standard_id')->orderBy('students.roll_no')
+        ->with([
+            'student' => function ($query) {
+                $query->orderBy('roll_no');
+            },
             'userDetail',
             'roles:id,name',
             'student.sectionStandard.section',
             'student.sectionStandard.standard',
-        ])->paginate();
+        ])
+        ->paginate();
     }
 
     // /**
