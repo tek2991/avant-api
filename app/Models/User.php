@@ -97,4 +97,9 @@ class User extends Authenticatable
     public function examSubjects(){
         return $this->belongsToMany(ExamSubject::class, 'exam_subject_score', 'user_id', 'exam_subject_id')->withPivot('id', 'marks_secured')->withTimestamps();
     }
+
+    public function notifications()
+    {
+        return $this->belongsToMany(Notification::class)->withPivot('id')->withTimestamps();
+    }
 }
