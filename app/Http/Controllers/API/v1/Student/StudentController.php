@@ -21,25 +21,34 @@ class StudentController extends Controller
     {
         $this->validate($request, [
             'search_string' => 'max:255',
+            'standard_id' => 'nullable|exists:standards,id',
+            'section_id' => 'nullable|exists:sections,id',
         ]);
 
+        $standard_id = $request->input('standard_id') ?: '%%';
+        $section_id = $request->input('section_id') ?: '%%';
+
         return User::role('student')
-        ->whereHas('userDetail', function ($query) use ($request) {
-            $query->where('name', 'ILIKE', '%' . $request->search_string . '%');
-        })
-        ->select('users.*')->whereHas('student')
-        ->join('students', 'students.user_id', '=', 'users.id')
-        ->orderBy('students.section_standard_id')->orderBy('students.roll_no')
-        ->with([
-            'student' => function ($query) {
-                $query->orderBy('roll_no');
-            },
-            'userDetail',
-            'roles:id,name',
-            'student.sectionStandard.section',
-            'student.sectionStandard.standard',
-        ])
-        ->paginate();
+            ->whereHas('userDetail', function ($query) use ($request) {
+                $query->where('name', 'ILIKE', '%' . $request->search_string . '%');
+            })
+            ->whereHas('student', function ($query) use ($standard_id, $section_id) {
+                $query->whereHas('sectionStandard', function ($query) use ($standard_id, $section_id) {
+                    $query->where('standard_id', 'ILIKE', $standard_id)
+                        ->where('section_id', 'ILIKE', $section_id);
+                });
+            })
+            ->select('users.*')->whereHas('student')
+            ->join('students', 'students.user_id', '=', 'users.id')
+            ->orderBy('students.section_standard_id')->orderBy('students.roll_no')
+            ->with([
+                'student',
+                'userDetail',
+                'roles:id,name',
+                'student.sectionStandard.section',
+                'student.sectionStandard.standard',
+            ])
+            ->paginate();
     }
 
     // /**
@@ -111,7 +120,6 @@ class StudentController extends Controller
         $student->subjects()->sync($subjects);
 
         return $student;
-
     }
 
     /**
