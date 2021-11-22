@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Notification;
+
 use App\Models\User;
+use App\Models\Notification;
 use Illuminate\Database\Seeder;
 
 class NotificationSeeder extends Seeder
@@ -18,7 +19,7 @@ class NotificationSeeder extends Seeder
         Notification::factory(10)->create();
 
         foreach(Notification::all() as $notification){
-            $notification->users()->sync(User::all()->random(50));
+            $notification->users()->sync(User::all()->random(300));
         }
     }
 }
