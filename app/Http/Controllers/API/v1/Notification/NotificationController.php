@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\API\v1\Notification;
 
-use App\Http\Controllers\Controller;
+use Exception;
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class NotificationController extends Controller
 {
@@ -81,6 +82,14 @@ class NotificationController extends Controller
      */
     public function destroy(Notification $notification)
     {
-        //
+        try{
+            $notification->delete();
+            return response('Deleted', 204);
+        }catch (Exception $ex){
+            return response()->json([
+                'header' => 'Error',
+                'message' => 'Other resources depend on this record.'
+            ], 418);
+        }
     }
 }
