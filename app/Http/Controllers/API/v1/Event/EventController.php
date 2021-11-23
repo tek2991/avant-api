@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\v1\Event;
 
 use Exception;
 use App\Models\Event;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
@@ -50,10 +51,10 @@ class EventController extends Controller
             'description' => 'required|max:255|string',
             'event_from_date' => 'required|date',
             'event_to_date' => 'required|date|after_or_equal:event_date_from',
+            'app_notification' => 'nullable|boolean',
         ]);
 
-
-        return Event::Create([
+        $event = Event::Create([
             'event_type_id' => $request->event_type_id,
             'name' => $request->name,
             'description' => $request->description,
@@ -62,6 +63,23 @@ class EventController extends Controller
             'created_by' => $user->id,
             'updated_by' => $user->id,
         ]);
+
+        if ($request->app_notification === true) {
+            Notification::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'created_by' => $user->id,
+                'updated_by' => $user->id,
+                'notification_type_id' => 1,
+                'event_id' => $event->id,
+            ]);
+        }
+
+        return response([
+            'header' => 'Success',
+            'message' => 'Event Created Successfully.',
+            'data' => $event
+        ], 201);
     }
 
     /**
