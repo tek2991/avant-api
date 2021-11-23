@@ -16,7 +16,7 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        return Notification::orderBy('created_at', 'desc')->paginate();
+        return Notification::with('event')->orderBy('created_at', 'desc')->paginate();
     }
 
     /**
