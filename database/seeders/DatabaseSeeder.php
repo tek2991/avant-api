@@ -48,6 +48,9 @@ class DatabaseSeeder extends Seeder
             SmsTemplateSeeder::class,
             ExamAttributesSeeder::class,
             HomeworkSeeder::class,
+            EventSeeder::class,
+            NotificationTypeSeeder::class,
+            NotificationSeeder::class,
         ]);
     }
 }

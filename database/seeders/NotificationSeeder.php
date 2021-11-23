@@ -16,6 +16,10 @@ class NotificationSeeder extends Seeder
      */
     public function run()
     {
+        if(env('APP_ENV') !== 'local'){
+            return;
+        }
+        
         Notification::factory(10)->create();
 
         foreach(Notification::all() as $notification){

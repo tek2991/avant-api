@@ -15,6 +15,9 @@ class EventSeeder extends Seeder
      */
     public function run()
     {
+        if(env('APP_ENV') !== 'local'){
+            return;
+        }
         Event::factory(10)->create();
     }
 }
