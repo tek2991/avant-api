@@ -15,7 +15,7 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        //
+        return Notification::paginate();
     }
 
     /**

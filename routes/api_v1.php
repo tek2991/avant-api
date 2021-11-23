@@ -193,6 +193,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('notification-type', [NotificationTypeController::class, 'index']);
     
+    Route::get('notification', [NotificationController::class, 'index']);
     Route::post('notification', [NotificationController::class, 'store']);
     
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
