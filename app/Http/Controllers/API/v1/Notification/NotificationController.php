@@ -26,7 +26,28 @@ class NotificationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = auth()->user();
+        $this->validate($request, [
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:2554',
+            'notification_type_id' => 'required|exists:notification_types,id',
+            'user_ids' => 'required|exists:users,id',
+        ]);
+
+        $notification = Notification::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'notification_type_id' => $request->notification_type_id,
+            'created_by' => $user->id,
+            'updated_by' => $user->id,
+        ]);
+
+        $notification->users()->attach($request->user_ids);
+
+        return response()->json([
+            'message' => 'Notification created successfully',
+            'notification' => $notification,
+        ]);
     }
 
     /**

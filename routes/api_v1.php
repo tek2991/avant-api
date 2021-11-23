@@ -26,6 +26,7 @@ use App\Http\Controllers\API\v1\Subject\ChapterController;
 use App\Http\Controllers\API\v1\Subject\SubjectController;
 use App\Http\Controllers\API\v1\Attributes\CasteController;
 use App\Http\Controllers\API\v1\Attributes\GenderController;
+use App\Http\Controllers\API\v1\Homework\HomeworkController;
 use App\Http\Controllers\API\v1\Appeal\CloseAppealController;
 use App\Http\Controllers\API\v1\Chart\StudentChartController;
 use App\Http\Controllers\API\v1\Chart\TeacherChartController;
@@ -48,6 +49,7 @@ use App\Http\Controllers\API\v1\Subject\SubjectTeacherController;
 use App\Http\Controllers\API\v1\Fee\AttachStandardToFeeController;
 use App\Http\Controllers\API\v1\Student\TransferStudentController;
 use App\Http\Controllers\API\v1\Fee\AttachChargeableToFeeController;
+use App\Http\Controllers\API\v1\Notification\NotificationController;
 use App\Http\Controllers\API\v1\Subject\SubjectForStudentController;
 use App\Http\Controllers\API\v1\Subject\SubjectForTeacherController;
 use App\Http\Controllers\API\v1\Student\UnallocatedStudentController;
@@ -55,7 +57,7 @@ use App\Http\Controllers\API\v1\Subject\ChapterProgressionController;
 use App\Http\Controllers\API\v1\ManualPayment\ManualPaymentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
-use App\Http\Controllers\API\v1\Homework\HomeworkController;
+use App\Http\Controllers\API\v1\Notification\NotificationTypeController;
 use App\Http\Controllers\API\v1\SMS\StudentBySectionStandardWithAttendance;
 
 /*
@@ -188,6 +190,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('student-by-section-standard-with-attendance', [StudentBySectionStandardWithAttendance::class, 'index']);
     Route::post('send-holiday-sms', [SendSms::class, 'holidaySms']);
     Route::post('send-absentee-sms', [SendSms::class, 'absenteeSms']);
+
+    Route::get('notification-type', [NotificationTypeController::class, 'index']);
+    
+    Route::post('notification', [NotificationController::class, 'store']);
     
     Route::post('logout', [ApiLogoutController::class, 'logout'])->name('api-logout');
 });
