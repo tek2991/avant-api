@@ -6,6 +6,7 @@ use Exception;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
@@ -16,7 +17,12 @@ class NotificationController extends Controller
      */
     public function index()
     {
-        return Notification::with('event')->orderBy('created_at', 'desc')->paginate();
+        $user = Auth::user();
+        if($user->hasRole('admin')) {
+            return Notification::with('event')->orderBy('created_at', 'desc')->paginate();
+        } else {
+            return $user->notifications()->with('event')->orderBy('created_at', 'desc')->paginate();
+        }
     }
 
     /**
