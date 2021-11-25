@@ -102,4 +102,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Notification::class)->withPivot('id')->withTimestamps();
     }
+
+    public function profilePicture(){
+        return $this->morphOne(Image::class, 'imageable');
+    }
 }
