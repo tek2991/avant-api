@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\v1\Event;
 
 use Exception;
+use App\Models\User;
 use App\Models\Event;
 use App\Models\Notification;
 use Illuminate\Http\Request;
@@ -65,7 +66,7 @@ class EventController extends Controller
         ]);
 
         if ($request->app_notification === true) {
-            Notification::create([
+            $notification = Notification::create([
                 'name' => $request->name,
                 'description' => $request->description,
                 'created_by' => $user->id,
@@ -73,6 +74,8 @@ class EventController extends Controller
                 'notification_type_id' => 1,
                 'event_id' => $event->id,
             ]);
+            $user_ids = User::get()->pluck('id')->toArray();
+            $notification->users()->attach($user_ids);
         }
 
         return response([
