@@ -18,7 +18,7 @@ class NotificationController extends Controller
     public function index()
     {
         $user = Auth::user();
-        if($user->hasRole('admin')) {
+        if($user->hasRole('director')) {
             return Notification::with('event')->orderBy('created_at', 'desc')->paginate();
         } else {
             return $user->notifications()->with('event')->orderBy('created_at', 'desc')->paginate();
