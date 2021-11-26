@@ -32,7 +32,7 @@ class ApiLoginController extends Controller
             ], 401);
         }
 
-        $profile = User::where('username', $request->username)->select(['id', 'username', 'email'])->with('userDetail')->first();
+        $profile = User::where('username', $request->username)->select(['id', 'username', 'email'])->with('userDetail', 'profilePicture')->first();
 
         $token =  $user->createToken('myapptoken')->plainTextToken;
 
@@ -67,7 +67,7 @@ class ApiLoginController extends Controller
             ], 401);
         }
 
-        $profile = User::where('username', $request->username)->select(['id', 'username', 'email'])->with('userDetail', 'studentWithTrashed.sectionStandard.section', 'studentWithTrashed.sectionStandard.standard')->first();
+        $profile = User::where('username', $request->username)->select(['id', 'username', 'email'])->with('userDetail', 'studentWithTrashed.sectionStandard.section', 'studentWithTrashed.sectionStandard.standard', 'profilePicture')->first();
 
         $token =  $user->createToken('myapptoken')->plainTextToken;
 
@@ -103,7 +103,7 @@ class ApiLoginController extends Controller
             ], 401);
         }
 
-        $profile = User::where('username', $request->username)->select(['id', 'username', 'email'])->with('userDetail')->first();
+        $profile = User::where('username', $request->username)->select(['id', 'username', 'email'])->with('userDetail', 'profilePicture')->first();
 
         $token =  $user->createToken('myapptoken')->plainTextToken;
 

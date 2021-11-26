@@ -53,7 +53,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        if(Auth::user()->id !== $user->id && Auth::user()->hasRole('director') !== true){
+        if (Auth::user()->id !== $user->id && Auth::user()->hasRole('director') !== true) {
             return response([
                 'header' => 'Forbidden',
                 'message' => 'Please Logout and Login again.'
@@ -91,26 +91,34 @@ class UserController extends Controller
             'email' => $request->email,
         ]);
 
-        if(!empty($request->password)){
+        if (!empty($request->password)) {
             $user->update(['password' => Hash::make($request->password)]);
         }
 
         $user->userDetail()->update($request->only([
-            'name', 'phone', 'phone_alternate', 'dob', 'gender_id', 'language_id', 'religion_id','caste_id', 'blood_group_id', 'address', 'pincode', 'fathers_name', 'mothers_name', 'pan_no', 'passport_no', 'voter_id', 'aadhar_no', 'dl_no'
+            'name', 'phone', 'phone_alternate', 'dob', 'gender_id', 'language_id', 'religion_id', 'caste_id', 'blood_group_id', 'address', 'pincode', 'fathers_name', 'mothers_name', 'pan_no', 'passport_no', 'voter_id', 'aadhar_no', 'dl_no'
         ]));
 
-        if(!empty($request->takenImageBase64)){
+        if (!empty($request->takenImageBase64)) {
             $base64_image = $request->takenImageBase64;
             if (preg_match('/^data:image\/(\w+);base64,/', $base64_image)) {
                 $data = substr($base64_image, strpos($base64_image, ',') + 1);
                 $data = base64_decode($data);
 
-                $image_name = $user->id . '_' . time() . '.jpg';
+                $image_name = 'profile_pictures/' . $user->id . '_' . time() . '.jpeg';
                 Storage::disk('public')->put($image_name, $data);
+
+                if($user->profilePicture()->exists()){
+                    $url = $user->profilePicture->url;
+                    Storage::disk('public')->delete($url);
+                    $user->profilePicture()->update(['url' => $image_name]);
+                }else{
+                    $user->profilePicture()->create(['url' => $image_name]);
+                }
             }
         }
 
-        $profile = $user->where('id', $user->id)->with('userDetail')->first();
+        $profile = $user->where('id', $user->id)->with('userDetail', 'profilePicture')->first();
 
         $response = [
             'user' => $profile,
