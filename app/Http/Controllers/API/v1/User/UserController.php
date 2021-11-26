@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -83,6 +84,7 @@ class UserController extends Controller
             'aadhar_no' => 'nullable|max:255',
             'dl_no' => 'nullable|max:255',
             'password' => 'nullable|min:8|max:24',
+            'takenImageBase64' => 'nullable',
         ]);
 
         $user->update([
@@ -97,6 +99,16 @@ class UserController extends Controller
             'name', 'phone', 'phone_alternate', 'dob', 'gender_id', 'language_id', 'religion_id','caste_id', 'blood_group_id', 'address', 'pincode', 'fathers_name', 'mothers_name', 'pan_no', 'passport_no', 'voter_id', 'aadhar_no', 'dl_no'
         ]));
 
+        if(!empty($request->takenImageBase64)){
+            $base64_image = $request->takenImageBase64;
+            if (preg_match('/^data:image\/(\w+);base64,/', $base64_image)) {
+                $data = substr($base64_image, strpos($base64_image, ',') + 1);
+                $data = base64_decode($data);
+
+                $image_name = $user->id . '_' . time() . '.jpg';
+                Storage::disk('public')->put($image_name, $data);
+            }
+        }
 
         $profile = $user->where('id', $user->id)->with('userDetail')->first();
 
