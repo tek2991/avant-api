@@ -6,6 +6,7 @@ use App\Models\Appeal;
 use App\Models\AppealState;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\AppealType;
 use Illuminate\Support\Facades\Auth;
 
 class AppealController extends Controller
@@ -20,10 +21,58 @@ class AppealController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $this->validate($request, [
+            'session_id' => 'nullable|exists:sessions,id',
+            'appeal_type_id' => 'nullable|exists:appeal_types,id',
+            'segment' => 'nullable|max:255',
+        ]);
+
+        $segment = $request->segment;
+        $appeal_state = '';
+
+        switch ($segment) {
+            case "approved":
+                $appeal_state = ['Approved'];
+                break;
+            case "pending":
+                $appeal_state = ['Created'];
+                break;
+            case "rejected":
+                $appeal_state = ['Rejected'];
+                break;
+            case "all":
+                $appeal_state = ['Approved', 'Created', 'Rejected'];
+                break;
+        }
+
+        $appeal_state_ids = AppealState::whereIn('name', $appeal_state)->pluck('id')->toArray();
+        $appeal_type_ids = $request->appeal_type_id ? [$request->appeal_type_id] : AppealType::get()->pluck('id')->toArray();
         $user = Auth::user();
-        return $user->appeals()->paginate();
+        $appeals = null;
+
+        if ($user->hasRole('director')) {
+            $appeals = Appeal::whereIn('appeal_state_id', $appeal_state_ids)
+                ->whereIn('appeal_type_id', $appeal_type_ids)
+                ->orderBy('created_at', 'desc')
+                ->with('user.userDetail', 'user.student', 'user.teacher')
+                ->paginate();
+        } else if ($user->hasRole('teacher')) {
+            $appeals = $user->appeals()->whereIn('appeal_state_id', $appeal_state_ids)
+                ->whereIn('appeal_type_id', $appeal_type_ids)
+                ->orderBy('created_at', 'desc')
+                ->with('user.userDetail', 'user.teacher')
+                ->paginate();
+        } else {
+            $appeals = $user->appeals()->whereIn('appeal_state_id', $appeal_state_ids)
+                ->whereIn('appeal_type_id', $appeal_type_ids)
+                ->orderBy('created_at', 'desc')
+                ->with('user.userDetail', 'user.studentWithTrashed')
+                ->paginate();
+        }
+
+        return $appeals;
     }
 
     /**
