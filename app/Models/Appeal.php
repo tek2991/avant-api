@@ -13,8 +13,8 @@ class Appeal extends Model
     use HasFactory;
 
     protected $fillable = [
-        'title',
-        'body',
+        'name',
+        'description',
         'appeal_from_date',
         'appeal_to_date',
         'appeal_type_id',

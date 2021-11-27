@@ -84,8 +84,8 @@ class AppealController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title' => 'required|max:255|string',
-            'body' => 'required|string',
+            'name' => 'required|max:255|string',
+            'description' => 'required|string',
             'appeal_from_date' => 'required|date',
             'appeal_to_date' => 'after_or_equal:appeal_date_from',
             'appeal_type_id' => 'required|exists:appeal_types,id',
@@ -94,14 +94,17 @@ class AppealController extends Controller
         $appealStateId = AppealState::firstWhere('name', 'Created')->id;
         $request['appeal_state_id'] = $appealStateId;
         $appeal = Auth::user()->appeals()->create(
-            $request->only(['title', 'body', 'appeal_from_date', 'appeal_to_date', 'appeal_type_id', 'appeal_state_id'])
+            $request->only(['name', 'description', 'appeal_from_date', 'appeal_to_date', 'appeal_type_id', 'appeal_state_id'])
         );
         $appeal->appealEvents()->create([
             'appeal_state_id' => $appealStateId,
             'user_id' => Auth::user()->id
         ]);
 
-        return $appeal->load('appealEvents', 'appealState');
+        return response([
+            'header' => 'Success',
+            'message' => 'Appeal created successfully.'
+        ], 200);
     }
 
     /**

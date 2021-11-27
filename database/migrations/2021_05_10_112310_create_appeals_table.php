@@ -18,8 +18,8 @@ class CreateAppealsTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('appeal_type_id')->constrained('appeal_types');
             $table->foreignId('appeal_state_id')->constrained('appeal_states');
-            $table->string('title');
-            $table->text('body');
+            $table->string('name');
+            $table->text('description');
             $table->text('recommending_remark')->nullable();
             $table->text('closing_remark')->nullable();
             $table->dateTime('appeal_from_date');
