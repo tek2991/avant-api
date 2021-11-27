@@ -57,6 +57,7 @@ use App\Http\Controllers\API\v1\Subject\ChapterProgressionController;
 use App\Http\Controllers\API\v1\ManualPayment\ManualPaymentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
+use App\Http\Controllers\API\v1\Attributes\AppealTypeController;
 use App\Http\Controllers\API\v1\Notification\NotificationTypeController;
 use App\Http\Controllers\API\v1\SMS\StudentBySectionStandardWithAttendance;
 
@@ -101,6 +102,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('blood-group', BloodGroupController::class)->only(['index']);
     Route::apiResource('bank', BankController::class)->only(['index']);
     Route::apiResource('instrument', InstrumentController::class)->only(['index']);
+    Route::apiResource('appeal-type', AppealTypeController::class)->only(['index']);
     
     Route::apiResource('fee', FeeController::class)->middleware(['can:bill_crud']);
     Route::get('fee-all', [FeeController::class, 'all'])->middleware(['can:bill_read']);
