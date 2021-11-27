@@ -137,7 +137,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('manual-payment/{manual_payment}', [ManualPaymentController::class, 'update'])->middleware(['can:manual_payment_crud']);
     
     Route::apiResource('appeal', AppealController::class);
-    Route::post('recommend-appeal/{appeal}', [RecommendAppealController::class, 'store'])->middleware(['can:appeal_crud']);
     Route::post('close-appeal/{appeal}', [CloseAppealController::class, 'store'])->middleware(['can:appeal_crud']);
     
     Route::get('attendance/{section_standard}', [AttendanceController::class, 'show']);
@@ -160,8 +159,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('homework', [HomeworkController::class, 'store'])->middleware(['can:homework_crud']);
     Route::put('homework/{homework}', [HomeworkController::class, 'update'])->middleware(['can:homework_crud']);
     Route::delete('homework/{homework}', [HomeworkController::class, 'destroy'])->middleware(['can:homework_crud']);
-
-    Route::get('appeal', [AppealController::class, 'index']);
 
     Route::apiResource('event', EventController::class);
     Route::get('event-type', [EventTypeController::class, 'index']);

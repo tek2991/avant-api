@@ -125,15 +125,21 @@ class AppealController extends Controller
     public function update(Request $request, Appeal $appeal)
     {
         $this->validate($request, [
-            'title' => 'required|max:255|string',
-            'body' => 'required|string'
+            'name' => 'required|max:255|string',
+            'description' => 'required|string',
+            'appeal_from_date' => 'required|date',
+            'appeal_to_date' => 'after_or_equal:appeal_date_from',
+            'appeal_type_id' => 'required|exists:appeal_types,id',
         ]);
 
         $appeal->update(
-            $request->only(['title', 'body'])
+            $request->only(['name', 'description', 'appeal_from_date', 'appeal_to_date', 'appeal_type_id', 'appeal_state_id'])
         );
 
-        return $appeal->load('appealEvents', 'appealState');
+        return response([
+            'header' => 'Success',
+            'message' => 'Appeal updated successfully.'
+        ], 200);
     }
 
     /**
