@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\API\v1\Appeal;
 
+use Exception;
 use App\Models\Appeal;
+use App\Models\AppealType;
 use App\Models\AppealState;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\AppealType;
 use Illuminate\Support\Facades\Auth;
 
 class AppealController extends Controller
@@ -56,19 +57,19 @@ class AppealController extends Controller
             $appeals = Appeal::whereIn('appeal_state_id', $appeal_state_ids)
                 ->whereIn('appeal_type_id', $appeal_type_ids)
                 ->orderBy('created_at', 'desc')
-                ->with('user.userDetail', 'user.student', 'user.teacher')
+                ->with('user.userDetail', 'user.student', 'user.teacher', 'appealType', 'appealState')
                 ->paginate();
         } else if ($user->hasRole('teacher')) {
             $appeals = $user->appeals()->whereIn('appeal_state_id', $appeal_state_ids)
                 ->whereIn('appeal_type_id', $appeal_type_ids)
                 ->orderBy('created_at', 'desc')
-                ->with('user.userDetail', 'user.teacher')
+                ->with('user.userDetail', 'user.teacher', 'appealType', 'appealState')
                 ->paginate();
         } else {
             $appeals = $user->appeals()->whereIn('appeal_state_id', $appeal_state_ids)
                 ->whereIn('appeal_type_id', $appeal_type_ids)
                 ->orderBy('created_at', 'desc')
-                ->with('user.userDetail', 'user.studentWithTrashed')
+                ->with('user.userDetail', 'user.studentWithTrashed', 'appealType', 'appealState')
                 ->paginate();
         }
 
@@ -143,6 +144,15 @@ class AppealController extends Controller
      */
     public function destroy(Appeal $appeal)
     {
-        // 
+        try {
+            $appeal->delete();
+        } catch (Exception $ex) {
+            return response([
+                'header' => 'Dependency error',
+                'message' => 'Other resources depend on this record.'
+            ], 418);
+        }
+
+        return response('', 204);
     }
 }
