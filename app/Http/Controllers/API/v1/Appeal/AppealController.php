@@ -93,13 +93,9 @@ class AppealController extends Controller
 
         $appealStateId = AppealState::firstWhere('name', 'Created')->id;
         $request['appeal_state_id'] = $appealStateId;
-        $appeal = Auth::user()->appeals()->create(
+        Auth::user()->appeals()->create(
             $request->only(['name', 'description', 'appeal_from_date', 'appeal_to_date', 'appeal_type_id', 'appeal_state_id'])
         );
-        $appeal->appealEvents()->create([
-            'appeal_state_id' => $appealStateId,
-            'user_id' => Auth::user()->id
-        ]);
 
         return response([
             'header' => 'Success',
