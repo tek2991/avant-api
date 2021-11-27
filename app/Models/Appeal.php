@@ -40,8 +40,4 @@ class Appeal extends Model
     public function appealState(){
         return $this->belongsTo(AppealState::class);
     }
-
-    public function appealEvents(){
-        return $this->hasMany(AppealEvent::class);
-    }
 }
