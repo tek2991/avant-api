@@ -161,6 +161,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('homework/{homework}', [HomeworkController::class, 'update'])->middleware(['can:homework_crud']);
     Route::delete('homework/{homework}', [HomeworkController::class, 'destroy'])->middleware(['can:homework_crud']);
 
+    Route::get('appeal', [AppealController::class, 'index']);
+
     Route::apiResource('event', EventController::class);
     Route::get('event-type', [EventTypeController::class, 'index']);
 

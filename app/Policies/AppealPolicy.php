@@ -73,7 +73,11 @@ class AppealPolicy
      */
     public function delete(User $user, Appeal $appeal)
     {
-        return false;
+        $isOwner = $appeal->user_id === $user->id;
+
+        $updatable = $appeal->appealState->name === "Created";
+
+        return $isOwner && $updatable;
     }
 
     /**
