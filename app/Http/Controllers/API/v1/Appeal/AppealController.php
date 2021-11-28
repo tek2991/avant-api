@@ -57,7 +57,7 @@ class AppealController extends Controller
             $appeals = Appeal::whereIn('appeal_state_id', $appeal_state_ids)
                 ->whereIn('appeal_type_id', $appeal_type_ids)
                 ->orderBy('created_at', 'desc')
-                ->with('user.userDetail', 'user.student', 'user.teacher', 'appealType', 'appealState')
+                ->with('user.userDetail', 'user.student.sectionStandard.standard', 'user.student.sectionStandard.section', 'user.teacher', 'appealType', 'appealState')
                 ->paginate();
         } else if ($user->hasRole('teacher')) {
             $appeals = $user->appeals()->whereIn('appeal_state_id', $appeal_state_ids)

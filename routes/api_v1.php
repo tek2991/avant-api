@@ -27,22 +27,22 @@ use App\Http\Controllers\API\v1\Subject\SubjectController;
 use App\Http\Controllers\API\v1\Attributes\CasteController;
 use App\Http\Controllers\API\v1\Attributes\GenderController;
 use App\Http\Controllers\API\v1\Homework\HomeworkController;
-use App\Http\Controllers\API\v1\Appeal\CloseAppealController;
 use App\Http\Controllers\API\v1\Chart\StudentChartController;
 use App\Http\Controllers\API\v1\Chart\TeacherChartController;
 use App\Http\Controllers\API\v1\SMS\StudentBySectionStandard;
 use App\Http\Controllers\API\v1\Attributes\LanguageController;
 use App\Http\Controllers\API\v1\Attributes\ReligionController;
 use App\Http\Controllers\API\v1\Chart\DirectorChartController;
+use App\Http\Controllers\API\v1\Appeal\ResolveAppealController;
 use App\Http\Controllers\API\v1\Subject\SubjectGroupController;
 use App\Http\Controllers\API\v1\Attendance\AttendanceController;
+use App\Http\Controllers\API\v1\Attributes\AppealTypeController;
 use App\Http\Controllers\API\v1\Attributes\BloodGroupController;
 use App\Http\Controllers\API\v1\Attributes\InstrumentController;
 use App\Http\Controllers\API\v1\Fee\ChargeableStudentController;
 use App\Http\Controllers\API\v1\Setup\SectionStandardController;
 use App\Http\Controllers\API\v1\Student\EnrollStudentController;
 use App\Http\Controllers\API\v1\Student\UpdateStudentController;
-use App\Http\Controllers\API\v1\Appeal\RecommendAppealController;
 use App\Http\Controllers\API\v1\Student\StudentTrashedController;
 use App\Http\Controllers\API\v1\Subject\StudentSubjectController;
 use App\Http\Controllers\API\v1\Subject\SubjectTeacherController;
@@ -57,7 +57,6 @@ use App\Http\Controllers\API\v1\Subject\ChapterProgressionController;
 use App\Http\Controllers\API\v1\ManualPayment\ManualPaymentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
-use App\Http\Controllers\API\v1\Attributes\AppealTypeController;
 use App\Http\Controllers\API\v1\Notification\NotificationTypeController;
 use App\Http\Controllers\API\v1\SMS\StudentBySectionStandardWithAttendance;
 
@@ -137,7 +136,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('manual-payment/{manual_payment}', [ManualPaymentController::class, 'update'])->middleware(['can:manual_payment_crud']);
     
     Route::apiResource('appeal', AppealController::class);
-    Route::post('close-appeal/{appeal}', [CloseAppealController::class, 'store'])->middleware(['can:appeal_crud']);
+    Route::put('appeal-resolve/{appeal}', [ResolveAppealController::class, 'store'])->middleware(['can:appeal_crud']);
     
     Route::get('attendance/{section_standard}', [AttendanceController::class, 'show']);
     Route::put('attendance/{attendance}', [AttendanceController::class, 'update']);
