@@ -124,6 +124,14 @@ class AppealController extends Controller
      */
     public function update(Request $request, Appeal $appeal)
     {
+
+        if($appeal->appealState->name !== 'Created'){
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Appeal is not in Created state.'
+            ], 403);
+        }
+
         $this->validate($request, [
             'name' => 'required|max:255|string',
             'description' => 'required|string',
@@ -150,6 +158,14 @@ class AppealController extends Controller
      */
     public function destroy(Appeal $appeal)
     {
+
+        if($appeal->appealState->name !== 'Created'){
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Appeal is not in Created state.'
+            ], 403);
+        }
+        
         try {
             $appeal->delete();
         } catch (Exception $ex) {

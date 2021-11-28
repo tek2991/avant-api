@@ -23,6 +23,21 @@ class ResolveAppealController extends Controller
     public function store(Request $request, Appeal $appeal)
     {
         $user = Auth::user();
+
+        if ($user->hasRole('director') !== true) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
+        if($appeal->appealState->name !== 'Created'){
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Appeal is not in Created state.'
+            ], 403);
+        }
+
         $this->validate($request, [
             'appeal_state' => 'required|in:Approved,Rejected'
         ]);
