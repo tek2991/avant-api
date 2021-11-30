@@ -52,10 +52,10 @@ Route::get('/phpinfo', function () {
     return view('phpinfo');
 })->middleware(['auth'])->name('phpinfo');
 
-Route::prefix('pwa/')->group(function () {
-    Route::post('register', [SpaRegisterController::class, 'register'])->name('register');
-    Route::post('director-login', [SpaLoginController::class, 'directorLogin'])->name('director-login');
-    Route::post('logout', [SpaLogoutController::class, 'logout'])->name('logout');
-});
+// Route::prefix('pwa/')->group(function () {
+//     Route::post('register', [SpaRegisterController::class, 'register'])->name('register');
+//     Route::post('director-login', [SpaLoginController::class, 'directorLogin'])->name('director-login');
+//     Route::post('logout', [SpaLogoutController::class, 'logout'])->name('logout');
+// });
 
 require __DIR__.'/auth.php';
