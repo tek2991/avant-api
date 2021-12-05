@@ -32,4 +32,7 @@ class SectionStandard extends Pivot
      public function attendance(){
          return $this->hasMany(Attendance::class);
      }
+     public function exams(){
+        return $this->belongsToMany(Exam::class, 'exam_section_standard', 'section_standard_id', 'exam_id')->withPivot('id')->withTimestamps();
+     }
 }

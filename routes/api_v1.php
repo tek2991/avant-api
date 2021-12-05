@@ -5,12 +5,14 @@ use App\Http\Controllers\Auth\ApiLoginController;
 use App\Http\Controllers\API\v1\Fee\FeeController;
 use App\Http\Controllers\Auth\ApiLogoutController;
 use App\Http\Controllers\API\v1\Bill\BillController;
+use App\Http\Controllers\API\v1\Exam\ExamController;
 use App\Http\Controllers\API\v1\User\UserController;
 use App\Http\Controllers\Auth\ApiRegisterController;
 use App\Http\Controllers\API\v1\Event\EventController;
 use App\Http\Controllers\API\v1\Bill\BillFeeController;
 use App\Http\Controllers\API\v1\User\TeacherController;
 use App\Http\Controllers\API\v1\Appeal\AppealController;
+use App\Http\Controllers\API\v1\Exam\ExamTypeController;
 use App\Http\Controllers\API\v1\Export\ExportController;
 use App\Http\Controllers\API\v1\Setup\SectionController;
 use App\Http\Controllers\API\v1\Setup\SessionController;
@@ -102,6 +104,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('bank', BankController::class)->only(['index']);
     Route::apiResource('instrument', InstrumentController::class)->only(['index']);
     Route::apiResource('appeal-type', AppealTypeController::class)->only(['index']);
+    Route::apiResource('exam-type', ExamTypeController::class)->only(['index']);
     
     Route::apiResource('fee', FeeController::class)->middleware(['can:bill_crud']);
     Route::get('fee-all', [FeeController::class, 'all'])->middleware(['can:bill_read']);
@@ -192,6 +195,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('send-absentee-sms', [SendSms::class, 'absenteeSms']);
 
     Route::get('notification-type', [NotificationTypeController::class, 'index']);
+
+    Route::get('exam', [ExamController::class, 'index']);
+    Route::post('exam', [ExamController::class, 'store']);
     
     Route::get('notification', [NotificationController::class, 'index']);
     Route::post('notification', [NotificationController::class, 'store']);

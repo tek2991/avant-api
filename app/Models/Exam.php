@@ -14,8 +14,17 @@ class Exam extends Model
         'name',
         'description',
         'exam_type_id',
+        'exam_start_date',
+        'exam_end_date',
         'created_by',
     ];
+
+    protected $cast = [
+        'exam_start_date' => 'datetime',
+        'exam_end_date' => 'datetime',
+    ];
+
+    protected $dates = ['exam_start_date', 'exam_end_date'];
 
     public function session(){
         return $this->belongsTo(Session::class);
@@ -31,5 +40,13 @@ class Exam extends Model
 
     public function creator(){
         return $this->belongsTo(User::class, 'created_by', 'id');
+    }
+
+    public function sectionStandards(){
+        return $this->belongsToMany(SectionStandard::class, 'exam_section_standard', 'exam_id', 'section_standard_id')->withPivot('id')->withTimestamps();
+    }
+
+    public function subjects(){
+        return $this->belongsToMany(Subject::class, 'exam_subject', 'exam_id', 'subject_id')->withPivot('id')->withTimestamps();
     }
 }

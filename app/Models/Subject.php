@@ -42,4 +42,8 @@ class Subject extends Model
     public function chapters(){
         return $this->hasMany(Chapter::class);
     }
+
+    public function exams(){
+        return $this->belongsToMany(Exam::class)->withPivot('id');
+    }
 }

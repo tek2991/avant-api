@@ -16,7 +16,7 @@ class CreateExamSectionStandardTable extends Migration
         Schema::create('exam_section_standard', function (Blueprint $table) {
             $table->id();
             $table->foreignId('exam_id')->constrained();
-            $table->foreignId('section_standard_id')->constrained();
+            $table->foreignId('section_standard_id')->constrained('section_standard', 'id');
             $table->timestamps();
         });
     }
