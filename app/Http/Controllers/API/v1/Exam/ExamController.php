@@ -65,7 +65,7 @@ class ExamController extends Controller
 
         
         $exam->sectionStandards()->sync($request->class_ids);
-        $exam->subjects()->attach($subjects);
+        // $exam->subjects()->attach($subjects);
 
         return response([
             'header' => 'Success',
