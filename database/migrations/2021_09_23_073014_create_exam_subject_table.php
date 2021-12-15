@@ -17,7 +17,7 @@ class CreateExamSubjectTable extends Migration
             $table->id();
             $table->foreignId('exam_id')->constrained();
             $table->foreignId('subject_id')->constrained();
-            $table->foreignId('exam_date_time_id')->constrained('exam_date_times');
+            $table->foreignId('exam_date_time_id')->nullable()->constrained('exam_date_times');
             $table->integer('full_mark');
             $table->integer('pass_mark');
             $table->integer('negative_percent');
