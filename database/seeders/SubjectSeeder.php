@@ -17,13 +17,6 @@ class SubjectSeeder extends Seeder
      */
     public function run()
     {   
-        if(env('APP_ENV') !== 'local'){
-            return;
-        }
-
-        // $subjectGroups = SubjectGroup::get();
-        // $standards = Standard::all();
-
         $teachers = collect(Teacher::all()->modelKeys());
         $subjects = [];
 
