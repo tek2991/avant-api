@@ -9,8 +9,8 @@ class ExamSchedule extends Model
     protected $fillable = [
         'exam_id',
         'date',
-        'from',
-        'to',
+        'start',
+        'end',
     ];
 
     public function exam(){

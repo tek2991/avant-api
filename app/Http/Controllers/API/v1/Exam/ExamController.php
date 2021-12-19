@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\SectionStandard;
 use App\Rules\ExamScheduleRule;
 use App\Http\Controllers\Controller;
+use App\Models\ExamSubjectState;
 use Illuminate\Support\Facades\Auth;
 
 class ExamController extends Controller
@@ -46,12 +47,15 @@ class ExamController extends Controller
             'exam_type_id' => 'required|integer|exists:exam_types,id',
             'exam_start_date' => 'required|date',
             'exam_end_date' => 'required|date',
-            'class_ids' => 'required|array|exists:section_standard,id',
             'exam_schedules.*.start' => 'required|date',
             'exam_schedules.*.end' => 'required|date|after:exam_schedules.*.start',
+            'class_ids' => 'required|array|exists:section_standard,id',
+            'full_mark' => 'required|integer|between:10,200',
+            'pass_mark' => 'required|integer|between:1,full_mark',
+            'negative_percentage' => 'required|integer|between:0,400',
         ]);
 
-        $session_id = Session::where('is_active', true)->first()->id;
+        $session_id = Session::where('is_active', true)->firstOrFail()->id;
 
         $exam = Exam::create([
             'name' => $request->name,
@@ -70,10 +74,19 @@ class ExamController extends Controller
             ]);
         }
 
-        // $standard_ids = array_values(array_unique(SectionStandard::whereIn('id', $request->class_ids)->get()->pluck('standard_id')->toArray()));
-        // $subjects = Subject::whereIn('standard_id', $standard_ids)->pluck('id')->toArray();
+        $standard_ids = array_values(array_unique(SectionStandard::whereIn('id', $request->class_ids)->get()->pluck('standard_id')->toArray()));
+        $subjects = Subject::whereIn('standard_id', $standard_ids)->pluck('id')->toArray();
         $exam->sectionStandards()->sync($request->class_ids);
-        // $exam->subjects()->attach($subjects);
+
+        $exam_subject_state_id = ExamSubjectState::where('name', 'Created')->firstOrFail()->id;
+
+        $exam->subjects()->attach($subjects, [
+            'full_mark' => $request->full_mark,
+            'pass_mark' => $request->pass_mark,
+            'negative_percentage' => $request->negative_percentage,
+            'exam_subject_state_id' => $exam_subject_state_id,
+            'auto_start' => false,
+        ]);
 
         return response([
             'header' => 'Success',

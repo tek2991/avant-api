@@ -15,8 +15,9 @@ class ExamSubject extends Model
         'exam_schedule_id',
         'full_mark',
         'pass_mark',
-        'negative_percent',
+        'negative_percentage',
         'exam_subject_state_id',
+        'auto_start',
     ];
 
     public function exam(){
