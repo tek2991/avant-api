@@ -12,7 +12,7 @@ class ExamSubject extends Model
     protected $fillable = [
         'exam_id',
         'subject_id',
-        'exam_date_time_id',
+        'exam_schedule_id',
         'full_mark',
         'pass_mark',
         'negative_percent',
@@ -27,8 +27,8 @@ class ExamSubject extends Model
         return $this->belongsTo(Subject::class);
     }
 
-    public function examDateTime(){
-        return $this->belongsTo(ExamDateTime::class);
+    public function examSchedule(){
+        return $this->belongsTo(ExamSchedule::class);
     }
 
     public function examSubjectState(){
