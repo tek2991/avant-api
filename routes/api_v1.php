@@ -28,6 +28,7 @@ use App\Http\Controllers\API\v1\Subject\ChapterController;
 use App\Http\Controllers\API\v1\Subject\SubjectController;
 use App\Http\Controllers\API\v1\Attributes\CasteController;
 use App\Http\Controllers\API\v1\Attributes\GenderController;
+use App\Http\Controllers\API\v1\Exam\ExamScheduleController;
 use App\Http\Controllers\API\v1\Homework\HomeworkController;
 use App\Http\Controllers\API\v1\Chart\StudentChartController;
 use App\Http\Controllers\API\v1\Chart\TeacherChartController;
@@ -197,7 +198,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('notification-type', [NotificationTypeController::class, 'index']);
 
     Route::get('exam', [ExamController::class, 'index']);
+    Route::get('exam/{exam}', [ExamController::class, 'show']);
     Route::post('exam', [ExamController::class, 'store']);
+
+    Route::get('exam-schedule/{exam}', [ExamScheduleController::class, 'index']);
+    Route::put('exam-schedule/{exam_schedule}', [ExamScheduleController::class, 'update']);
+    Route::post('exam-schedule', [ExamScheduleController::class, 'store']);
+    Route::delete('exam-schedule/{exam_schedule}', [ExamScheduleController::class, 'destroy']);
     
     Route::get('notification', [NotificationController::class, 'index']);
     Route::post('notification', [NotificationController::class, 'store']);
