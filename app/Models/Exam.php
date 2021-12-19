@@ -34,8 +34,8 @@ class Exam extends Model
         return $this->belongsTo(ExamType::class);
     }
 
-    public function examDateTimes(){
-        return $this->hasMany(ExamDateTime::class);
+    public function examSchedules(){
+        return $this->hasMany(ExamSchedule::class);
     }
 
     public function creator(){

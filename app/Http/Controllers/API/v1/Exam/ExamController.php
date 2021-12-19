@@ -64,9 +64,9 @@ class ExamController extends Controller
         ]);
 
         foreach($request->exam_schedules as $exam_schedule) {
-            $exam->examDateTimes()->create([
-                'from' => $exam_schedule['start'],
-                'to' => $exam_schedule['end'],
+            $exam->examSchedules()->create([
+                'start' => $exam_schedule['start'],
+                'end' => $exam_schedule['end'],
             ]);
         }
 

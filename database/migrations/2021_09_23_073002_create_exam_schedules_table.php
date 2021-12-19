@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExamDateTimesTable extends Migration
+class CreateExamSchedulesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateExamDateTimesTable extends Migration
      */
     public function up()
     {
-        Schema::create('exam_date_times', function (Blueprint $table) {
+        Schema::create('exam_schedules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('exam_id')->constrained();
-            $table->dateTime('from');
-            $table->dateTime('to');
+            $table->dateTime('start');
+            $table->dateTime('end');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateExamDateTimesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exam_date_times');
+        Schema::dropIfExists('exam_schedules');
     }
 }
