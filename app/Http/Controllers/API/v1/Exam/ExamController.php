@@ -4,10 +4,11 @@ namespace App\Http\Controllers\API\v1\Exam;
 
 use App\Models\Exam;
 use App\Models\Session;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\SectionStandard;
 use App\Models\Subject;
+use Illuminate\Http\Request;
+use App\Models\SectionStandard;
+use App\Rules\ExamScheduleRule;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class ExamController extends Controller
@@ -46,6 +47,8 @@ class ExamController extends Controller
             'exam_start_date' => 'required|date',
             'exam_end_date' => 'required|date',
             'class_ids' => 'required|array|exists:section_standard,id',
+            'exam_schedules.*.start' => 'required|date',
+            'exam_schedules.*.end' => 'required|date|after:exam_schedules.*.start',
         ]);
 
         $session_id = Session::where('is_active', true)->first()->id;
@@ -60,10 +63,15 @@ class ExamController extends Controller
             'created_by' => $user->id,
         ]);
 
-        $standard_ids = array_values(array_unique(SectionStandard::whereIn('id', $request->class_ids)->get()->pluck('standard_id')->toArray()));
-        $subjects = Subject::whereIn('standard_id', $standard_ids)->pluck('id')->toArray();
+        foreach($request->exam_schedules as $exam_schedule) {
+            $exam->examDateTimes()->create([
+                'from' => $exam_schedule['start'],
+                'to' => $exam_schedule['end'],
+            ]);
+        }
 
-        
+        // $standard_ids = array_values(array_unique(SectionStandard::whereIn('id', $request->class_ids)->get()->pluck('standard_id')->toArray()));
+        // $subjects = Subject::whereIn('standard_id', $standard_ids)->pluck('id')->toArray();
         $exam->sectionStandards()->sync($request->class_ids);
         // $exam->subjects()->attach($subjects);
 
