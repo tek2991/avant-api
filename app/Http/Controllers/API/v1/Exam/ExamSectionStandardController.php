@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\v1\Exam;
 use Exception;
 use App\Models\Exam;
 use Illuminate\Http\Request;
+use App\Models\SectionStandard;
 use App\Models\ExamSectionStandard;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -43,15 +44,15 @@ class ExamSectionStandardController extends Controller
             'section_standard_id' => 'required|integer|exists:section_standard,id',
         ]);
 
-        $examSectionStandard = ExamSectionStandard::create([
-            'exam_id' => $request->exam_id,
-            'section_standard_id' => $request->section_standard_id,
-        ]);
+        $exam = Exam::findOrFail($request->exam_id);
+        $sectionStandard = SectionStandard::findOrFail($request->section_standard_id);
+
+        $sync = $exam->sectionStandards()->syncWithoutDetaching([$sectionStandard->id]);
 
         return response([
             'header' => 'Success',
             'message' => 'Exam Section Standard Created Successfully.',
-            'data' => $examSectionStandard
+            'data' => $sync,
         ], 201);
     }
 
