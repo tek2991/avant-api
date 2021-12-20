@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class ExamSectionStandard extends Pivot
 {
-    protected $table = 'exam_section_standards';
+    protected $table = 'exam_section_standard';
     protected $fillable = ['exam_id', 'section_standard_id'];
 
     public function exam()

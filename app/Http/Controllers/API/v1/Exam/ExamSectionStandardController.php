@@ -18,7 +18,7 @@ class ExamSectionStandardController extends Controller
      */
     public function index(Exam $exam)
     {
-        $examSections = $exam->sectionStandards()->with('section', 'standard')->orderBy('id')->paginate();
+        $examSections = ExamSectionStandard::where('exam_id', $exam->id)->with('sectionStandard.section', 'sectionStandard.standard')->paginate();
         return $examSections;
     }
 
