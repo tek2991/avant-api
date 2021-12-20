@@ -51,6 +51,7 @@ use App\Http\Controllers\API\v1\Subject\StudentSubjectController;
 use App\Http\Controllers\API\v1\Subject\SubjectTeacherController;
 use App\Http\Controllers\API\v1\Fee\AttachStandardToFeeController;
 use App\Http\Controllers\API\v1\Student\TransferStudentController;
+use App\Http\Controllers\API\v1\Exam\ExamSectionStandardController;
 use App\Http\Controllers\API\v1\Fee\AttachChargeableToFeeController;
 use App\Http\Controllers\API\v1\Notification\NotificationController;
 use App\Http\Controllers\API\v1\Subject\SubjectForStudentController;
@@ -205,6 +206,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('exam-schedule/{exam_schedule}', [ExamScheduleController::class, 'update']);
     Route::post('exam-schedule', [ExamScheduleController::class, 'store']);
     Route::delete('exam-schedule/{exam_schedule}', [ExamScheduleController::class, 'destroy']);
+
+    Route::get('exam-section-standard/{exam}', [ExamSectionStandardController::class, 'index']);
     
     Route::get('notification', [NotificationController::class, 'index']);
     Route::post('notification', [NotificationController::class, 'store']);
