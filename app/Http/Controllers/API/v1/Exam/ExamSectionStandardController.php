@@ -18,7 +18,7 @@ class ExamSectionStandardController extends Controller
      */
     public function index(Exam $exam)
     {
-        $examSections = ExamSectionStandard::where('exam_id', $exam->id)->with('sectionStandard.section', 'sectionStandard.standard')->paginate();
+        $examSections = ExamSectionStandard::where('exam_id', $exam->id)->with('sectionStandard.section', 'sectionStandard.standard')->orderBy('section_standard_id')->paginate();
         return $examSections;
     }
 
@@ -30,7 +30,29 @@ class ExamSectionStandardController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = Auth::user();
+        if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
+        $this->validate($request, [
+            'exam_id' => 'required|integer|exists:exams,id',
+            'section_standard_id' => 'required|integer|exists:section_standard,id',
+        ]);
+
+        $examSectionStandard = ExamSectionStandard::create([
+            'exam_id' => $request->exam_id,
+            'section_standard_id' => $request->section_standard_id,
+        ]);
+
+        return response([
+            'header' => 'Success',
+            'message' => 'Exam Section Standard Created Successfully.',
+            'data' => $examSectionStandard
+        ], 201);
     }
 
     /**

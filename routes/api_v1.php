@@ -208,6 +208,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('exam-schedule/{exam_schedule}', [ExamScheduleController::class, 'destroy']);
 
     Route::get('exam-section-standard/{exam}', [ExamSectionStandardController::class, 'index']);
+    Route::post('exam-section-standard', [ExamSectionStandardController::class, 'store']);
     Route::delete('exam-section-standard/{exam_section_standard}', [ExamSectionStandardController::class, 'destroy']);
     
     Route::get('notification', [NotificationController::class, 'index']);
