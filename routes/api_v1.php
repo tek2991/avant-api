@@ -27,6 +27,7 @@ use App\Http\Controllers\API\v1\Student\StudentController;
 use App\Http\Controllers\API\v1\Subject\ChapterController;
 use App\Http\Controllers\API\v1\Subject\SubjectController;
 use App\Http\Controllers\API\v1\Attributes\CasteController;
+use App\Http\Controllers\API\v1\Exam\ExamSubjectController;
 use App\Http\Controllers\API\v1\Attributes\GenderController;
 use App\Http\Controllers\API\v1\Exam\ExamScheduleController;
 use App\Http\Controllers\API\v1\Homework\HomeworkController;
@@ -210,6 +211,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('exam-section-standard/{exam}', [ExamSectionStandardController::class, 'index']);
     Route::post('exam-section-standard', [ExamSectionStandardController::class, 'store']);
     Route::delete('exam-section-standard/{exam_section_standard}', [ExamSectionStandardController::class, 'destroy']);
+
+    Route::get('exam-subject/{exam}', [ExamSubjectController::class, 'index']);
     
     Route::get('notification', [NotificationController::class, 'index']);
     Route::post('notification', [NotificationController::class, 'store']);

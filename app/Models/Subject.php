@@ -44,6 +44,14 @@ class Subject extends Model
     }
 
     public function exams(){
-        return $this->belongsToMany(Exam::class)->withPivot('id');
+        return $this->belongsToMany(Exam::class, 'exam_subject', 'subject_id', 'exam_id')->withPivot([
+            'id',
+            'exam_schedule_id',
+            'full_mark',
+            'pass_mark',
+            'negative_percentage',
+            'exam_subject_state_id',
+            'auto_start',
+        ])->withTimestamps();
     }
 }
