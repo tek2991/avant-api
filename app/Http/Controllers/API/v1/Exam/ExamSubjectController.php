@@ -16,7 +16,7 @@ class ExamSubjectController extends Controller
      */
     public function index(Exam $exam)
     {
-        $exam_subjects = ExamSubject::where('exam_id', $exam->id)->with('subject', 'examSchedule', 'examSubjectState')->orderBy('subject_id')->paginate();
+        $exam_subjects = ExamSubject::where('exam_id', $exam->id)->with('subject.standard', 'examSchedule', 'examSubjectState')->orderBy('subject_id')->paginate();
         return $exam_subjects;
     }
 
