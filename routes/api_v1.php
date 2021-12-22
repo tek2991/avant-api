@@ -214,6 +214,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('exam-section-standard/{exam_section_standard}', [ExamSectionStandardController::class, 'destroy']);
 
     Route::get('exam-subject/{exam}', [ExamSubjectController::class, 'index']);
+    Route::put('exam-subject/{exam_subject}', [ExamSubjectController::class, 'update']);
     
     Route::get('notification', [NotificationController::class, 'index']);
     Route::post('notification', [NotificationController::class, 'store']);
