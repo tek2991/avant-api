@@ -23,6 +23,12 @@ class ExamScheduleController extends Controller
         return $examSchedules;
     }
 
+    public function all(Exam $exam)
+    {
+        $examSchedules = $exam->examSchedules()->orderBy('start')->get();
+        return $examSchedules;
+    }
+
     /**
      * Store a newly created resource in storage.
      *
