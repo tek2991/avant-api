@@ -22,6 +22,12 @@ class ExamSubjectController extends Controller
         return $exam_subjects;
     }
 
+    public function all(Exam $exam)
+    {
+        $exam_subjects = ExamSubject::where('exam_id', $exam->id)->with('subject.standard', 'examSchedule', 'examSubjectState')->orderBy('subject_id')->get();
+        return $exam_subjects;
+    }
+
     /**
      * Store a newly created resource in storage.
      *

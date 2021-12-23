@@ -175,6 +175,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('subject-group-all', [SubjectGroupController::class, 'all'])->middleware(['can:subject_read']);
 
     Route::apiResource('subject', SubjectController::class)->middleware(['can:subject_crud']);
+    Route::get('subject-all', [SubjectController::class, 'all'])->middleware(['can:subject_read']);
     Route::get('subject-for-teacher/{user}', [SubjectForTeacherController::class, 'index'])->middleware(['can:subject_read']);
     Route::get('teacher-subject-by-section-standard/{section_standard}', [SubjectForTeacherController::class, 'teacherSubjectBySectionStandard'])->middleware(['can:subject_read']);
     Route::get('subject-for-student/{user}', [SubjectForStudentController::class, 'index'])->middleware(['can:subject_read']);
@@ -214,6 +215,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('exam-section-standard/{exam_section_standard}', [ExamSectionStandardController::class, 'destroy']);
 
     Route::get('exam-subject/{exam}', [ExamSubjectController::class, 'index']);
+    // Route::get('exam-subject-all/{exam}', [ExamSubjectController::class, 'all']);
     Route::put('exam-subject/{exam_subject}', [ExamSubjectController::class, 'update']);
     
     Route::get('notification', [NotificationController::class, 'index']);
