@@ -54,6 +54,7 @@ Route::post('/teacher-import', [TeacherImportController::class, 'store'])->middl
 Route::get('/teacher-template', [TemplateExportController::class, 'teacherTemplate'])->middleware(['auth'])->name('teacher.template');
 
 Route::get('/tiny-mce-demo', [TinyMceController::class, 'index'])->middleware(['auth'])->name('tiny-mce-demo.index');
+Route::post('/tiny-mce-image-upload', [TinyMceController::class, 'imageUpload'])->middleware(['auth'])->name('tiny-mce-demo.image-upload');
 
 Route::get('/phpinfo', function () {
     return view('phpinfo');
