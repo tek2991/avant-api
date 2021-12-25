@@ -16,3 +16,9 @@ mix.js('resources/js/app.js', 'public/js').postCss('resources/css/app.css', 'pub
     require('tailwindcss'),
     require('autoprefixer'),
 ]);
+
+/*
+    Mix task to copy TinyMCE to the public files when Mix is run
+*/
+
+mix.copyDirectory('vendor/tinymce/tinymce', 'public/js/tinymce');
