@@ -6,7 +6,6 @@
     </x-slot>
     
     <div class="py-12">
-        <h5>Tiny MCE Demo</h5>
         <x-head.tinymce-config />
         <x-forms.tinymce-editor />
     </div>
