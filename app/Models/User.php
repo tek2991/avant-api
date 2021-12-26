@@ -106,4 +106,8 @@ class User extends Authenticatable
     public function profilePicture(){
         return $this->morphOne(Image::class, 'imageable');
     }
+
+    public function tinymces(){
+        return $this->hasMany(Tinymce::class);
+    }
 }

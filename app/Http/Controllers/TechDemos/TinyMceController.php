@@ -6,17 +6,20 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Mews\Purifier\Facades\Purifier;
+use App\Models\Tinymce;
 
 class TinyMceController extends Controller
 {
     public function index()
     {
-        return view('tech-demos.tiny-mce');
+        $tinymces = Tinymce::paginate();
+        return view('tech-demos.tiny-mce', compact('tinymces'));
     }
 
     public function imageUpload(Request $request)
     {
-        if(!$request->base64){
+        if (!$request->base64) {
             return response([
                 'header' => 'Bad Request',
                 'message' => 'No image found.'
@@ -41,13 +44,19 @@ class TinyMceController extends Controller
                 return response([
                     'header' => 'Internal Server Error',
                     'message' => 'Something went wrong.'
-                ], 500);   
+                ], 500);
             }
         }
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $user = Auth::user();
-        
+        Purifier::clean($request->description);
+        Tinymce::create([
+            'description' => $request->description,
+            'user_id' => $user->id
+        ]);
+        return back()->withStatus('TinyMCE created successfully.');
     }
 }
