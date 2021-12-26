@@ -17,6 +17,7 @@
         "laravel/telescope": "^4.4",
         "laravel/tinker": "^2.5",
         "maatwebsite/excel": "^3.1",
+        "mews/purifier": "^3.3",
         "razorpay/razorpay": "2.7",
         "spatie/laravel-permission": "^4.0",
         "tinymce/tinymce": "^5.10"

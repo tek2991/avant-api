@@ -55,6 +55,7 @@ Route::get('/teacher-template', [TemplateExportController::class, 'teacherTempla
 
 Route::get('/tiny-mce-demo', [TinyMceController::class, 'index'])->middleware(['auth'])->name('tiny-mce-demo.index');
 Route::post('/tiny-mce-image-upload', [TinyMceController::class, 'imageUpload'])->middleware(['auth'])->name('tiny-mce-demo.image-upload');
+Route::post('/tiny-mce-demo', [TinyMceController::class, 'store'])->middleware(['auth'])->name('tiny-mce-demo.store');
 
 Route::get('/phpinfo', function () {
     return view('phpinfo');

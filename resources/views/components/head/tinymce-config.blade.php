@@ -45,7 +45,7 @@
         selector: 'textarea#myeditorinstance', // Replace this CSS selector to match the placeholder element for TinyMCE
         statusbar: true,
         menubar: false,
-        readonly: true,
+        // readonly: true,
         plugins: [
             'code charmap table image imagetools lists fullscreen wordcount'
         ],
@@ -57,8 +57,6 @@
             img.src = base64;
             await img.complete;
             let dataurl = await resizeImage(img);
-            console.log(dataurl);
-
             let response = await fetch('{{ route('tiny-mce-demo.image-upload') }}', {
                 method: 'POST',
                 headers: {
@@ -67,7 +65,6 @@
                 },
                 body: JSON.stringify({
                     base64: dataurl,
-                    test: 'test'
                 })
             });
 
