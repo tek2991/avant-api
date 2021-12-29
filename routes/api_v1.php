@@ -219,6 +219,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('exam-subject/{exam_subject}', [ExamSubjectController::class, 'update']);
     Route::post('exam-subject', [ExamSubjectController::class, 'store']);
     Route::delete('exam-subject/{exam_subject}', [ExamSubjectController::class, 'destroy']);
+
+    Route::get('exam-question/{exam_subject}', [ExamQuestionController::class, 'index']);
     
     Route::get('notification', [NotificationController::class, 'index']);
     Route::post('notification', [NotificationController::class, 'store']);

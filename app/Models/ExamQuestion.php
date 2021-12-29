@@ -29,4 +29,8 @@ class ExamQuestion extends Model
     public function creator(){
         return $this->belongsTo(User::class, 'created_by', 'id');
     }
+
+    public function examQuestionOptions(){
+        return $this->hasMany(ExamQuestionOption::class);
+    }
 }
