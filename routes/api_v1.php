@@ -29,6 +29,7 @@ use App\Http\Controllers\API\v1\Subject\SubjectController;
 use App\Http\Controllers\API\v1\Attributes\CasteController;
 use App\Http\Controllers\API\v1\Exam\ExamSubjectController;
 use App\Http\Controllers\API\v1\Attributes\GenderController;
+use App\Http\Controllers\API\v1\Exam\ExamQuestionController;
 use App\Http\Controllers\API\v1\Exam\ExamScheduleController;
 use App\Http\Controllers\API\v1\Homework\HomeworkController;
 use App\Http\Controllers\API\v1\Chart\StudentChartController;
