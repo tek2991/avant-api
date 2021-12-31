@@ -44,6 +44,7 @@ use App\Http\Controllers\API\v1\Attendance\AttendanceController;
 use App\Http\Controllers\API\v1\Attributes\AppealTypeController;
 use App\Http\Controllers\API\v1\Attributes\BloodGroupController;
 use App\Http\Controllers\API\v1\Attributes\InstrumentController;
+use App\Http\Controllers\API\v1\Exam\ExamQuestionTypeController;
 use App\Http\Controllers\API\v1\Fee\ChargeableStudentController;
 use App\Http\Controllers\API\v1\Setup\SectionStandardController;
 use App\Http\Controllers\API\v1\Student\EnrollStudentController;
@@ -109,6 +110,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('instrument', InstrumentController::class)->only(['index']);
     Route::apiResource('appeal-type', AppealTypeController::class)->only(['index']);
     Route::apiResource('exam-type', ExamTypeController::class)->only(['index']);
+    Route::get('exam-question-type', [ExamQuestionTypeController::class, 'index']);
     
     Route::apiResource('fee', FeeController::class)->middleware(['can:bill_crud']);
     Route::get('fee-all', [FeeController::class, 'all'])->middleware(['can:bill_read']);
