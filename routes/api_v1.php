@@ -61,6 +61,7 @@ use App\Http\Controllers\API\v1\Subject\SubjectForStudentController;
 use App\Http\Controllers\API\v1\Subject\SubjectForTeacherController;
 use App\Http\Controllers\API\v1\Student\UnallocatedStudentController;
 use App\Http\Controllers\API\v1\Subject\ChapterProgressionController;
+use App\Http\Controllers\API\v1\TinyMce\TinyMceImageUploadController;
 use App\Http\Controllers\API\v1\ManualPayment\ManualPaymentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
@@ -225,6 +226,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('exam-subject/{exam_subject}', [ExamSubjectController::class, 'destroy']);
 
     Route::get('exam-question/{exam_subject}', [ExamQuestionController::class, 'index']);
+
+    Route::post('/tiny_mce_uploaded_imgs', [TinyMceImageUploadController::class, 'store']);
     
     Route::get('notification', [NotificationController::class, 'index']);
     Route::post('notification', [NotificationController::class, 'store']);
