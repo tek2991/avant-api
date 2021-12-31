@@ -216,6 +216,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('exam-section-standard/{exam_section_standard}', [ExamSectionStandardController::class, 'destroy']);
 
     Route::get('exam-subject/{exam}', [ExamSubjectController::class, 'index']);
+    Route::get('exam-subject-show/{exam_subject}', [ExamSubjectController::class, 'show']);
     Route::get('exam-subject-all/{exam}', [ExamSubjectController::class, 'allExcluded']);
     Route::put('exam-subject/{exam_subject}', [ExamSubjectController::class, 'update']);
     Route::post('exam-subject', [ExamSubjectController::class, 'store']);

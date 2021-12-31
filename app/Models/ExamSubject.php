@@ -40,6 +40,6 @@ class ExamSubject extends Pivot
     }
 
     public function examQuestions(){
-        return $this->hasMany(ExamQuestion::class);
+        return $this->hasMany(ExamQuestion::class, 'exam_subject_id');
     }
 }

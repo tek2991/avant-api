@@ -79,7 +79,7 @@ class ExamSubjectController extends Controller
      */
     public function show(ExamSubject $examSubject)
     {
-        //
+        return $examSubject->load('subject.standard', 'examSchedule', 'examSubjectState', 'examQuestions');
     }
 
     /**
