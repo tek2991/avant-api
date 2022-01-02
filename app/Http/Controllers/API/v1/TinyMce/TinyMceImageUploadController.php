@@ -30,7 +30,7 @@ class TinyMceImageUploadController extends Controller
                 return response([
                     'header' => 'Success',
                     'message' => 'Image uploaded successfully.',
-                    'image_url' => Storage::url($image_name)
+                    'image_url' => substr(Storage::url($image_name), 1),
                 ], 200);
             } catch (\Exception $e) {
                 return response([

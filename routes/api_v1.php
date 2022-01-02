@@ -227,7 +227,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('exam-question/{exam_subject}', [ExamQuestionController::class, 'index']);
 
-    Route::post('/tiny_mce_uploaded_imgs', [TinyMceImageUploadController::class, 'store']);
+    Route::post('tiny_mce_img_upload', [TinyMceImageUploadController::class, 'store']);
     
     Route::get('notification', [NotificationController::class, 'index']);
     Route::post('notification', [NotificationController::class, 'store']);
