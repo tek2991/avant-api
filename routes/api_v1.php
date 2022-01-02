@@ -226,6 +226,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('exam-subject/{exam_subject}', [ExamSubjectController::class, 'destroy']);
 
     Route::get('exam-question/{exam_subject}', [ExamQuestionController::class, 'index']);
+    Route::post('exam-question', [ExamQuestionController::class, 'store']);
 
     Route::post('tiny_mce_img_upload', [TinyMceImageUploadController::class, 'store']);
     
