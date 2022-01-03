@@ -135,4 +135,18 @@ class ExamQuestionController extends Controller
             ], 500);
         }
     }
+
+    public function destroy(ExamQuestion $examQuestion){
+        try {
+            $examQuestion->delete();
+            return response([
+                'message' => 'Exam Question Deleted Successfully',
+            ], 200);
+        } catch (Exception $ex) {
+            return response([
+                'message' => 'Something went wrong.',
+                'errors' => $ex->getMessage()
+            ], 500);
+        }
+    }
 }
