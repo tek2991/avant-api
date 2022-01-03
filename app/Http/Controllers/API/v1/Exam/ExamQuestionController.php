@@ -76,4 +76,63 @@ class ExamQuestionController extends Controller
             ], 500);
         }
     }
+
+    public function update(ExamQuestion $examQuestion, Request $request){
+        $user = auth()->user();
+
+        $this->validate($request, [
+            'chapter_id' => 'nullable|exists:chapters,id',
+            'exam_question_type_id' => 'required|exists:exam_question_types,id',
+            'question' => 'required',
+            'mark' => 'required|numeric',
+            'max_time_in_seconds' => 'nullable|numeric',
+            'option_1' => 'requiredIf:exam_question_type_id,1',
+            'option_2' => 'requiredIf:exam_question_type_id,1',
+            'option_3' => 'requiredIf:exam_question_type_id,1',
+            'option_4' => 'requiredIf:exam_question_type_id,1',
+            'answer' => 'requiredIf:exam_question_type_id,1',
+        ]);
+
+        try {
+            $examQuestion->update([
+                'chapter_id' => $request->chapter_id,
+                'exam_question_type_id' => $request->exam_question_type_id,
+                'description' => $request->question,
+                'marks' => $request->mark,
+                'max_time_in_seconds' => $request->max_time_in_seconds ? $request->max_time_in_seconds : 0,
+                'created_by' => $user->id,
+            ]);
+
+            if ($request->exam_question_type_id == 1) {
+                $examQuestion->examQuestionOptions()->delete();
+                $examQuestion->examQuestionOptions()->createMany([
+                    [
+                        'description' => $request->option_1,
+                        'is_correct' => $request->answer == 1 ? true : false,
+                    ],
+                    [
+                        'description' => $request->option_2,
+                        'is_correct' => $request->answer == 2 ? true : false,
+                    ],
+                    [
+                        'description' => $request->option_3,
+                        'is_correct' => $request->answer == 3 ? true : false,
+                    ],
+                    [
+                        'description' => $request->option_4,
+                        'is_correct' => $request->answer == 4 ? true : false,
+                    ],
+                ]);
+            }
+            return response([
+                'message' => 'Exam Question Updated Successfully',
+                'data' => $examQuestion->load('examQuestionOptions', 'examQuestionType'),
+            ], 200);
+        } catch (Exception $ex) {
+            return response([
+                'message' => 'Something went wrong.',
+                'errors' => $ex->getMessage()
+            ], 500);
+        }
+    }
 }
