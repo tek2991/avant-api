@@ -17,9 +17,20 @@ class ExamSubjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Exam $exam)
+    public function index(Exam $exam, Request $request)
     {
-        $exam_subjects = ExamSubject::where('exam_id', $exam->id)->with('subject.standard', 'examSchedule', 'examSubjectState', 'examQuestions:exam_subject_id,id,marks')->orderBy('subject_id')->paginate();
+        $this->validate($request, [
+            'standard_id' => 'nullable|exists:standards,id',
+            'subject_group_id' => 'nullable|exists:subject_groups,id',
+        ]);
+        
+        $standard_id = $request->input('standard_id') ? $request->input('standard_id') : '%%';
+        $subject_group_id = $request->input('subject_group_id') ? $request->input('subject_group_id') : '%%';
+
+        $exam_subjects = ExamSubject::where('exam_id', $exam->id)->whereHas('subject', function ($query) use ($standard_id, $subject_group_id) {
+            $query->where('standard_id', 'like', $standard_id)->where('subject_group_id', 'like', $subject_group_id);
+        })->with('subject.standard', 'examSchedule', 'examSubjectState', 'examQuestions:exam_subject_id,id,marks')->orderBy('subject_id')->paginate();
+
         return $exam_subjects;
     }
 
