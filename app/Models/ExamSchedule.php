@@ -11,8 +11,8 @@ class ExamSchedule extends Model
         'date',
         'start',
         'end',
-        'start_time',
-        'end_time',
+        'started_at',
+        'ended_at',
     ];
 
     public function exam(){

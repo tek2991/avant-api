@@ -14,8 +14,8 @@ class AddColumnToExamSchedulesTable extends Migration
     public function up()
     {
         Schema::table('exam_schedules', function (Blueprint $table) {
-            $table->dateTime('start_time')->nullable();
-            $table->dateTime('end_time')->nullable();
+            $table->dateTime('started_at')->nullable();
+            $table->dateTime('ended_at')->nullable();
         });
     }
 
@@ -27,8 +27,8 @@ class AddColumnToExamSchedulesTable extends Migration
     public function down()
     {
         Schema::table('exam_schedules', function (Blueprint $table) {
-            $table->dropColumn('start_time');
-            $table->dropColumn('end_time');
+            $table->dropColumn('started_at');
+            $table->dropColumn('ended_at');
         });
     }
 }
