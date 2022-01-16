@@ -22,14 +22,24 @@ class ExamSubjectController extends Controller
         $this->validate($request, [
             'standard_id' => 'nullable|exists:standards,id',
             'subject_group_id' => 'nullable|exists:subject_groups,id',
+            'exam_schedule_id' => 'nullable|exists:exam_schedules,id',
         ]);
-        
+
         $standard_id = $request->input('standard_id') ? $request->input('standard_id') : '%%';
         $subject_group_id = $request->input('subject_group_id') ? $request->input('subject_group_id') : '%%';
+        $exam_schedule_id = $request->input('exam_schedule_id') ? $request->input('exam_schedule_id') : '%%';
 
-        $exam_subjects = ExamSubject::where('exam_id', $exam->id)->whereHas('subject', function ($query) use ($standard_id, $subject_group_id) {
-            $query->where('standard_id', 'like', $standard_id)->where('subject_group_id', 'like', $subject_group_id);
-        })->with('subject.standard', 'examSchedule', 'examSubjectState', 'examQuestions:exam_subject_id,id,marks')->orderBy('subject_id')->paginate();
+        $exam_subjects = null;
+
+        if ($request->input('exam_schedule_id')) {
+            $exam_subjects = ExamSubject::where('exam_id', $exam->id)->where('exam_schedule_id', 'like', $exam_schedule_id)->whereHas('subject', function ($query) use ($standard_id, $subject_group_id) {
+                $query->where('standard_id', 'like', $standard_id)->where('subject_group_id', 'like', $subject_group_id);
+            })->with('subject.standard', 'examSchedule', 'examSubjectState', 'examQuestions:exam_subject_id,id,marks')->orderBy('subject_id')->paginate();
+        } else {
+            $exam_subjects = ExamSubject::where('exam_id', $exam->id)->whereHas('subject', function ($query) use ($standard_id, $subject_group_id) {
+                $query->where('standard_id', 'like', $standard_id)->where('subject_group_id', 'like', $subject_group_id);
+            })->with('subject.standard', 'examSchedule', 'examSubjectState', 'examQuestions:exam_subject_id,id,marks')->orderBy('subject_id')->paginate();
+        }
 
         return $exam_subjects;
     }
