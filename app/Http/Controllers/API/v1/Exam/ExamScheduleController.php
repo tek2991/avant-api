@@ -19,7 +19,7 @@ class ExamScheduleController extends Controller
      */
     public function index(Exam $exam)
     {
-        $examSchedules = $exam->examSchedules()->orderBy('start')->paginate();
+        $examSchedules = $exam->examSchedules()->withCount('examSubjects')->orderBy('start')->paginate();
         return $examSchedules;
     }
 
