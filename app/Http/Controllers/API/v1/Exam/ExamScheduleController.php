@@ -6,9 +6,10 @@ use Exception;
 use App\Models\Exam;
 use App\Models\ExamSchedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use App\Models\ExamSubjectState;
 use PhpParser\Node\Stmt\TryCatch;
 use App\Http\Controllers\Controller;
-use App\Models\ExamSubjectState;
 use Illuminate\Support\Facades\Auth;
 
 class ExamScheduleController extends Controller
@@ -167,23 +168,55 @@ class ExamScheduleController extends Controller
 
         $exam_subjects = $examSchedule->examSubjects()->get();
 
-        foreach ($exam_subjects as $exam_subject) {
-            if($request->status == 'start'){
-                if($exam_subject->exam_subject_state_id == $exam_subject_created_state_id){
+        // foreach ($exam_subjects as $exam_subject) {
+        //     if ($request->status == 'start') {
+        //         if ($exam_subject->exam_subject_state_id == $exam_subject_created_state_id) {
+        //             $exam_subject->update([
+        //                 'exam_subject_state_id' => $exam_subject_state_id
+        //             ]);
+        //         }
+        //     }
+
+        //     if ($request->status == 'end') {
+        //         if ($exam_subject->exam_subject_state_id == $exam_subject_active_state_id) {
+        //             $exam_subject->update([
+        //                 'exam_subject_state_id' => $exam_subject_state_id
+        //             ]);
+        //         }
+        //     }
+        // }
+
+        if ($request->status == 'start') {
+            foreach ($exam_subjects as $exam_subject) {
+                if ($exam_subject->exam_subject_state_id == $exam_subject_created_state_id) {
                     $exam_subject->update([
                         'exam_subject_state_id' => $exam_subject_state_id
                     ]);
                 }
             }
-
-            if($request->status == 'end'){
-                if($exam_subject->exam_subject_state_id == $exam_subject_active_state_id){
-                    $exam_subject->update([
-                        'exam_subject_state_id' => $exam_subject_state_id
-                    ]);
-                }
+            if($examSchedule->started_at == null){
+                $examSchedule->update([
+                    'started_at' => Carbon::now()
+                ]);
             }
         }
+
+        if ($request->status == 'end') {
+            foreach ($exam_subjects as $exam_subject) {
+                if ($exam_subject->exam_subject_state_id == $exam_subject_active_state_id) {
+                    $exam_subject->update([
+                        'exam_subject_state_id' => $exam_subject_state_id
+                    ]);
+                }
+            }
+            if($examSchedule->ended_at == null){
+                $examSchedule->update([
+                    'ended_at' => Carbon::now()
+                ]);
+            }
+        }
+
+
 
         return response([
             'header' => 'Success',
