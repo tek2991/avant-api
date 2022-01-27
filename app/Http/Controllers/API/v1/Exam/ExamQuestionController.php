@@ -34,9 +34,9 @@ class ExamQuestionController extends Controller
             'answer' => 'requiredIf:exam_question_type_id,1',
         ]);
 
-        $full_marks = ExamSubject::find($request->exam_subject_id)->full_marks;
+        $full_mark = ExamSubject::find($request->exam_subject_id)->full_mark;
         $total_marks = ExamQuestion::where('exam_subject_id', $request->exam_subject_id)->sum('marks');
-        $remaining_marks = $full_marks - $total_marks;
+        $remaining_marks = $full_mark - $total_marks;
 
         if ($request->mark > $remaining_marks) {
             return response()->json([
@@ -103,9 +103,9 @@ class ExamQuestionController extends Controller
             'answer' => 'requiredIf:exam_question_type_id,1',
         ]);
 
-        $full_marks = ExamSubject::find($examQuestion->exam_subject_id)->full_marks;
+        $full_mark = ExamSubject::find($examQuestion->exam_subject_id)->full_mark;
         $total_marks = ExamQuestion::where('exam_subject_id', $examQuestion->exam_subject_id)->whereNotIn('id', [$examQuestion->id])->sum('marks');
-        $remaining_marks = $full_marks - $total_marks;
+        $remaining_marks = $full_mark - $total_marks;
 
         if ($request->mark > $remaining_marks) {
             return response()->json([
