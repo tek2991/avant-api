@@ -169,6 +169,15 @@ class ExamScheduleController extends Controller
         $exam_subjects = $examSchedule->examSubjects()->get();
 
         if ($request->status == 'start') {
+            foreach ($exam_subjects as $exam_subject){
+                $assigned_mark = $exam_subject->examQuestions->sum('marks');
+                if($assigned_mark != $exam_subject->full_mark){
+                    return response([
+                        'header' => 'Error',
+                        'message' => 'Unassigned marks in: '.$exam_subject->subject->name . ' (' . $exam_subject->subject->standard->name .')',                    ], 400);
+                }
+            }
+
             foreach ($exam_subjects as $exam_subject) {
                 if ($exam_subject->exam_subject_state_id == $exam_subject_created_state_id) {
                     $exam_subject->update([
