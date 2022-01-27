@@ -168,24 +168,6 @@ class ExamScheduleController extends Controller
 
         $exam_subjects = $examSchedule->examSubjects()->get();
 
-        // foreach ($exam_subjects as $exam_subject) {
-        //     if ($request->status == 'start') {
-        //         if ($exam_subject->exam_subject_state_id == $exam_subject_created_state_id) {
-        //             $exam_subject->update([
-        //                 'exam_subject_state_id' => $exam_subject_state_id
-        //             ]);
-        //         }
-        //     }
-
-        //     if ($request->status == 'end') {
-        //         if ($exam_subject->exam_subject_state_id == $exam_subject_active_state_id) {
-        //             $exam_subject->update([
-        //                 'exam_subject_state_id' => $exam_subject_state_id
-        //             ]);
-        //         }
-        //     }
-        // }
-
         if ($request->status == 'start') {
             foreach ($exam_subjects as $exam_subject) {
                 if ($exam_subject->exam_subject_state_id == $exam_subject_created_state_id) {
