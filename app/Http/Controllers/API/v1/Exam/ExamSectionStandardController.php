@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\SectionStandard;
 use App\Models\ExamSectionStandard;
 use App\Http\Controllers\Controller;
+use App\Models\ExamSubject;
 use Illuminate\Support\Facades\Auth;
 
 class ExamSectionStandardController extends Controller
@@ -32,7 +33,7 @@ class ExamSectionStandardController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-        if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
+        if ($user->hasRole('director') !== true) {
             return response([
                 'header' => 'Forbidden',
                 'message' => 'Please Logout and Login again.'
@@ -93,6 +94,17 @@ class ExamSectionStandardController extends Controller
                 'header' => 'Forbidden',
                 'message' => 'Please Logout and Login again.'
             ], 401);
+        }
+
+        $exam_id = $examSectionStandard->exam_id;
+        $subject_ids = $examSectionStandard->sectionStandard->standard->subjects->pluck('id')->toArray();
+        $exam_subject_count = ExamSubject::where('exam_id', $exam_id)->whereIn('subject_id', $subject_ids)->count();
+
+        if($exam_subject_count > 0){
+            return response([
+                'header' => 'Forbidden',
+                'message' => $exam_subject_count . ' subjects assigned for this class.'
+            ], 403);
         }
 
         try {
