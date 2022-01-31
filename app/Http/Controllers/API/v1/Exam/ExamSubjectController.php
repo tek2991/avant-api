@@ -24,6 +24,7 @@ class ExamSubjectController extends Controller
             'standard_id' => 'nullable|exists:standards,id',
             'subject_group_id' => 'nullable|exists:subject_groups,id',
             'exam_schedule_id' => 'nullable|exists:exam_schedules,id',
+            'segment' => 'nullable|in:all,active,closed,upcoming',
         ]);
 
         $standard_id = $request->input('standard_id') ? $request->input('standard_id') : '%%';
@@ -50,7 +51,27 @@ class ExamSubjectController extends Controller
         if($user->hasRole('director')){
             return $exam_subjects->paginate();
         }else if($user->hasRole('student')){
-            return $exam_subjects->whereIn('subject_id', $subject_ids)->whereHas('examSchedule')->orderBy('exam_schedule_id')->paginate();
+            $segment = $request->segment;
+            $exam_subject_states = null;
+    
+            switch ($segment) {
+                case "active":
+                    $exam_subject_states = ['Active'];
+                    break;
+                case "upcoming":
+                    $exam_subject_states = ['Created'];
+                    break;
+                case "closed":
+                    $exam_subject_states = ['Evaluating', 'Locked'];
+                    break;
+                case "all":
+                    $exam_subject_states = ['Active', 'Created', 'Evaluating', 'Locked'];
+                    break;
+            }
+
+            $exam_subject_state_ids = ExamSubjectState::whereIn('name', $exam_subject_states)->pluck('id')->toArray();
+
+            return $exam_subjects->whereIn('subject_id', $subject_ids)->whereIn('exam_subject_state_id', $exam_subject_state_ids)->whereHas('examSchedule')->orderBy('exam_schedule_id')->paginate();
         }
     }
 
