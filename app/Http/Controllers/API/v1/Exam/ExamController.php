@@ -21,8 +21,19 @@ class ExamController extends Controller
      */
     public function index()
     {
-        $exams = Exam::with('examType')->paginate();
-        return $exams;
+        $user = Auth::user();
+        if($user->hasRole('director') === true){
+            $exams = Exam::with('examType')->paginate();
+            return $exams;
+        }
+
+        if($user->hasRole('student') === true){
+            $subject_ids = $user->student->subjects()->pluck('subject_id');
+            $exams = Exam::whereHas('subjects', function ($query) use ($subject_ids) {
+                $query->whereIn('subjects.id', $subject_ids);
+            })->with('examType')->paginate();
+            return $exams;
+        }
     }
 
     /**

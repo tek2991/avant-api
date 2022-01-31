@@ -76,6 +76,8 @@ class ExamSubjectController extends Controller
             'negative_percentage' => 'required|integer|between:0,400',
         ]);
 
+        $exam_subject_created_state_id = ExamSubjectState::where('name', 'Created')->first()->id;
+
         $exam_subject = ExamSubject::create([
             'exam_id' => $request->exam_id,
             'subject_id' => $request->subject_id,
@@ -83,6 +85,8 @@ class ExamSubjectController extends Controller
             'full_mark' => $request->full_mark,
             'pass_mark' => $request->pass_mark,
             'negative_percentage' => $request->negative_percentage,
+            'exam_subject_state_id' => $exam_subject_created_state_id,
+            'auto_start' => false,
         ]);
 
         return response([
