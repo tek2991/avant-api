@@ -47,10 +47,10 @@ class ExamSubjectController extends Controller
             $subject_ids = $user->student->subjects->pluck('id')->toArray();
         }
 
-        if($user->hasRole('admin')){
+        if($user->hasRole('director')){
             return $exam_subjects->paginate();
         }else if($user->hasRole('student')){
-            return $exam_subjects->whereIn('subject_id', $subject_ids)->whereHas('examSchedule')->orderBy('exam_schedule.start')->paginate();
+            return $exam_subjects->whereIn('subject_id', $subject_ids)->whereHas('examSchedule')->orderBy('exam_schedule_id')->paginate();
         }
     }
 
