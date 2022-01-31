@@ -19,6 +19,7 @@ class ExamSubjectController extends Controller
      */
     public function index(Exam $exam, Request $request)
     {
+        $user = Auth::user();
         $this->validate($request, [
             'standard_id' => 'nullable|exists:standards,id',
             'subject_group_id' => 'nullable|exists:subject_groups,id',
@@ -34,14 +35,23 @@ class ExamSubjectController extends Controller
         if ($request->input('exam_schedule_id')) {
             $exam_subjects = ExamSubject::where('exam_id', $exam->id)->where('exam_schedule_id', 'like', $exam_schedule_id)->whereHas('subject', function ($query) use ($standard_id, $subject_group_id) {
                 $query->where('standard_id', 'like', $standard_id)->where('subject_group_id', 'like', $subject_group_id);
-            })->with('subject.standard', 'examSchedule', 'examSubjectState', 'examQuestions:exam_subject_id,id,marks')->orderBy('subject_id')->paginate();
+            })->with('subject.standard', 'examSchedule', 'examSubjectState', 'examQuestions:exam_subject_id,id,marks')->orderBy('subject_id');
         } else {
             $exam_subjects = ExamSubject::where('exam_id', $exam->id)->whereHas('subject', function ($query) use ($standard_id, $subject_group_id) {
                 $query->where('standard_id', 'like', $standard_id)->where('subject_group_id', 'like', $subject_group_id);
-            })->with('subject.standard', 'examSchedule', 'examSubjectState', 'examQuestions:exam_subject_id,id,marks')->orderBy('subject_id')->paginate();
+            })->with('subject.standard', 'examSchedule', 'examSubjectState', 'examQuestions:exam_subject_id,id,marks')->orderBy('subject_id');
         }
 
-        return $exam_subjects;
+        $subject_ids = '';
+        if($user->hasRole('student')){
+            $subject_ids = $user->student->subjects->pluck('id')->toArray();
+        }
+
+        if($user->hasRole('admin')){
+            return $exam_subjects->paginate();
+        }else if($user->hasRole('student')){
+            return $exam_subjects->whereIn('subject_id', $subject_ids)->whereHas('examSchedule')->orderBy('exam_schedule.start')->paginate();
+        }
     }
 
     public function allExcluded(Exam $exam)
