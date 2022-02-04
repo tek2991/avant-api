@@ -53,12 +53,25 @@ class ExamAnswerController extends Controller
                 'exam_answer_state_id' => $exam_answer_created_state_id,
             ];
         }
+
         $exam_subject_active_state_id = ExamSubjectState::where('name', 'Active')->first()->id;
         $exam_subject_score = ExamSubjectScore::where('exam_subject_id', $exam_subject->id)->where('user_id', $user_id)->first();
-        ExamAnswer::insert($insert_data);
-        $exam_subject_score->update([
-            'exam_subject_state_id' => $exam_subject_active_state_id,
-        ]);
+
+        if($exam_subject_score->exam_subject_state_id != $exam_subject_active_state_id){
+            ExamAnswer::insert($insert_data);
+            $exam_subject_score->update([
+                'exam_subject_state_id' => $exam_subject_active_state_id,
+            ]);
+            return response([
+                'header' => 'Success',
+                'message' => 'Online Exam started!',
+            ], 200);
+        }
+
+        return response([
+            'header' => 'Success',
+            'message' => 'Online Exam rejoined!',
+        ], 200);
     }
 
     /**
