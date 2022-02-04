@@ -4,9 +4,11 @@ namespace App\Http\Controllers\API\v1\Exam;
 
 use Exception;
 use App\Models\Exam;
+use App\Models\User;
 use App\Models\ExamSchedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use App\Models\ExamSubjectScore;
 use App\Models\ExamSubjectState;
 use PhpParser\Node\Stmt\TryCatch;
 use App\Http\Controllers\Controller;
@@ -165,10 +167,13 @@ class ExamScheduleController extends Controller
 
         $exam_subject_created_state_id = ExamSubjectState::where('name', 'Created')->first()->id;
         $exam_subject_active_state_id = ExamSubjectState::where('name', 'Active')->first()->id;
+        $exam_subject_evaluating_state_id = ExamSubjectState::where('name', 'Evaluating')->first()->id;
 
         $exam_subjects = $examSchedule->examSubjects()->get();
 
         if ($request->status == 'start') {
+            
+            // Loop through exam subjects and check if they are ready
             foreach ($exam_subjects as $exam_subject){
                 $assigned_mark = $exam_subject->examQuestions->sum('marks');
                 if($assigned_mark != $exam_subject->full_mark){
@@ -183,6 +188,15 @@ class ExamScheduleController extends Controller
                     $exam_subject->update([
                         'exam_subject_state_id' => $exam_subject_state_id
                     ]);
+
+                    $student_ids = $exam_subject->subject->students->pluck('id')->toArray();
+                    $user_ids = User::whereIn('id', $student_ids)->pluck('id')->toArray();
+                    $pivot_data = [
+                        'marks_secured' => 0,
+                        'exam_subject_state_id' => $exam_subject_created_state_id,
+                    ];
+                    $sync_data = array_combine($user_ids, array_fill(0, count($user_ids), $pivot_data));
+                    $exam_subject->users()->sync($sync_data);
                 }
             }
             if($examSchedule->started_at == null){
@@ -197,6 +211,12 @@ class ExamScheduleController extends Controller
                 if ($exam_subject->exam_subject_state_id == $exam_subject_active_state_id) {
                     $exam_subject->update([
                         'exam_subject_state_id' => $exam_subject_state_id
+                    ]);
+
+                    $exam_subject_score_ids = $exam_subject->examSubjectScores->pluck('id')->toArray();
+
+                    ExamSubjectScore::whereIn('id', $exam_subject_score_ids)->update([
+                        'exam_subject_state_id' => $exam_subject_evaluating_state_id
                     ]);
                 }
             }

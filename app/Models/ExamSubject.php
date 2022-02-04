@@ -42,4 +42,8 @@ class ExamSubject extends Pivot
     public function examQuestions(){
         return $this->hasMany(ExamQuestion::class, 'exam_subject_id');
     }
+
+    public function examSubjectScores(){
+        return $this->hasMany(ExamSubjectScore::class, 'exam_subject_id');
+    }
 }

@@ -12,7 +12,8 @@ class ExamSubjectScore extends Model
     protected $fillable = [
         'exam_subject_id',
         'user_id',
-        'marks_secured'
+        'marks_secured',
+        'exam_subject_state_id',
     ];
 
     public function examSubject(){
@@ -21,5 +22,9 @@ class ExamSubjectScore extends Model
 
     public function user(){
         return $this->belongsTo(User::class);
+    }
+
+    public function examSubjectState(){
+        return $this->belongsTo(ExamSubjectState::class);
     }
 }
