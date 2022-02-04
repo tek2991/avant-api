@@ -29,16 +29,8 @@ class ExamQuestionController extends Controller
         }
 
         $question = $examQuestion->load('examQuestionOptions', 'examQuestionType');
-        $answer = $question->examAnswers()->where('user_id', $user->id)->first();
 
-        return response([
-            'header' => 'OK',
-            'message' => 'Question and Answer',
-            'data' => [
-                'question' => $question,
-                'answer' => $answer
-            ]
-        ], 200);
+        return $question;
     }
 
     public function store(Request $request)
