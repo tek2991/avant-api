@@ -189,7 +189,7 @@ class ExamScheduleController extends Controller
                         'exam_subject_state_id' => $exam_subject_state_id
                     ]);
 
-                    $student_ids = $exam_subject->subject->students->pluck('id')->toArray();
+                    $student_ids = $exam_subject->subject->students->pluck('user_id')->toArray();
                     $user_ids = User::whereIn('id', $student_ids)->pluck('id')->toArray();
                     $pivot_data = [
                         'marks_secured' => 0,
@@ -213,7 +213,7 @@ class ExamScheduleController extends Controller
                         'exam_subject_state_id' => $exam_subject_state_id
                     ]);
 
-                    $exam_subject_score_ids = $exam_subject->examSubjectScores->pluck('id')->toArray();
+                    $exam_subject_score_ids = $exam_subject->examSubjectScores->pluck('user_id')->toArray();
 
                     ExamSubjectScore::whereIn('id', $exam_subject_score_ids)->update([
                         'exam_subject_state_id' => $exam_subject_evaluating_state_id
