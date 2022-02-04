@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\API\v1\Exam;
 
+use Exception;
 use App\Models\ExamSubject;
+use App\Models\ExamQuestion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\ExamQuestion;
-use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class ExamQuestionController extends Controller
 {
@@ -14,6 +15,30 @@ class ExamQuestionController extends Controller
     {
         $examQuestions = ExamQuestion::where('exam_subject_id', $examSubject->id)->with('examQuestionOptions', 'examQuestionType')->paginate();
         return $examQuestions;
+    }
+
+    public function show(ExamQuestion $examQuestion)
+    {
+        $user = Auth::user();
+
+        if($user->hasRole('student') !== true) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
+        $question = $examQuestion->load('examQuestionOptions', 'examQuestionType');
+        $answer = $question->examAnswers()->where('user_id', $user->id)->first();
+
+        return response([
+            'header' => 'OK',
+            'message' => 'Question and Answer',
+            'data' => [
+                'question' => $question,
+                'answer' => $answer
+            ]
+        ], 200);
     }
 
     public function store(Request $request)

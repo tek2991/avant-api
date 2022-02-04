@@ -34,4 +34,8 @@ class ExamQuestion extends Model
     public function examQuestionOptions(){
         return $this->hasMany(ExamQuestionOption::class);
     }
+
+    public function examAnswers(){
+        return $this->hasMany(ExamAnswer::class);
+    }
 }
