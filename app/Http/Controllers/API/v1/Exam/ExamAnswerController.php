@@ -22,6 +22,19 @@ class ExamAnswerController extends Controller
     {
         //
     }
+    /**
+     * Display a listing of all the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function all(ExamSubject $examSubject)
+    {
+        $user = Auth::user();
+        $exa_question_ids = $examSubject->examQuestions()->pluck('id')->toArray();
+        $exam_answers = ExamAnswer::whereIn('exam_question_id', $exa_question_ids)->where('user_id', $user->id)->get();
+        return $exam_answers;
+    }
+
 
     /**
      * Store a newly created resource in storage.
