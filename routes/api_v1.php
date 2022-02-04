@@ -23,6 +23,7 @@ use App\Http\Controllers\API\v1\Subject\StreamController;
 use App\Http\Controllers\API\v1\Attributes\BankController;
 use App\Http\Controllers\API\v1\Bill\FeeInvoiceController;
 use App\Http\Controllers\API\v1\Event\EventTypeController;
+use App\Http\Controllers\API\v1\Exam\ExamAnswerController;
 use App\Http\Controllers\API\v1\Student\StudentController;
 use App\Http\Controllers\API\v1\Subject\ChapterController;
 use App\Http\Controllers\API\v1\Subject\SubjectController;
@@ -214,6 +215,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('exam-schedule', [ExamScheduleController::class, 'store']);
     Route::delete('exam-schedule/{exam_schedule}', [ExamScheduleController::class, 'destroy']);
     Route::post('exam-schedule-control/{exam_schedule}', [ExamScheduleController::class, 'control']);
+
+    Route::post('exam-answer', [ExamAnswerController::class, 'store']);
 
     Route::get('exam-section-standard/{exam}', [ExamSectionStandardController::class, 'index']);
     Route::post('exam-section-standard', [ExamSectionStandardController::class, 'store']);
