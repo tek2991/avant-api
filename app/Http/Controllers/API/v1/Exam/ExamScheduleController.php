@@ -161,8 +161,24 @@ class ExamScheduleController extends Controller
 
         if ($request->status == 'start') {
             $exam_subject_state_id = ExamSubjectState::where('name', 'Active')->first()->id;
+            $current_time_stamp = Carbon::now()->timestamp;
+            $start_time_stamp = Carbon::parse($examSchedule->start)->timestamp;
+            if($current_time_stamp < $start_time_stamp) {
+                return response([
+                    'header' => 'Forbidden',
+                    'message' => 'Exam Schedule is not started yet.'
+                ], 403);
+            }
         } elseif ($request->status == 'end') {
             $exam_subject_state_id = ExamSubjectState::where('name', 'Evaluating')->first()->id;
+            $current_time_stamp = Carbon::now()->timestamp;
+            $end_time_stamp = Carbon::parse($examSchedule->end)->timestamp;
+            if($current_time_stamp > $end_time_stamp) {
+                return response([
+                    'header' => 'Forbidden',
+                    'message' => 'Exam Schedule is ended.'
+                ], 403);
+            }
         }
 
         $exam_subject_created_state_id = ExamSubjectState::where('name', 'Created')->first()->id;
