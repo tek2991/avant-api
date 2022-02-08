@@ -40,6 +40,7 @@ use App\Http\Controllers\API\v1\Attributes\LanguageController;
 use App\Http\Controllers\API\v1\Attributes\ReligionController;
 use App\Http\Controllers\API\v1\Chart\DirectorChartController;
 use App\Http\Controllers\API\v1\Appeal\ResolveAppealController;
+use App\Http\Controllers\API\v1\Exam\ExamAnswerStateController;
 use App\Http\Controllers\API\v1\Subject\SubjectGroupController;
 use App\Http\Controllers\API\v1\Attendance\AttendanceController;
 use App\Http\Controllers\API\v1\Attributes\AppealTypeController;
