@@ -219,6 +219,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('exam-answer-all/{exam_subject}', [ExamAnswerController::class, 'all']);
     Route::post('exam-answer', [ExamAnswerController::class, 'store']);
 
+    Route::get('exam-answer-state', [ExamAnswerStateController::class, 'index']);
+
     Route::get('exam-section-standard/{exam}', [ExamSectionStandardController::class, 'index']);
     Route::post('exam-section-standard', [ExamSectionStandardController::class, 'store']);
     Route::delete('exam-section-standard/{exam_section_standard}', [ExamSectionStandardController::class, 'destroy']);
