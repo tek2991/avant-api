@@ -122,11 +122,16 @@ class ExamAnswerController extends Controller
             ],
         ]);
 
-        $examAnswer->update([
-            'description' => $request->description ? $request->description : null,
-            'exam_question_option_id' => $request->exam_question_option_id ? $request->exam_question_option_id : null,
+        $update_data = [
             'exam_answer_state_id' => $request->exam_answer_state_id,
-        ]);
+        ];
+
+        if($request->exam_answer_state_id == ExamAnswerState::where('name', 'Answered')->first()->id){
+            $update_data['description'] = $request->description;
+            $update_data['exam_question_option_id'] = $request->exam_question_option_id;
+        }
+
+        $examAnswer->update($update_data);
 
         return response([
             'header' => 'Success',
