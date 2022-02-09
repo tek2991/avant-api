@@ -14,6 +14,7 @@ class ExamAnswer extends Model
         'user_id',
         'description',
         'exam_answer_state_id',
+        'exam_question_option_id',
         'marks_secured',
         'evaluated_by',
     ];

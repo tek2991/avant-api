@@ -32,7 +32,7 @@ class ExamAnswerController extends Controller
     {
         $user = Auth::user();
         $exa_question_ids = $examSubject->examQuestions()->pluck('id')->toArray();
-        $exam_answers = ExamAnswer::whereIn('exam_question_id', $exa_question_ids)->where('user_id', $user->id)->get();
+        $exam_answers = ExamAnswer::whereIn('exam_question_id', $exa_question_ids)->where('user_id', $user->id)->orderBy('exam_question_id')->get();
         return $exam_answers;
     }
 
