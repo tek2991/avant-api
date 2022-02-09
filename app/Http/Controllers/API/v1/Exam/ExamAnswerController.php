@@ -7,6 +7,7 @@ use App\Models\ExamAnswer;
 use App\Models\ExamSubject;
 use Illuminate\Http\Request;
 use App\Models\ExamAnswerState;
+use Illuminate\Validation\Rule;
 use App\Models\ExamSubjectScore;
 use App\Models\ExamSubjectState;
 use App\Http\Controllers\Controller;
@@ -95,7 +96,7 @@ class ExamAnswerController extends Controller
      */
     public function show(ExamAnswer $examAnswer)
     {
-        //
+        
     }
 
     /**
@@ -107,7 +108,30 @@ class ExamAnswerController extends Controller
      */
     public function update(Request $request, ExamAnswer $examAnswer)
     {
-        //
+        $this->validate($request, [
+            'exam_question_type' => ['required', Rule::in(['Objective', 'Descriptive'])],
+            'exam_answer_state_id' => 'required|integer|exists:exam_answer_states,id',
+            'description' => [
+                Rule::requiredIf($request->exam_question_type == 'Descriptive' && $request->exam_answer_state_id == ExamAnswerState::where('name', 'Answered')->first()->id),
+                'string',
+            ],
+            'exam_question_option_id' => [
+                Rule::requiredIf($request->exam_question_type == 'Objective' && $request->exam_answer_state_id == ExamAnswerState::where('name', 'Answered')->first()->id),
+                'integer',
+                'exists:exam_question_options,id',
+            ],
+        ]);
+
+        $examAnswer->update([
+            'description' => $request->description ? $request->description : null,
+            'exam_question_option_id' => $request->exam_question_option_id ? $request->exam_question_option_id : null,
+            'exam_answer_state_id' => $request->exam_answer_state_id,
+        ]);
+
+        return response([
+            'header' => 'Success',
+            'message' => 'Exam Answer Updated!',
+        ], 200);
     }
 
     /**

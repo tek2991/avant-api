@@ -219,6 +219,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('exam-answer-all/{exam_subject}', [ExamAnswerController::class, 'all']);
     Route::post('exam-answer', [ExamAnswerController::class, 'store']);
+    Route::put('exam-answer/{exam_answer}', [ExamAnswerController::class, 'update']);
 
     Route::get('exam-answer-state', [ExamAnswerStateController::class, 'index']);
 
