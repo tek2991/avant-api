@@ -55,7 +55,17 @@ class ExamAnswerController extends Controller
         $this->validate($request, [
             'exam_subject_id' => 'required|integer|exists:exam_subject,id',
         ]);
+
+        $exam_subject_active_state_id = ExamSubjectState::where('name', 'Active')->first()->id;
         $exam_subject = ExamSubject::find($request->exam_subject_id);
+
+        if ($exam_subject->exam_subject_state_id !== $exam_subject_active_state_id) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Exam Subject is not active.'
+            ], 403);
+        }
+
         $exam_question_ids = $exam_subject->examQuestions()->pluck('id')->toArray();
         $user_id = $user->id;
         $exam_answer_created_state_id = ExamAnswerState::where('name', 'Created')->first()->id;
