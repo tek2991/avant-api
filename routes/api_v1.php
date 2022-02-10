@@ -54,6 +54,7 @@ use App\Http\Controllers\API\v1\Student\UpdateStudentController;
 use App\Http\Controllers\API\v1\Student\StudentTrashedController;
 use App\Http\Controllers\API\v1\Subject\StudentSubjectController;
 use App\Http\Controllers\API\v1\Subject\SubjectTeacherController;
+use App\Http\Controllers\API\v1\Exam\ActiveExamSubjectsForStudent;
 use App\Http\Controllers\API\v1\Fee\AttachStandardToFeeController;
 use App\Http\Controllers\API\v1\Student\TransferStudentController;
 use App\Http\Controllers\API\v1\Exam\ExamSectionStandardController;
@@ -233,6 +234,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('exam-subject/{exam_subject}', [ExamSubjectController::class, 'update']);
     Route::post('exam-subject', [ExamSubjectController::class, 'store']);
     Route::delete('exam-subject/{exam_subject}', [ExamSubjectController::class, 'destroy']);
+
+    Route::get('active-exam-subjects-for-student', [ActiveExamSubjectsForStudent::class, 'index']);
 
     Route::get('exam-question/{exam_subject}', [ExamQuestionController::class, 'index']);
     Route::get('exam-question-show/{exam_question}', [ExamQuestionController::class, 'show']);
