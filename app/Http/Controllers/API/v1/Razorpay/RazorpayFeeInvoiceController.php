@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Razorpay as ModelsRazorpay;
 use App\Http\Controllers\API\v1\Attributes\VariableController;
+use App\Jobs\UpdateExamUsersJob;
 
 class RazorpayFeeInvoiceController extends Controller
 {
@@ -312,6 +313,9 @@ class RazorpayFeeInvoiceController extends Controller
             'event' => $event,
             'payload' => $webhookBody,
         ]);
+
+        $user = $payment->feeInvoice->user;
+        UpdateExamUsersJob::dispatch($user);
 
         return response('OK', 200);
     }

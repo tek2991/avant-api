@@ -10,6 +10,7 @@ use App\Models\ManualPayment;
 use App\Models\PaymentMethod;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Jobs\UpdateExamUsersJob;
 use Illuminate\Support\Facades\Auth;
 
 class ManualPaymentController extends Controller
@@ -126,6 +127,10 @@ class ManualPaymentController extends Controller
         Receipt::create([
             'fee_invoice_id' => $payment->fee_invoice_id,
         ]);
+
+        $user = $payment->feeInvoice->user;
+
+        UpdateExamUsersJob::dispatch($user);
 
         return $manualPayment;
     }
