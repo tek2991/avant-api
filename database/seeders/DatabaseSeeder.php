@@ -51,6 +51,7 @@ class DatabaseSeeder extends Seeder
             EventSeeder::class,
             NotificationTypeSeeder::class,
             NotificationSeeder::class,
+            ExamUserStateSeeder::class,
         ]);
     }
 }

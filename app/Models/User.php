@@ -110,4 +110,8 @@ class User extends Authenticatable
     public function tinymces(){
         return $this->hasMany(Tinymce::class);
     }
+
+    public function exams(){
+        return $this->belongsToMany(Exam::class, 'exam_user', 'user_id', 'exam_id')->withPivot('exam_user_state_id')->withTimestamps();
+    }
 }

@@ -63,4 +63,10 @@ class Exam extends Model
             'auto_start',
         ])->withTimestamps();
     }
+
+    public function users(){
+        return $this->belongsToMany(User::class, 'exam_user', 'exam_id', 'user_id')->withPivot([
+            'exam_user_state_id',
+        ]);
+    }
 }
