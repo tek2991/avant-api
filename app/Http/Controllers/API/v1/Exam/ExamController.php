@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\SectionStandard;
 use App\Rules\ExamScheduleRule;
 use App\Http\Controllers\Controller;
+use App\Jobs\CreateExamUsersJob;
 use App\Models\ExamSubjectState;
 use Illuminate\Support\Facades\Auth;
 
@@ -98,6 +99,8 @@ class ExamController extends Controller
             'exam_subject_state_id' => $exam_subject_state_id,
             'auto_start' => false,
         ]);
+
+        CreateExamUsersJob::dispatch($exam->id);
 
         return response([
             'header' => 'Success',
