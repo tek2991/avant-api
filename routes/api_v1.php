@@ -13,6 +13,7 @@ use App\Http\Controllers\API\v1\Bill\BillFeeController;
 use App\Http\Controllers\API\v1\User\TeacherController;
 use App\Http\Controllers\API\v1\Appeal\AppealController;
 use App\Http\Controllers\API\v1\Exam\ExamTypeController;
+use App\Http\Controllers\API\v1\Exam\ExamUserController;
 use App\Http\Controllers\API\v1\Export\ExportController;
 use App\Http\Controllers\API\v1\Setup\SectionController;
 use App\Http\Controllers\API\v1\Setup\SessionController;
@@ -217,6 +218,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('exam-schedule', [ExamScheduleController::class, 'store']);
     Route::delete('exam-schedule/{exam_schedule}', [ExamScheduleController::class, 'destroy']);
     Route::post('exam-schedule-control/{exam_schedule}', [ExamScheduleController::class, 'control']);
+
+    Route::get('exam-user/{exam}', [ExamUserController::class, 'index']);
 
     Route::get('exam-answer-all/{exam_subject}', [ExamAnswerController::class, 'all']);
     Route::post('exam-answer', [ExamAnswerController::class, 'store']);
