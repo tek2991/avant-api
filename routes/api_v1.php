@@ -223,6 +223,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('exam-schedule-control/{exam_schedule}', [ExamScheduleController::class, 'control']);
 
     Route::get('exam-user/{exam}', [ExamUserController::class, 'index']);
+    Route::put('exam-user/{exam}', [ExamUserController::class, 'update']);
 
     Route::get('exam-answer-all/{exam_subject}', [ExamAnswerController::class, 'all']);
     Route::post('exam-answer', [ExamAnswerController::class, 'store']);

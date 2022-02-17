@@ -58,28 +58,6 @@ class ExamUserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ExamUser  $examUser
-     * @return \Illuminate\Http\Response
-     */
-    public function show(ExamUser $examUser)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -88,17 +66,25 @@ class ExamUserController extends Controller
      */
     public function update(Request $request, ExamUser $examUser)
     {
-        //
-    }
+        $user = Auth::user();
+        if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\ExamUser  $examUser
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(ExamUser $examUser)
-    {
-        //
+        $this->validate($request, [
+            'exam_user_state_id' => 'bail|required|integer|exists:exam_user_states,id',
+        ]);
+
+        $examUser->update([
+            'exam_user_state_id' => $request->exam_user_state_id,
+        ]);
+
+        return response ([
+            'header' => 'Success',
+            'message' => 'Exam User State Updated Successfully.'
+        ], 200);
     }
 }
