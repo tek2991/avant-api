@@ -25,7 +25,34 @@ class ExamUserController extends Controller
             ], 401);
         }
 
-        $exam_users = ExamUser::where('exam_id', $exam->id)->with('user.userDetail', 'user.student')->paginate();
+        $this->validate(request(), [
+            'standard_id' => 'bail|nullable|integer|exists:standards,id',
+            'section_id' => 'bail|nullable|integer|exists:sections,id',
+        ]);
+
+        $exam_users = ExamUser::where('exam_id', $exam->id)
+        ->whereHas('user', function ($query) {
+            $query->whereHas('student', function ($query) {
+                $query->whereHas('sectionStandard', function ($query) {
+                    $query->whereHas('standard', function ($query) {
+                        if(request()->filled('standard_id')) {
+                            $query->where('id', request()->standard_id);
+                        }
+                        $query->orderBy('id');
+                    });
+
+                    $query->whereHas('section', function ($query) {
+                        if(request()->filled('section_id')) {
+                            $query->where('id', request()->section_id);
+                        }
+                        $query->orderBy('id');
+                    });
+
+                    $query->orderBy('roll_no');
+                });
+            });
+        })
+        ->with('user.userDetail', 'user.student.sectionStandard.section', 'user.student.sectionStandard.standard')->paginate();
 
         return $exam_users;
     }
