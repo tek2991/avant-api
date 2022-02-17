@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Jobs\SendSmsJob;
 use App\Models\SmsTemplate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Jobs\SendMultipleSmsJob;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -101,6 +102,9 @@ class SendSms extends Controller
             'user_ids' => 'exists:users,id'
         ]);
 
+        $due_upto = Carbon::create($request->due_upto)->toFormattedDateString();
+        $pay_before = Carbon::create($request->pay_before)->toFormattedDateString();
+
         $users = User::whereIn('id', $request->user_ids)->get();
         $sms_objects = [];
 
@@ -109,7 +113,7 @@ class SendSms extends Controller
             $sms_object = [
                 "user_id" => $user->id,
                 "number" => $user->userDetail->phone,
-                "variables" => [$request->due_upto, $unpaid_due, $request->pay_before]
+                "variables" => [$due_upto, $unpaid_due/100, $pay_before]
             ];
 
             $sms_objects[] = $sms_object;

@@ -207,6 +207,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('student-by-section-standard-with-unpaid-due', [StudentBySectionStandardWithUnpaidDue::class, 'index']);
     Route::post('send-holiday-sms', [SendSms::class, 'holidaySms']);
     Route::post('send-absentee-sms', [SendSms::class, 'absenteeSms']);
+    Route::post('send-unpaid-due-sms', [SendSms::class, 'unpaidDueSms']);
 
     Route::get('notification-type', [NotificationTypeController::class, 'index']);
 
