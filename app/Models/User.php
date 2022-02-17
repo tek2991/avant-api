@@ -114,4 +114,18 @@ class User extends Authenticatable
     public function exams(){
         return $this->belongsToMany(Exam::class, 'exam_user', 'user_id', 'exam_id')->withPivot('exam_user_state_id')->withTimestamps();
     }
+
+    public function unpaidDue(){
+        $fee_invoices = $this->feeInvoices()->get();
+        $unpaid_due = 0;
+        foreach ($fee_invoices as $fee_invoice) {
+            if ($fee_invoice->payment == null) {
+                $unpaid_due += $fee_invoice->gross_amount_in_cent;
+            }else if (in_array($fee_invoice->payment->payment_status_id, ['created', 'failed'])) {
+                $unpaid_due += $fee_invoice->gross_amount_in_cent;
+            }
+        }
+
+        return $unpaid_due;
+    }
 }

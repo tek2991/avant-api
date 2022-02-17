@@ -43,16 +43,7 @@ class CreateExamUsersJob implements ShouldQueue
 
         foreach ($user_ids as $user_id) {
             $user = User::find($user_id);
-            $unpaid_amount = 0;
-
-            $feeInvoices = $user->feeInvoices()->with('payment')->get();
-            foreach ($feeInvoices as $feeInvoice) {
-                if ($feeInvoice->payment == null) {
-                    $unpaid_amount += $feeInvoice->gross_amount_in_cent;
-                }else if (in_array($feeInvoice->payment->payment_status_id, ['created', 'failed'])) {
-                    $unpaid_amount += $feeInvoice->gross_amount_in_cent;
-                }
-            }
+            $unpaid_amount = $user->unpaidDue();
 
             $exam_user_state_id = $unpaid_amount > 10 ? $exam_user_inactive_state_id : $exam_user_active_state_id;
 

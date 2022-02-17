@@ -70,6 +70,7 @@ use App\Http\Controllers\API\v1\ManualPayment\ManualPaymentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
 use App\Http\Controllers\API\v1\Notification\NotificationTypeController;
+use App\Http\Controllers\API\v1\SMS\StudentBySectionStandardWithUnpaidDue;
 use App\Http\Controllers\API\v1\SMS\StudentBySectionStandardWithAttendance;
 
 /*
@@ -203,6 +204,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('student-by-section-standard', [StudentBySectionStandard::class, 'index']);
     Route::get('student-by-section-standard-with-attendance', [StudentBySectionStandardWithAttendance::class, 'index']);
+    Route::get('student-by-section-standard-with-unpaid-due', [StudentBySectionStandardWithUnpaidDue::class, 'index']);
     Route::post('send-holiday-sms', [SendSms::class, 'holidaySms']);
     Route::post('send-absentee-sms', [SendSms::class, 'absenteeSms']);
 

@@ -85,4 +85,44 @@ class SendSms extends Controller
 
         return response($sms_objects, 200);
     }
+
+    public function unpaidDueSms(Request $request){
+        $user = Auth::user();
+        if ($user->hasRole('director') !== true) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
+        $this->validate($request, [
+            'due_upto' => 'required|date',
+            'pay_before' => 'required|date',
+            'user_ids' => 'exists:users,id'
+        ]);
+
+        $users = User::whereIn('id', $request->user_ids)->get();
+        $sms_objects = [];
+
+        foreach ($users as $user) {
+            $unpaid_due = $user->unpaidDue();
+            $sms_object = [
+                "user_id" => $user->id,
+                "number" => $user->userDetail->phone,
+                "variables" => [$request->due_upto, $unpaid_due, $request->pay_before]
+            ];
+
+            $sms_objects[] = $sms_object;
+        }
+
+        $template = SmsTemplate::where('message_id', '111041')->firstOrFail();
+        $route = 'dlt';
+        $db_variables = VariableController::keyPairs();
+        $url = $db_variables['FAST2SMS_URL'];
+        $key = $db_variables['FAST2SMS_KEY'];
+
+        SendMultipleSmsJob::dispatch($sms_objects, $template, $route, $url, $key);
+
+        return response($sms_objects, 200);
+    }
 }
