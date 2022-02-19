@@ -18,6 +18,7 @@ use App\Http\Controllers\API\v1\Export\ExportController;
 use App\Http\Controllers\API\v1\Setup\SectionController;
 use App\Http\Controllers\API\v1\Setup\SessionController;
 use App\Http\Controllers\API\v1\SMS\SmsRecordController;
+use App\Http\Controllers\API\v1\Exam\ExamUserForStudents;
 use App\Http\Controllers\API\v1\Fee\ChargeableController;
 use App\Http\Controllers\API\v1\Setup\StandardController;
 use App\Http\Controllers\API\v1\Subject\StreamController;
@@ -224,6 +225,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('exam-user/{exam}', [ExamUserController::class, 'index']);
     Route::put('exam-user/{exam}', [ExamUserController::class, 'update']);
+    Route::get('exam-user-all-student', [ExamUserForStudents::class, 'all']);
 
     Route::get('exam-answer-all/{exam_subject}', [ExamAnswerController::class, 'all']);
     Route::post('exam-answer', [ExamAnswerController::class, 'store']);

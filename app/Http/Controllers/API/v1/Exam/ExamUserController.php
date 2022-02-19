@@ -54,7 +54,7 @@ class ExamUserController extends Controller
         if (request()->filled('user_id')) {
             $query->where('user_id', request()->user_id);
         }
-        $exam_users = $query->with('user.userDetail', 'user.student.sectionStandard.section', 'user.student.sectionStandard.standard')->paginate();
+        $exam_users = $query->with('examUserState', 'user.userDetail', 'user.student.sectionStandard.section', 'user.student.sectionStandard.standard')->paginate();
         return $exam_users;
     }
 
