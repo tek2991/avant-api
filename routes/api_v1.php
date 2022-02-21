@@ -70,6 +70,7 @@ use App\Http\Controllers\API\v1\TinyMce\TinyMceImageUploadController;
 use App\Http\Controllers\API\v1\ManualPayment\ManualPaymentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
+use App\Http\Controllers\API\v1\Exam\AdmitCardController;
 use App\Http\Controllers\API\v1\Notification\NotificationTypeController;
 use App\Http\Controllers\API\v1\SMS\StudentBySectionStandardWithUnpaidDue;
 use App\Http\Controllers\API\v1\SMS\StudentBySectionStandardWithAttendance;
@@ -263,6 +264,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::get('fee-invoice-print/{fee_invoice}', [FeeInvoiceController::class, 'print']);
 Route::get('fee-invoice-receipt/{fee_invoice}', [FeeInvoiceController::class, 'printReceipt']);
+Route::get('admit-card/{exam}', [AdmitCardController::class, 'print']);
 
 Route::get('bill-fee-export/{bill_fee}', [ExportController::class, 'billFee']);
 Route::get('sms-report', [SmsRecordController::class, 'index']);
