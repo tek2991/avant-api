@@ -18,6 +18,7 @@ use App\Http\Controllers\API\v1\Export\ExportController;
 use App\Http\Controllers\API\v1\Setup\SectionController;
 use App\Http\Controllers\API\v1\Setup\SessionController;
 use App\Http\Controllers\API\v1\SMS\SmsRecordController;
+use App\Http\Controllers\API\v1\Exam\AdmitCardController;
 use App\Http\Controllers\API\v1\Exam\ExamUserForStudents;
 use App\Http\Controllers\API\v1\Fee\ChargeableController;
 use App\Http\Controllers\API\v1\Setup\StandardController;
@@ -31,6 +32,7 @@ use App\Http\Controllers\API\v1\Subject\ChapterController;
 use App\Http\Controllers\API\v1\Subject\SubjectController;
 use App\Http\Controllers\API\v1\Attributes\CasteController;
 use App\Http\Controllers\API\v1\Exam\ExamSubjectController;
+use App\Http\Controllers\API\v1\Exam\ExamSubjectForStudent;
 use App\Http\Controllers\API\v1\Attributes\GenderController;
 use App\Http\Controllers\API\v1\Exam\ExamQuestionController;
 use App\Http\Controllers\API\v1\Exam\ExamScheduleController;
@@ -70,7 +72,6 @@ use App\Http\Controllers\API\v1\TinyMce\TinyMceImageUploadController;
 use App\Http\Controllers\API\v1\ManualPayment\ManualPaymentController;
 use App\Http\Controllers\API\v1\Razorpay\RazorpayFeeInvoiceController;
 use App\Http\Controllers\API\v1\Attendance\StudentAttendanceController;
-use App\Http\Controllers\API\v1\Exam\AdmitCardController;
 use App\Http\Controllers\API\v1\Notification\NotificationTypeController;
 use App\Http\Controllers\API\v1\SMS\StudentBySectionStandardWithUnpaidDue;
 use App\Http\Controllers\API\v1\SMS\StudentBySectionStandardWithAttendance;
@@ -218,6 +219,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('exam', [ExamController::class, 'store']);
 
     Route::get('admit-card/{exam}', [AdmitCardController::class, 'show']);
+    Route::get('exam-subject-for-student/{exam}', [ExamSubjectForStudent::class, 'index']);
 
     Route::get('exam-schedule/{exam}', [ExamScheduleController::class, 'index']);
     Route::get('exam-schedule-all/{exam}', [ExamScheduleController::class, 'all']);
