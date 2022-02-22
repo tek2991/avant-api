@@ -89,6 +89,6 @@ class AdmitCardController extends Controller
                 'message' => 'Something went wrong, Please contact principal!'
             ], 401);
         }
-        return $exam_user->with('exam', 'examUserState')->first();
+        return $exam_user->with('exam.examType', 'examUserState')->first();
     }
 }
