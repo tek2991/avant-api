@@ -8,6 +8,7 @@ use Barryvdh\DomPDF\Facade as PDF;
 use App\Http\Controllers\Controller;
 use Laravel\Sanctum\PersonalAccessToken;
 use App\Http\Controllers\API\v1\Attributes\VariableController;
+use Auth;
 
 class AdmitCardController extends Controller
 {
@@ -39,5 +40,10 @@ class AdmitCardController extends Controller
         return $pdf->download('admit_card_1.pdf');
 
         // return view('documents.admit-card', compact('exam', 'variables'));
+    }
+
+    public function show(Exam $exam){
+        $user = Auth::user();
+        
     }
 }
