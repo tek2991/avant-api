@@ -217,6 +217,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('exam/{exam}', [ExamController::class, 'show']);
     Route::post('exam', [ExamController::class, 'store']);
 
+    Route::get('admit-card/{exam}', [AdmitCardController::class, 'show']);
+
     Route::get('exam-schedule/{exam}', [ExamScheduleController::class, 'index']);
     Route::get('exam-schedule-all/{exam}', [ExamScheduleController::class, 'all']);
     Route::put('exam-schedule/{exam_schedule}', [ExamScheduleController::class, 'update']);
@@ -264,7 +266,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::get('fee-invoice-print/{fee_invoice}', [FeeInvoiceController::class, 'print']);
 Route::get('fee-invoice-receipt/{fee_invoice}', [FeeInvoiceController::class, 'printReceipt']);
-Route::get('admit-card/{exam}', [AdmitCardController::class, 'print']);
 
 Route::get('bill-fee-export/{bill_fee}', [ExportController::class, 'billFee']);
 Route::get('sms-report', [SmsRecordController::class, 'index']);
