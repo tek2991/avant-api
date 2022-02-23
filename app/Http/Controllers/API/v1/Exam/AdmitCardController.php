@@ -17,60 +17,60 @@ class AdmitCardController extends Controller
 {
     public function print(Request $request, Exam $exam)
     {
-        if (strpos($request->pat, '|') === false) {
-            return response([
-                'header' => 'Forbidden',
-                'message' => 'You are not authorised to read this resource!'
-            ], 401);
-        }
+        // if (strpos($request->pat, '|') === false) {
+        //     return response([
+        //         'header' => 'Forbidden',
+        //         'message' => 'You are not authorised to read this resource!'
+        //     ], 401);
+        // }
 
-        $patArray = explode("|", $request->pat);
-        $model_id = $patArray[0];
-        $token = $patArray[1];
-        $pas = PersonalAccessToken::findOrFail($model_id);
+        // $patArray = explode("|", $request->pat);
+        // $model_id = $patArray[0];
+        // $token = $patArray[1];
+        // $pas = PersonalAccessToken::findOrFail($model_id);
 
-        if(!hash_equals($pas->token, hash('sha256', $token))){
-            return response([
-                'header' => 'Forbidden',
-                'message' => 'You are not authorised to read this resource!'
-            ], 401);
-        }
+        // if(!hash_equals($pas->token, hash('sha256', $token))){
+        //     return response([
+        //         'header' => 'Forbidden',
+        //         'message' => 'You are not authorised to read this resource!'
+        //     ], 401);
+        // }
 
-        $user = $pas->tokenable;
+        // $user = $pas->tokenable;
 
-        if ($user->hasRole('student') !== true) {
-            return response([
-                'header' => 'Forbidden',
-                'message' => 'Please Logout and Login again.'
-            ], 401);
-        }
+        // if ($user->hasRole('student') !== true) {
+        //     return response([
+        //         'header' => 'Forbidden',
+        //         'message' => 'Please Logout and Login again.'
+        //     ], 401);
+        // }
 
-        $allowed_exam_user_states = ['Active', 'Provisional', 'Completed'];
+        // $allowed_exam_user_states = ['Active', 'Provisional', 'Completed'];
 
-        $allowed_exam_user_state_ids = ExamUserState::whereIn('name', $allowed_exam_user_states)->pluck('id')->toArray();
-        $exam_user = ExamUser::where('user_id', $user->id)->where('exam_id', $exam->id)->first();
+        // $allowed_exam_user_state_ids = ExamUserState::whereIn('name', $allowed_exam_user_states)->pluck('id')->toArray();
+        // $exam_user = ExamUser::where('user_id', $user->id)->where('exam_id', $exam->id)->first();
 
-        $offline_exam_type_id = ExamType::where('name', 'Offline')->first()->id;
-        if ($exam->exam_type_id != $offline_exam_type_id) {
-            return response([
-                'header' => 'Invalid Request',
-                'message' => 'Admit Card is issued only for offline exams'
-            ], 401);
-        }
+        // $offline_exam_type_id = ExamType::where('name', 'Offline')->first()->id;
+        // if ($exam->exam_type_id != $offline_exam_type_id) {
+        //     return response([
+        //         'header' => 'Invalid Request',
+        //         'message' => 'Admit Card is issued only for offline exams'
+        //     ], 401);
+        // }
 
-        if (!in_array($exam_user->exam_user_state_id, $allowed_exam_user_state_ids)) {
-            return response([
-                'header' => 'Forbidden',
-                'message' => 'You are not authorised to read this resource!'
-            ], 401);
-        }
+        // if (!in_array($exam_user->exam_user_state_id, $allowed_exam_user_state_ids)) {
+        //     return response([
+        //         'header' => 'Forbidden',
+        //         'message' => 'You are not authorised to read this resource!'
+        //     ], 401);
+        // }
 
         $variables = VariableController::keyPairs();
 
-        $pdf = PDF::loadView('documents.admit-card', compact('exam', 'variables'));
-        return $pdf->download('admit_card_1.pdf');
+        // $pdf = PDF::loadView('documents.admit-card', compact('exam', 'variables'));
+        // return $pdf->download('admit_card_1.pdf');
 
-        // return view('documents.admit-card', compact('exam', 'variables'));
+        return view('documents.admit-card', compact('exam', 'variables'));
     }
 
     public function show(Exam $exam)
