@@ -54,6 +54,7 @@
 
         .school-heading{
             color:#384353;
+            text-align: left;
         }
 
     </style>
@@ -63,10 +64,6 @@
     <div class="a4-container">
         <table style="border: none">
             <tr>
-                <th style="text-align: left">
-                    {{-- <img src="{{ url('/img/board_logo.png') }}" alt="seba_logo" class="logo"> --}}
-                    <img src="{{ public_path('img/board_logo.png') }}" alt="board_logo" class="logo">
-                </th>
                 <th class="school-heading">
                     <span style="font-size: 1.5rem;">{{ $variables['ADDRESS_LINE_1'] }}</span> <br>
                     {{ $variables['ADDRESS_LINE_2'] }} <br>
@@ -133,9 +130,9 @@
                     </table>
                 </td>
                 <td style="width: 25% padding: 0;  text-align: right; border: 1px solid black">
-                    {{-- <img src="{{ $exam_user->user->profilePicture->url ? url('storage/' . $exam_user->user->profilePicture->url) : url('/img/profile.png') }}"
+                    {{-- <img src="{{ $exam_user->user->profilePicture ? url('storage/' . $exam_user->user->profilePicture->url) : url('/img/profile.png') }}"
                         alt="seba_logo" style="max-width: 150px"> --}}
-                    <img src="{{ $exam_user->user->profilePicture->url ? public_path('storage/' . $exam_user->user->profilePicture->url) : public_path('img/logo.png') }}"
+                    <img src="{{ $exam_user->user->profilePicture ? public_path('storage/' . $exam_user->user->profilePicture->url) : public_path('img/logo.png') }}"
                         style="max-width: 150px; max-height: 200px" />
                 </td>
             </tr>
