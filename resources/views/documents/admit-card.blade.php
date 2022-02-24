@@ -132,7 +132,7 @@
                         </tr>
                     </table>
                 </td>
-                <td style="width: 25% padding: 0;  text-align: right;">
+                <td style="width: 25% padding: 0;  text-align: right; border: 1px solid black">
                     {{-- <img src="{{ $exam_user->user->profilePicture->url ? url('storage/' . $exam_user->user->profilePicture->url) : url('/img/profile.png') }}"
                         alt="seba_logo" style="max-width: 150px"> --}}
                     <img src="{{ $exam_user->user->profilePicture->url ? public_path('storage/' . $exam_user->user->profilePicture->url) : public_path('img/logo.png') }}"
