@@ -31,30 +31,38 @@ class ExamUserController extends Controller
             'user_id' => 'bail|nullable|integer|exists:users,id',
         ]);
 
-        $query = ExamUser::where('exam_id', $exam->id)
-            ->whereHas('user', function ($query) {
-                $query->whereHas('student', function ($query) {
-                    $query->whereHas('sectionStandard', function ($query) {
-                        $query->whereHas('standard', function ($query) {
-                            if (request()->filled('standard_id')) {
-                                $query->where('id', request()->standard_id);
-                            }
-                            $query->orderBy('id');
-                        });
-                        $query->whereHas('section', function ($query) {
-                            if (request()->filled('section_id')) {
-                                $query->where('id', request()->section_id);
-                            }
-                            $query->orderBy('id');
-                        });
-                        $query->orderBy('roll_no');
-                    });
-                });
-            });
+        $query = ExamUser::where('exam_id', $exam->id);
         if (request()->filled('user_id')) {
             $query->where('user_id', request()->user_id);
         }
-        $exam_users = $query->with('examUserState', 'user.userDetail', 'user.student.sectionStandard.section', 'user.student.sectionStandard.standard')->paginate();
+        $query = $query->whereHas('user', function ($query) {
+            $query->whereHas('student', function ($query) {
+                $query->whereHas('sectionStandard', function ($query) {
+                    $query->whereHas('standard', function ($query) {
+                        if (request()->filled('standard_id')) {
+                            $query->where('id', request()->standard_id);
+                        }
+                    });
+                    $query->whereHas('section', function ($query) {
+                        if (request()->filled('section_id')) {
+                            $query->where('id', request()->section_id);
+                        }
+                    });
+                });
+            });
+        })
+            ->select('exam_user.*')
+            ->join('users', 'users.id', '=', 'exam_user.user_id')
+            ->join('students', 'students.user_id', '=', 'users.id')
+            ->orderBy('students.section_standard_id')->orderBy('students.roll_no');
+        $exam_users = $query->with(
+            'examUserState:id,name',
+            'user:id',
+            'user.userDetail:id,user_id,name',
+            'user.student:id,user_id,section_standard_id,roll_no',
+            'user.student.sectionStandard.section',
+            'user.student.sectionStandard.standard'
+        )->paginate();
         return $exam_users;
     }
 
