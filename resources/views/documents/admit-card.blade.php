@@ -48,44 +48,60 @@
             padding: 5px;
         }
 
-        /* table.routine-table .heading th {
-            width: 30%;
+        .logo {
+            width: 120px;
         }
 
-        table.routine-table .heading th:nth-child(1) {
-            width: 10%;
-        } */
+        .school-heading{
+            color:#384353;
+        }
 
     </style>
 </head>
 
 <body>
     <div class="a4-container">
-        <table>
+        <table style="border: none">
             <tr>
-                <td style="width:60%">
-                    <span style="font-size: 1.5rem">{{ $variables['ADDRESS_LINE_1'] }}</span> <br>
+                <th>
+                    {{-- <img src="{{ url('/img/board_logo.png') }}" alt="seba_logo" class="logo"> --}}
+                    <img src="{{ public_path('img/board_logo.png') }}" alt="board_logo" class="r_logo">
+                </th>
+                <th class="school-heading">
+                    <span style="font-size: 1.5rem;">{{ $variables['ADDRESS_LINE_1'] }}</span> <br>
                     {{ $variables['ADDRESS_LINE_2'] }} <br>
                     {{ $variables['ADDRESS_LINE_3'] }}<br>
                     School Reg. ID: {{ $variables['SCHOOL_REG_ID'] }}
-                </td>
-                {{-- <td style="width:20%">
-                    <img src="{{ public_path('img/logo.png') }}" style="width: 100%; max-width: 150px" />
-                </td> --}}
-                <td style="width:40%; text-align: right;">
+                </th>
+                <th>
+                    {{-- <img src="{{ url('/img/school_logo.png') }}" alt="school_logo" class="logo"> --}}
+                    <img src="{{ public_path('img/school_logo.png') }}" alt="school_logo" class="r_logo">
+                </th>
+            </tr>
+        </table>
+        <table style="border: none; border-collapse: collapse;">
+            <tr>
+                <th colspan="2" style="padding: 20px;">
                     @if ($exam_user->examUserState->name == 'Provisional')
-                    <span style="font-size: 1.3rem; color:Tomato">Provisional</span><br>
+                        <span style="font-size: 1.3rem; color:Tomato;">Provisional Admit Card</span>
+                    @else
+                        <span style="font-size: 1.3rem;">Admit Card</span><br>
                     @endif
-                    <span style="font-size: 1.5rem">Admit Card</span><br>
-                    {{ $exam->name }}<br>
-                    Session: {{ $exam->session->name }}
-                </td>
+                </th>
             </tr>
         </table>
         <table style="border: none; margin-top:2rem;">
             <tr>
                 <td style="width: 75%; padding: 0;">
                     <table style="border-collapse: collapse;">
+                        <tr>
+                            <td style="width: 60%; border: 1px solid black">
+                                <span style="font-weight: bold">Exam Name:</span> {{ $exam->name }}
+                            </td>
+                            <td style="width: 40%; border: 1px solid black; text-align: start;">
+                                <span style="font-weight: bold">Session:</span> {{ $exam->session->name }}
+                            </td>
+                        </tr>
                         <tr>
                             <td style="width: 60%; border: 1px solid black">
                                 <span style="font-weight: bold">Name:</span> {{ $exam_user->user->userDetail->name }}
@@ -117,7 +133,9 @@
                     </table>
                 </td>
                 <td style="width: 25% padding: 0;  text-align: right;">
-                    <img src="{{ $exam_user->user->profilePicture ? $exam_user->user->profilePicture : public_path('img/logo.png') }}"
+                    {{-- <img src="{{ $exam_user->user->profilePicture->url ? url('storage/' . $exam_user->user->profilePicture->url) : url('/img/profile.png') }}"
+                        alt="seba_logo" style="max-width: 150px"> --}}
+                    <img src="{{ $exam_user->user->profilePicture->url ? public_path('storage/' . $exam_user->user->profilePicture->url) : public_path('img/logo.png') }}"
                         style="width: 100%; max-width: 150px" />
                 </td>
             </tr>
@@ -149,6 +167,7 @@
                 </tr>
             @endforelse
         </table>
+        <h5 style="text-align: center;">** END **</h5>
     </div>
 </body>
 
