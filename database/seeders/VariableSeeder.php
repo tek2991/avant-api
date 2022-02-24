@@ -16,16 +16,20 @@ class VariableSeeder extends Seeder
     {
         $variables = [];
 
-        if (file_exists(__DIR__.'/../../keyValues.php')) {
-            require __DIR__.'/../../keyValues.php';
+        if (file_exists(__DIR__ . '/../../keyValues.php')) {
+            require __DIR__ . '/../../keyValues.php';
             $variables = $keyValues;
         }
 
         foreach ($variables as $key => $value) {
-            Variable::create([
-                'key' => $key,
-                'value' => $value
-            ]);
+            Variable::UpdateOrCreate(
+                [
+                    'key' => $key,
+                ],
+                [
+                    'value' => $value
+                ]
+            );
         }
     }
 }
