@@ -8,33 +8,34 @@ $keyValues= [
     'ADDRESS_LINE_1' => "Avant SMS",
     'ADDRESS_LINE_2' => "Webrefiner Pvt Ltd",
     'ADDRESS_LINE_3' => "Guwahati, Assam, India 781001",
+    'PHONE_NO' => "91-73500-95500",
+    'EMAIL' => "test@email.com",
+    'SCHOOL_REG_ID' => "123456789",
     'GST' => "18HAGTS5485RT",
     'LOGO' => "https://resources.ap-south-1.linodeobjects.com/logo.png",
     'FAST2SMS_URL' => "https://www.fast2sms.com/dev/bulkV2",
     'FAST2SMS_KEY' => "jQvTC3AO126q5l8yEHz9VrwbFRmDZfU0eP7ouihasSKXGIJtBWehCMnVdxa0P2XcAkDU7pfEGSmyvzqw",
 ];
 
-$standards_arr = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
+$standards_arr = ['Nursery', 'LKG', 'UKG', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
 
-$sections_arr = ['A', 'B', 'C', 'Science', 'Commerce', 'Humanities'];
+$sections_arr = ['A'];
 
 $subjects_arr = [
-    'English' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
+    'Rhymes' => ['Nursery', 'LKG', 'UKG'],
+    'Oral English' => ['Nursery', 'LKG', 'UKG'],
+    'Oral Maths' => ['Nursery', 'LKG', 'UKG'],
+    'English' => ['Nursery', 'LKG', 'UKG'],
+    'English I' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
+    'English II' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'],
     'Assamese' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
-    'Hindi' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
-    'Sanskrit' => ['VI', 'VII', 'VIII', 'IX', 'X'],
-    'Maths' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
-    'Science' => ['VI', 'VII', 'VIII', 'IX', 'X'],
-    'EVS' => ['I', 'II', 'III', 'IV', 'V'],
-    'Social Science' => ['VI', 'VII', 'VIII', 'IX', 'X'],
+    'Hindi' => ['UKG', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
+    'Maths' => ['Nursery', 'LKG', 'UKG', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
+    'Science' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
+    'EVS' => ['UKG'],
+    'Social Science' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
     'Computer' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
-    'Moral Science' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'],
-    'General Knowledge' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'],
-    'Music' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
-    'Art' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
-    'Yoga' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
-    'Games' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'],
-    'Craft' => ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'],
-    'Scout' => ['VI', 'VII', 'VIII', 'IX', 'X'],
-    'NCC' => ['VI', 'VII', 'VIII'],
+    'General Knowledge' => ['I', 'II', 'III', 'IV', 'V', 'VI'],
+    'Drawing' => ['Nursery', 'LKG', 'UKG', 'I', 'II', 'III', 'IV', 'V', 'VI'],
+    'Fine Art' => ['IX', 'X'],
 ];

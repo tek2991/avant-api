@@ -41,20 +41,20 @@
             border-collapse: collapse;
         }
 
-        table.routine-table .heading th, table.routine-table .data td {
+        table.routine-table .heading th,
+        table.routine-table .data td {
             text-align: left;
             border: 1px solid black;
             padding: 5px;
         }
 
-        table.routine-table .heading th {
-            width: 15%;
+        /* table.routine-table .heading th {
+            width: 30%;
         }
 
-        table.routine-table .heading th:nth-child(1),
-        table.routine-table .heading th:nth-child(5) {
-            width: 5%;
-        }
+        table.routine-table .heading th:nth-child(1) {
+            width: 10%;
+        } */
 
     </style>
 </head>
@@ -63,18 +63,22 @@
     <div class="a4-container">
         <table>
             <tr>
-                <td style="width:40%">
-                    <span style="font-size: 1.5rem">School Name</span> <br>
-                    Full Address of the school <br>
-                    Email and Phone No
+                <td style="width:60%">
+                    <span style="font-size: 1.5rem">{{ $variables['ADDRESS_LINE_1'] }}</span> <br>
+                    {{ $variables['ADDRESS_LINE_2'] }} <br>
+                    {{ $variables['ADDRESS_LINE_3'] }}<br>
+                    School Reg. ID: {{ $variables['SCHOOL_REG_ID'] }}
                 </td>
-                <td style="width:20%">
-                    <img src="{{ $variables['LOGO'] }}" style="width: 100%; max-width: 150px" />
-                </td>
-                <td style="width:40%">
+                {{-- <td style="width:20%">
+                    <img src="{{ public_path('img/logo.png') }}" style="width: 100%; max-width: 150px" />
+                </td> --}}
+                <td style="width:40%; text-align: right;">
+                    @if ($exam_user->examUserState->name == 'Provisional')
+                    <span style="font-size: 1.3rem; color:Tomato">Provisional</span><br>
+                    @endif
                     <span style="font-size: 1.5rem">Admit Card</span><br>
-                    Exam Name (Provisional)<br>
-                    Accademic Year
+                    {{ $exam->name }}<br>
+                    Session: {{ $exam->session->name }}
                 </td>
             </tr>
         </table>
@@ -84,216 +88,66 @@
                     <table style="border-collapse: collapse;">
                         <tr>
                             <td style="width: 60%; border: 1px solid black">
-                                <span style="font-weight: bold">Name:</span> Full Name of the Student
+                                <span style="font-weight: bold">Name:</span> {{ $exam_user->user->userDetail->name }}
                             </td>
                             <td style="width: 40%; border: 1px solid black; text-align: start;">
-                                <span style="font-weight: bold">Class:</span> Class And Section
+                                <span style="font-weight: bold">Class:</span>
+                                {{ $exam_user->user->student->sectionStandard->standard->name }} -
+                                {{ $exam_user->user->student->sectionStandard->section->name }}
                             </td>
                         </tr>
                         <tr>
                             <td style="width: 60%; border: 1px solid black">
-                                <span style="font-weight: bold">User ID:</span> Stuents User ID
+                                <span style="font-weight: bold">User ID:</span> {{ $exam_user->user->username }}
                             </td>
                             <td style="width: 40%; border: 1px solid black; text-align: start;">
-                                <span style="font-weight: bold">Roll No:</span> Roll No
+                                <span style="font-weight: bold">Roll No:</span>
+                                {{ $exam_user->user->student->roll_no }}
                             </td>
                         </tr>
                         <tr>
                             <td style="width: 60%; border: 1px solid black">
-                                <span style="font-weight: bold">Admission No:</span> The Admission No
+                                <span style="font-weight: bold">Admission No:</span>
+                                {{ $exam_user->user->student->admission_no }}
                             </td>
                             <td style="width: 40%; border: 1px solid black; text-align: start;">
-                                <span style="font-weight: bold">D.O.B</span> Students DOB
-                            </td>table.routine-table .heading th 
+                                <span style="font-weight: bold">D.O.B</span> {{ $exam_user->user->userDetail->dob }}
+                            </td>
                         </tr>
                     </table>
                 </td>
                 <td style="width: 25% padding: 0;  text-align: right;">
-                    <img src="{{ $variables['LOGO'] }}" style="width: 100%; max-width: 150px; border: 1px solid black"/>
+                    <img src="{{ $exam_user->user->profilePicture ? $exam_user->user->profilePicture : public_path('img/logo.png') }}"
+                        style="width: 100%; max-width: 150px" />
                 </td>
             </tr>
         </table>
 
         <table style="margin-top: 2rem" class="routine-table">
             <tr>
-                <th colspan="8">Exam Routine</th>
+                <th colspan="5">Exam Routine</th>
             </tr>
             <tr class="heading">
-                <th>Sl</th>
+                <th>SL</th>
                 <th>Date</th>
-                <th>Time</th>
+                <th>Time (HH:MM)</th>
                 <th>Subject</th>
-
-                <th>Sl</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Subject</th>
+                <th>Marks (P) F </th>
             </tr>
-            <tr class="data">
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-            </tr>
-            <tr class="data">
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-            </tr>
-            <tr class="data">
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-            </tr>
-            <tr class="data">
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-            </tr>
-            <tr class="data">
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-            </tr>
-            <tr class="data">
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-            </tr>
-            <tr class="data">
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-            </tr>
-            <tr class="data">
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-            </tr>
-            <tr class="data">
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-            </tr>
-            <tr class="data">
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-            </tr>
-            <tr class="data">
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-            </tr>
-            <tr class="data">
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-            </tr>
-            <tr class="data">
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-            </tr>
-            <tr class="data">
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-            </tr>
-            <tr class="data">
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-
-                <td>Sl</td>
-                <td>Date</td>
-                <td>Time</td>
-                <td>Subject</td>
-            </tr>
+            @forelse ($exam_subjects as $item)
+                <tr class="data">
+                    <td>{{ $loop->index + 1 }}</td>
+                    <td>{{ $item->examSchedule->start->toFormattedDateString() }}</td>
+                    <td>{{ $item->examSchedule->start->format('H:m') }} to
+                        {{ $item->examSchedule->end->format('H:m') }}</td>
+                    <td>{{ $item->subject->name }}</td>
+                    <td>({{ $item->pass_mark }}) {{ $item->full_mark }}</td>
+                </tr>
+            @empty
+                <tr class="data">
+                    <td colspan="5">No Data</td>
+                </tr>
+            @endforelse
         </table>
     </div>
 </body>

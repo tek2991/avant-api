@@ -15,6 +15,13 @@ class ExamSchedule extends Model
         'ended_at',
     ];
 
+    protected $cast = [
+        'start' => 'datetime',
+        'end' => 'datetime',
+    ];
+
+    protected $dates = ['start', 'end'];
+
     public function exam(){
         return $this->belongsTo(Exam::class);
     }

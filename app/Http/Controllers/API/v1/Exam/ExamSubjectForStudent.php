@@ -10,9 +10,10 @@ use Illuminate\Support\Facades\Auth;
 
 class ExamSubjectForStudent extends Controller
 {
-    public function index(Exam $exam){
-        $user = Auth::user();
-        if($user->hasRole('student') !== true){
+    public static function index(Exam $exam, $userModel = null)
+    {
+        $user = $userModel ? $userModel : Auth::user();
+        if ($user->hasRole('student') !== true) {
             return response([
                 'header' => 'Forbidden',
                 'message' => 'Please Logout and Login again.'
