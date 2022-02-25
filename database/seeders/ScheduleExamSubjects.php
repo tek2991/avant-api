@@ -16,7 +16,6 @@ class ScheduleExamSubjects extends Seeder
     public function run()
     {
         $exams = Exam::get();
-        $exam_ids = $exams->pluck('id')->toArray();
 
         foreach($exams as $exam){
             $exam_subjects = ExamSubject::where('exam_id', $exam->id)->get();
