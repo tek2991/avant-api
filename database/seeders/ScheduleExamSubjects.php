@@ -6,7 +6,7 @@ use App\Models\Exam;
 use App\Models\ExamSubject;
 use Illuminate\Database\Seeder;
 
-class ScheduleExamSubjectSeeder extends Seeder
+class ScheduleExamSubjects extends Seeder
 {
     /**
      * Run the database seeds.
