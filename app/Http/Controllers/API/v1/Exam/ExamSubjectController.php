@@ -44,16 +44,16 @@ class ExamSubjectController extends Controller
         }
 
         $subject_ids = '';
-        if($user->hasRole('student')){
+        if ($user->hasRole('student')) {
             $subject_ids = $user->student->subjects->pluck('id')->toArray();
         }
 
-        if($user->hasRole('director')){
+        if ($user->hasRole('director')) {
             return $exam_subjects->paginate();
-        }else if($user->hasRole('student')){
+        } else if ($user->hasRole('student')) {
             $segment = $request->segment;
             $exam_subject_states = null;
-    
+
             switch ($segment) {
                 case "active":
                     $exam_subject_states = ['Active'];
@@ -135,7 +135,13 @@ class ExamSubjectController extends Controller
      */
     public function show(ExamSubject $examSubject)
     {
-        return $examSubject->load('subject.standard', 'subject.chapters', 'examSchedule', 'examSubjectState', 'examQuestions');
+        return $examSubject->load(
+            'subject.standard',
+            'subject.chapters:id,subject_id,name',
+            'examSchedule',
+            'examSubjectState:id,name',
+            'examQuestions:id,exam_subject_id,marks'
+        );
     }
 
     /**
