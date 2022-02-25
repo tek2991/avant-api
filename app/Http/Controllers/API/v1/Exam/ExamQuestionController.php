@@ -13,7 +13,7 @@ class ExamQuestionController extends Controller
 {
     public function index(ExamSubject $examSubject)
     {
-        $examQuestions = ExamQuestion::where('exam_subject_id', $examSubject->id)->with('examQuestionOptions', 'examQuestionType')->paginate();
+        $examQuestions = ExamQuestion::where('exam_subject_id', $examSubject->id)->with('examQuestionOptions', 'examQuestionType')->orderBy('id')->paginate();
         return $examQuestions;
     }
 
