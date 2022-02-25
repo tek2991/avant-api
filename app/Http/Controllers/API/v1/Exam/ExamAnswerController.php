@@ -43,9 +43,9 @@ class ExamAnswerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $userModel = null)
     {
-        $user = Auth::user();
+        $user = $userModel ? $userModel : Auth::user();
         if ($user->hasRole('student') !== true) {
             return response([
                 'header' => 'Forbidden',
