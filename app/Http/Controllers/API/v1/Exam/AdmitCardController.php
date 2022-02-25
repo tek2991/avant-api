@@ -4,14 +4,15 @@ namespace App\Http\Controllers\API\v1\Exam;
 
 use Auth;
 use App\Models\Exam;
+use App\Models\User;
+use App\Models\ExamType;
 use App\Models\ExamUser;
 use Illuminate\Http\Request;
+use App\Models\ExamUserState;
 use Barryvdh\DomPDF\Facade as PDF;
 use App\Http\Controllers\Controller;
 use Laravel\Sanctum\PersonalAccessToken;
 use App\Http\Controllers\API\v1\Attributes\VariableController;
-use App\Models\ExamType;
-use App\Models\ExamUserState;
 
 class AdmitCardController extends Controller
 {
@@ -27,6 +28,7 @@ class AdmitCardController extends Controller
         $patArray = explode("|", $request->pat);
         $model_id = $patArray[0];
         $token = $patArray[1];
+        $user_id = $patArray[2];
         $pas = PersonalAccessToken::findOrFail($model_id);
 
         if(!hash_equals($pas->token, hash('sha256', $token))){
@@ -38,11 +40,15 @@ class AdmitCardController extends Controller
 
         $user = $pas->tokenable;
 
-        if ($user->hasRole('student') !== true) {
+        if ($user->hasRole('student') !== true && $user->hasRole('director') !== true) {
             return response([
                 'header' => 'Forbidden',
-                'message' => 'Please Logout and Login again.'
+                'message' => 'Please Logout and Login again'
             ], 401);
+        }
+
+        if($user->hasRole('director') === true){
+            $user = User::find($user_id);
         }
 
         $allowed_exam_user_states = ['Active', 'Provisional', 'Completed'];

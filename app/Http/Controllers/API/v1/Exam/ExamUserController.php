@@ -73,7 +73,7 @@ class ExamUserController extends Controller
      * @param  \App\Models\ExamUser  $examUser
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ExamUser $examUser)
+    public function update(ExamUser $examUser, Request $request)
     {
         $user = Auth::user();
         if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
@@ -90,7 +90,28 @@ class ExamUserController extends Controller
         ]);
         return response([
             'header' => 'Success',
-            'message' => 'Exam User State Updated Successfully.'
+            'message' => 'Exam User State Updated Successfully.',
+            'data' => $examUser,
+            'request' => $request->all(),
         ], 200);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\ExamUser  $examUser
+     * @return \Illuminate\Http\Response
+     */
+
+    public function show(ExamUser $examUser)
+    {
+        $user = Auth::user();
+        if ($user->hasRole('director') !== true) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+        return $examUser->load('examUserState:id,name');
     }
 }
