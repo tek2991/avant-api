@@ -159,11 +159,12 @@ class ExamScheduleController extends Controller
 
         $exam_subject_state_id = null;
 
+        // Check time constraints
         if ($request->status == 'start') {
             $exam_subject_state_id = ExamSubjectState::where('name', 'Active')->first()->id;
             $current_time_stamp = Carbon::now()->timestamp;
             $start_time_stamp = Carbon::parse($examSchedule->start)->timestamp;
-            if($current_time_stamp < $start_time_stamp) {
+            if ($current_time_stamp < $start_time_stamp) {
                 return response([
                     'header' => 'Forbidden',
                     'message' => 'Exam Schedule is not started yet.'
@@ -173,7 +174,7 @@ class ExamScheduleController extends Controller
             $exam_subject_state_id = ExamSubjectState::where('name', 'Evaluating')->first()->id;
             $current_time_stamp = Carbon::now()->timestamp;
             $end_time_stamp = Carbon::parse($examSchedule->end)->timestamp;
-            if($current_time_stamp > $end_time_stamp) {
+            if ($current_time_stamp > $end_time_stamp) {
                 return response([
                     'header' => 'Forbidden',
                     'message' => 'Exam Schedule is ended.'
@@ -187,15 +188,16 @@ class ExamScheduleController extends Controller
 
         $exam_subjects = $examSchedule->examSubjects()->get();
 
-        if ($request->status == 'start') {
-            
+        if ($request->status == 'start') {     
+
             // Loop through exam subjects and check if they are ready
-            foreach ($exam_subjects as $exam_subject){
+            foreach ($exam_subjects as $exam_subject) {
                 $assigned_mark = $exam_subject->examQuestions->sum('marks');
-                if($assigned_mark != $exam_subject->full_mark){
+                if ($assigned_mark != $exam_subject->full_mark) {
                     return response([
                         'header' => 'Error',
-                        'message' => 'Unassigned marks in: '.$exam_subject->subject->name . ' (' . $exam_subject->subject->standard->name .')',                    ], 400);
+                        'message' => 'Unassigned marks in: ' . $exam_subject->subject->name . ' (' . $exam_subject->subject->standard->name . ')'
+                    ], 400);
                 }
             }
 
@@ -215,7 +217,7 @@ class ExamScheduleController extends Controller
                     $exam_subject->users()->sync($sync_data);
                 }
             }
-            if($examSchedule->started_at == null){
+            if ($examSchedule->started_at == null) {
                 $examSchedule->update([
                     'started_at' => Carbon::now()
                 ]);
@@ -236,7 +238,7 @@ class ExamScheduleController extends Controller
                     ]);
                 }
             }
-            if($examSchedule->ended_at == null){
+            if ($examSchedule->ended_at == null) {
                 $examSchedule->update([
                     'ended_at' => Carbon::now()
                 ]);
