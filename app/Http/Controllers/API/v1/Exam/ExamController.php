@@ -116,7 +116,7 @@ class ExamController extends Controller
      */
     public function show(Exam $exam)
     {
-        return $exam;
+        return $exam->load('examType');
     }
 
     /**
