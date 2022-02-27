@@ -32,10 +32,10 @@ class ExamUserController extends Controller
         ]);
 
         $query = ExamUser::where('exam_id', $exam->id);
-        if (request()->filled('user_id')) {
-            $query->where('user_id', request()->user_id);
-        }
         $query = $query->whereHas('user', function ($query) {
+            if (request()->filled('user_id')) {
+                $query->where('id', request()->user_id);
+            }
             $query->whereHas('student', function ($query) {
                 $query->whereHas('sectionStandard', function ($query) {
                     $query->whereHas('standard', function ($query) {
