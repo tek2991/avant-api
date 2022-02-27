@@ -37,6 +37,13 @@ class EvaluateAnswerController extends Controller
             ], 403);
         }
 
+        if($examAnswer->examQuestion->examSubject->examSubjectState->name != 'Evaluating') {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Exam is not in evaluation state.'
+            ], 403);
+        }
+
         $examAnswer->update([
             'marks_secured' => $request->marks_secured,
             'evaluated_by' => $user->id,
