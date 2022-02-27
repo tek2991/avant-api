@@ -43,6 +43,7 @@ use App\Http\Controllers\API\v1\SMS\StudentBySectionStandard;
 use App\Http\Controllers\API\v1\Attributes\LanguageController;
 use App\Http\Controllers\API\v1\Attributes\ReligionController;
 use App\Http\Controllers\API\v1\Chart\DirectorChartController;
+use App\Http\Controllers\API\v1\Exam\EvaluateAnswerController;
 use App\Http\Controllers\API\v1\Appeal\ResolveAppealController;
 use App\Http\Controllers\API\v1\Exam\ExamAnswerStateController;
 use App\Http\Controllers\API\v1\Subject\SubjectGroupController;
@@ -51,6 +52,7 @@ use App\Http\Controllers\API\v1\Attributes\AppealTypeController;
 use App\Http\Controllers\API\v1\Attributes\BloodGroupController;
 use App\Http\Controllers\API\v1\Attributes\InstrumentController;
 use App\Http\Controllers\API\v1\Exam\ExamQuestionTypeController;
+use App\Http\Controllers\API\v1\Exam\StudentUsersForExamSubject;
 use App\Http\Controllers\API\v1\Fee\ChargeableStudentController;
 use App\Http\Controllers\API\v1\Setup\SectionStandardController;
 use App\Http\Controllers\API\v1\Student\EnrollStudentController;
@@ -250,14 +252,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('exam-subject/{exam_subject}', [ExamSubjectController::class, 'update']);
     Route::post('exam-subject', [ExamSubjectController::class, 'store']);
     Route::delete('exam-subject/{exam_subject}', [ExamSubjectController::class, 'destroy']);
+    Route::get('stuent-users-for-exam-subject-all/{exam_subject}', [StudentUsersForExamSubject::class, 'all']);
 
     Route::get('active-exam-subjects-for-student', [ActiveExamSubjectsForStudent::class, 'index']);
 
     Route::get('exam-question/{exam_subject}', [ExamQuestionController::class, 'index']);
+    Route::get('exam-question-all/{exam_subject}', [ExamQuestionController::class, 'all']);
     Route::get('exam-question-show/{exam_question}', [ExamQuestionController::class, 'show']);
     Route::post('exam-question', [ExamQuestionController::class, 'store']);
     Route::put('exam-question/{exam_question}', [ExamQuestionController::class, 'update']);
     Route::delete('exam-question/{exam_question}', [ExamQuestionController::class, 'destroy']);
+
+    Route::put('evaluate-answer/{exam_answer}', [EvaluateAnswerController::class, 'update']);
 
     Route::post('tiny_mce_img_upload', [TinyMceImageUploadController::class, 'store']);
     

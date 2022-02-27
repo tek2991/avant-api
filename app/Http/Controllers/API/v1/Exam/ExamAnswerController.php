@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\v1\Exam;
 
 use Auth;
+use App\Models\User;
 use App\Models\ExamAnswer;
 use App\Models\ExamSubject;
 use Illuminate\Http\Request;
@@ -28,9 +29,13 @@ class ExamAnswerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function all(ExamSubject $examSubject)
+    public function all(ExamSubject $examSubject, Request $request)
     {
-        $user = Auth::user();
+        $this->validate($request, [
+            'user_id' => 'nullable|exists:users,id',
+        ]);
+        $check_auth = Auth::user()->hasRole('director');
+        $user = $request->filled('user_id') && $check_auth ? User::find($request->user_id) : Auth::user();
         $exa_question_ids = $examSubject->examQuestions()->pluck('id')->toArray();
         $exam_answers = ExamAnswer::whereIn('exam_question_id', $exa_question_ids)->where('user_id', $user->id)->orderBy('exam_question_id')->get();
         return $exam_answers;
@@ -118,6 +123,14 @@ class ExamAnswerController extends Controller
      */
     public function update(Request $request, ExamAnswer $examAnswer)
     {
+        $user = Auth::user();
+        if ($examAnswer->user_id !== $user->id) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
         $this->validate($request, [
             'exam_question_type' => ['required', Rule::in(['Objective', 'Descriptive'])],
             'exam_answer_state_id' => 'required|integer|exists:exam_answer_states,id',

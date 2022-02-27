@@ -21,7 +21,7 @@ class ExamQuestionController extends Controller
     {
         $user = Auth::user();
 
-        if($user->hasRole('student') !== true) {
+        if ($user->hasRole('student') !== true) {
             return response([
                 'header' => 'Forbidden',
                 'message' => 'Please Logout and Login again.'
@@ -31,6 +31,24 @@ class ExamQuestionController extends Controller
         $question = $examQuestion->load('examQuestionOptions', 'examQuestionType');
 
         return $question;
+    }
+
+    /**
+     * Display a listing of all the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function all(ExamSubject $examSubject)
+    {
+        $user = Auth::user();
+        if($user->hasRole('director') !== true) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+        $exam_questions = ExamQuestion::where('exam_subject_id', $examSubject->id)->with('examQuestionOptions', 'examQuestionType')->orderBy('id')->get();
+        return $exam_questions;
     }
 
     public function store(Request $request)
@@ -104,7 +122,8 @@ class ExamQuestionController extends Controller
         }
     }
 
-    public function update(ExamQuestion $examQuestion, Request $request){
+    public function update(ExamQuestion $examQuestion, Request $request)
+    {
         $user = auth()->user();
 
         $this->validate($request, [
@@ -173,7 +192,8 @@ class ExamQuestionController extends Controller
         }
     }
 
-    public function destroy(ExamQuestion $examQuestion){
+    public function destroy(ExamQuestion $examQuestion)
+    {
         try {
             $examQuestion->delete();
             return response([
