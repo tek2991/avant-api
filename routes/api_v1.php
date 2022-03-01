@@ -52,6 +52,7 @@ use App\Http\Controllers\API\v1\Attributes\AppealTypeController;
 use App\Http\Controllers\API\v1\Attributes\BloodGroupController;
 use App\Http\Controllers\API\v1\Attributes\InstrumentController;
 use App\Http\Controllers\API\v1\Exam\ExamQuestionTypeController;
+use App\Http\Controllers\API\v1\Exam\ExamSubjectScoreController;
 use App\Http\Controllers\API\v1\Exam\StudentUsersForExamSubject;
 use App\Http\Controllers\API\v1\Fee\ChargeableStudentController;
 use App\Http\Controllers\API\v1\Setup\SectionStandardController;
@@ -264,6 +265,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('exam-question/{exam_question}', [ExamQuestionController::class, 'destroy']);
 
     Route::put('evaluate-answer/{exam_answer}', [EvaluateAnswerController::class, 'update']);
+    Route::put('exam-subject-score/{exam_subject_score}', [ExamSubjectScoreController::class, 'update']);
 
     Route::post('tiny_mce_img_upload', [TinyMceImageUploadController::class, 'store']);
     
