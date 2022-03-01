@@ -190,6 +190,7 @@ class ExamScheduleController extends Controller
         $exam_subject_locked_state = ExamSubjectState::where('name', 'Locked')->first()->id;
 
         $exam_subjects = $examSchedule->examSubjects()->get();
+        $is_online_exam = $examSchedule->exam->examType->name == 'Online';
 
         if ($request->status == 'start') {
             // Loop through exam subjects and check if they are ready
@@ -227,56 +228,95 @@ class ExamScheduleController extends Controller
         }
 
         if ($request->status == 'end') {
-            foreach ($exam_subjects as $exam_subject) {
-                if ($exam_subject->exam_subject_state_id == $exam_subject_active_state_id) {
-                    $exam_subject->update([
-                        'exam_subject_state_id' => $exam_subject_state_id
-                    ]);
+            if ($is_online_exam) {
+                foreach ($exam_subjects as $exam_subject) {
+                    if ($exam_subject->exam_subject_state_id == $exam_subject_active_state_id) {
+                        $exam_subject->update([
+                            'exam_subject_state_id' => $exam_subject_state_id
+                        ]);
 
-                    $exam_subject_score_ids = $exam_subject->examSubjectScores->pluck('id')->toArray();
+                        $exam_subject_score_ids = $exam_subject->examSubjectScores->pluck('id')->toArray();
 
-                    ExamSubjectScore::whereIn('id', $exam_subject_score_ids)->update([
-                        'exam_subject_state_id' => $exam_subject_evaluating_state_id
+                        ExamSubjectScore::whereIn('id', $exam_subject_score_ids)->update([
+                            'exam_subject_state_id' => $exam_subject_evaluating_state_id
+                        ]);
+                    }
+                }
+                if ($examSchedule->ended_at == null) {
+                    $examSchedule->update([
+                        'ended_at' => Carbon::now()
                     ]);
                 }
-            }
-            if ($examSchedule->ended_at == null) {
-                $examSchedule->update([
-                    'ended_at' => Carbon::now()
-                ]);
+            } else {
+                foreach ($exam_subjects as $exam_subject) {
+                    $assigned_mark = $exam_subject->examQuestions->sum('marks');
+                    if ($assigned_mark != $exam_subject->full_mark) {
+                        return response([
+                            'header' => 'Error',
+                            'message' => 'Unassigned marks in: ' . $exam_subject->subject->name . ' (' . $exam_subject->subject->standard->name . ')'
+                        ], 400);
+                    }
+                }
+
+                foreach ($exam_subjects as $exam_subject) {
+                    if ($exam_subject->exam_subject_state_id == $exam_subject_created_state_id) {
+                        $exam_subject->update([
+                            'exam_subject_state_id' => $exam_subject_state_id
+                        ]);
+
+                        $student_ids = $exam_subject->subject->students->pluck('user_id')->toArray();
+                        $user_ids = User::whereIn('id', $student_ids)->pluck('id')->toArray();
+                        $pivot_data = [
+                            'marks_secured' => 0,
+                            'exam_subject_state_id' => $exam_subject_state_id,
+                        ];
+                        $sync_data = array_combine($user_ids, array_fill(0, count($user_ids), $pivot_data));
+                        $exam_subject->users()->sync($sync_data);
+                    }
+                }
+
+                if ($examSchedule->started_at == null) {
+                    $examSchedule->update([
+                        'started_at' => Carbon::now(),
+                        'ended_at' => Carbon::now(),
+                    ]);
+                }
             }
         }
 
         if ($request->status == 'lock') {
-            foreach ($exam_subjects as $exam_subject) {
-                if ($exam_subject->exam_subject_state_id !== $exam_subject_evaluating_state_id) {
-                    return response([
-                        'header' => 'Forbidden',
-                        'message' => $exam_subject->subject->name . ' (' . $exam_subject->subject->standard->name . ') is not in evaluating state.'
-                    ], 403);
+            if ($is_online_exam) {
+                foreach ($exam_subjects as $exam_subject) {
+                    if ($exam_subject->exam_subject_state_id !== $exam_subject_evaluating_state_id) {
+                        return response([
+                            'header' => 'Forbidden',
+                            'message' => $exam_subject->subject->name . ' (' . $exam_subject->subject->standard->name . ') is not in evaluating state.'
+                        ], 403);
+                    }
+
+                    $exam_question_ids = $exam_subject->examQuestions->pluck('id')->toArray();
+                    $count_null_marks_secured = ExamAnswer::whereIn('exam_question_id', $exam_question_ids)->whereNull('marks_secured')->count();
+                    if ($count_null_marks_secured > 0) {
+                        $pending_answer = ExamAnswer::whereIn('exam_question_id', $exam_question_ids)->whereNull('marks_secured')->first();
+                        return response([
+                            'header' => 'Forbidden',
+                            'message' => 'Evaluation incomplete in ' . $exam_subject->subject->name . ' (' . $exam_subject->subject->standard->name . ') for ' . $pending_answer->user->userDetail->name,
+                        ], 403);
+                    }
                 }
 
-                $exam_question_ids = $exam_subject->examQuestions->pluck('id')->toArray();
-                $count_null_marks_secured = ExamAnswer::whereIn('exam_question_id', $exam_question_ids)->whereNull('marks_secured')->count();
-                if ($count_null_marks_secured > 0) {
-                    $pending_answer = ExamAnswer::whereIn('exam_question_id', $exam_question_ids)->whereNull('marks_secured')->first();
-                    return response([
-                        'header' => 'Forbidden',
-                        'message' => 'Evaluation incomplete in ' . $exam_subject->subject->name . ' (' . $exam_subject->subject->standard->name . ') for ' . $pending_answer->user->userDetail->name,
-                    ], 403);
-                }
+                $exam_subject_ids = $exam_subjects->pluck('id')->toArray();
+                $exam_subject_score_ids = ExamSubjectScore::whereIn('exam_subject_id', $exam_subject_ids)->pluck('id')->toArray();
+
+                ExamSubject::whereIn('id', $exam_subject_ids)->update([
+                    'exam_subject_state_id' => $exam_subject_locked_state
+                ]);
+
+                ExamSubjectScore::whereIn('id', $exam_subject_score_ids)->update([
+                    'exam_subject_state_id' => $exam_subject_locked_state
+                ]);
+            } else {
             }
-
-            $exam_subject_ids = $exam_subjects->pluck('id')->toArray();
-            $exam_subject_score_ids = ExamSubjectScore::whereIn('exam_subject_id', $exam_subject_ids)->pluck('id')->toArray();
-
-            ExamSubject::whereIn('id', $exam_subject_ids)->update([
-                'exam_subject_state_id' => $exam_subject_locked_state
-            ]);
-
-            ExamSubjectScore::whereIn('id', $exam_subject_score_ids)->update([
-                'exam_subject_state_id' => $exam_subject_locked_state
-            ]);
         }
 
 
