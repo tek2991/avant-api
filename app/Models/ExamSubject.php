@@ -36,7 +36,7 @@ class ExamSubject extends Pivot
     }
 
     public function users(){
-        return $this->belongsToMany(User::class, 'exam_subject_scores', 'exam_subject_id', 'user_id')->withPivot('id', 'marks_secured')->withTimestamps();
+        return $this->belongsToMany(User::class, 'exam_subject_scores', 'exam_subject_id', 'user_id')->withPivot('id', 'marks_secured', 'evaluated_by')->withTimestamps();
     }
 
     public function examQuestions(){

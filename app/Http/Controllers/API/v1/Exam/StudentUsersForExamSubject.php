@@ -22,7 +22,8 @@ class StudentUsersForExamSubject extends Controller
         $users = $examSubject->users()
             ->join('students', 'students.user_id', '=', 'users.id')
             ->orderBy('students.section_standard_id')->orderBy('students.roll_no')
-            ->with('userDetail', 'student', 'student.sectionStandard', 'student.sectionStandard.standard', 'student.sectionStandard.section')->get();
+            ->with('userDetail', 'student', 'student.sectionStandard', 'student.sectionStandard.standard', 'student.sectionStandard.section')
+            ->get();
         return $users;
     }
 }

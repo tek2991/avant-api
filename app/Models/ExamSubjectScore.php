@@ -14,6 +14,7 @@ class ExamSubjectScore extends Model
         'user_id',
         'marks_secured',
         'exam_subject_state_id',
+        'evaluated_by',
     ];
 
     public function examSubject(){
