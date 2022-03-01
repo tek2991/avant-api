@@ -154,14 +154,10 @@ class ExamScheduleController extends Controller
                 'message' => 'Please Logout and Login again.'
             ], 401);
         }
-
         $this->validate($request, [
             'status' => 'required|in:start,end,lock'
         ]);
-
         $exam_subject_state_id = null;
-
-        // Check time constraints
         if ($request->status == 'start') {
             $exam_subject_state_id = ExamSubjectState::where('name', 'Active')->first()->id;
             $current_time_stamp = Carbon::now()->timestamp;
@@ -183,12 +179,10 @@ class ExamScheduleController extends Controller
                 ], 403);
             }
         }
-
         $exam_subject_created_state_id = ExamSubjectState::where('name', 'Created')->first()->id;
         $exam_subject_active_state_id = ExamSubjectState::where('name', 'Active')->first()->id;
         $exam_subject_evaluating_state_id = ExamSubjectState::where('name', 'Evaluating')->first()->id;
         $exam_subject_locked_state = ExamSubjectState::where('name', 'Locked')->first()->id;
-
         $exam_subjects = $examSchedule->examSubjects()->get();
         $is_online_exam = $examSchedule->exam->examType->name == 'Online';
 
@@ -203,7 +197,6 @@ class ExamScheduleController extends Controller
                     ], 400);
                 }
             }
-
             foreach ($exam_subjects as $exam_subject) {
                 if ($exam_subject->exam_subject_state_id == $exam_subject_created_state_id) {
                     $exam_subject->update([
@@ -226,7 +219,6 @@ class ExamScheduleController extends Controller
                 ]);
             }
         }
-
         if ($request->status == 'end') {
             if ($is_online_exam) {
                 foreach ($exam_subjects as $exam_subject) {
@@ -257,7 +249,6 @@ class ExamScheduleController extends Controller
                         ], 400);
                     }
                 }
-
                 foreach ($exam_subjects as $exam_subject) {
                     if ($exam_subject->exam_subject_state_id == $exam_subject_created_state_id) {
                         $exam_subject->update([
@@ -274,7 +265,6 @@ class ExamScheduleController extends Controller
                         $exam_subject->users()->sync($sync_data);
                     }
                 }
-
                 if ($examSchedule->started_at == null) {
                     $examSchedule->update([
                         'started_at' => Carbon::now(),
@@ -293,7 +283,6 @@ class ExamScheduleController extends Controller
                             'message' => $exam_subject->subject->name . ' (' . $exam_subject->subject->standard->name . ') is not in evaluating state.'
                         ], 403);
                     }
-
                     $exam_question_ids = $exam_subject->examQuestions->pluck('id')->toArray();
                     $count_null_marks_secured = ExamAnswer::whereIn('exam_question_id', $exam_question_ids)->whereNull('marks_secured')->count();
                     if ($count_null_marks_secured > 0) {
@@ -304,14 +293,11 @@ class ExamScheduleController extends Controller
                         ], 403);
                     }
                 }
-
                 $exam_subject_ids = $exam_subjects->pluck('id')->toArray();
                 $exam_subject_score_ids = ExamSubjectScore::whereIn('exam_subject_id', $exam_subject_ids)->pluck('id')->toArray();
-
                 ExamSubject::whereIn('id', $exam_subject_ids)->update([
                     'exam_subject_state_id' => $exam_subject_locked_state
                 ]);
-
                 ExamSubjectScore::whereIn('id', $exam_subject_score_ids)->update([
                     'exam_subject_state_id' => $exam_subject_locked_state
                 ]);
@@ -327,20 +313,16 @@ class ExamScheduleController extends Controller
                         ], 403);
                     }
                 }
-
                 $exam_subject_ids = $exam_subjects->pluck('id')->toArray();
                 $exam_subject_score_ids = ExamSubjectScore::whereIn('exam_subject_id', $exam_subject_ids)->pluck('id')->toArray();
                 ExamSubject::whereIn('id', $exam_subject_ids)->update([
                     'exam_subject_state_id' => $exam_subject_locked_state
                 ]);
-
                 ExamSubjectScore::whereIn('id', $exam_subject_score_ids)->update([
                     'exam_subject_state_id' => $exam_subject_locked_state
                 ]);
             }
         }
-
-
 
         return response([
             'header' => 'Success',
