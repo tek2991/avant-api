@@ -36,6 +36,7 @@ class ExamSubjectScoreController extends Controller
         
         $examSubjectScore->update([
             'marks_secured' => $marks_secured,
+            'evaluated_by' => $user->id,
         ]);
 
         return response([
