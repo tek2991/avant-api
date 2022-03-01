@@ -316,6 +316,27 @@ class ExamScheduleController extends Controller
                     'exam_subject_state_id' => $exam_subject_locked_state
                 ]);
             } else {
+                foreach ($exam_subjects as $exam_subject) {
+                    $exam_subject_score_ids = $exam_subject->examSubjectScores->pluck('id')->toArray();
+                    $count_not_evaluated_exam_subject_scores = ExamSubjectScore::whereIn('id', $exam_subject_score_ids)->whereNull('evaluated_by')->count();
+                    if ($count_not_evaluated_exam_subject_scores > 0) {
+                        $pending_exam_subject_score = ExamSubjectScore::whereIn('id', $exam_subject_score_ids)->whereNull('evaluated_by')->first();
+                        return response([
+                            'header' => 'Forbidden',
+                            'message' => 'Evaluation incomplete in ' . $exam_subject->subject->name . ' (' . $exam_subject->subject->standard->name . ') for ' . $pending_exam_subject_score->user->userDetail->name,
+                        ], 403);
+                    }
+                }
+
+                $exam_subject_ids = $exam_subjects->pluck('id')->toArray();
+                $exam_subject_score_ids = ExamSubjectScore::whereIn('exam_subject_id', $exam_subject_ids)->pluck('id')->toArray();
+                ExamSubject::whereIn('id', $exam_subject_ids)->update([
+                    'exam_subject_state_id' => $exam_subject_locked_state
+                ]);
+
+                ExamSubjectScore::whereIn('id', $exam_subject_score_ids)->update([
+                    'exam_subject_state_id' => $exam_subject_locked_state
+                ]);
             }
         }
 
