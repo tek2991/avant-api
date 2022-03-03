@@ -301,6 +301,11 @@ class ExamScheduleController extends Controller
                 ExamSubjectScore::whereIn('id', $exam_subject_score_ids)->update([
                     'exam_subject_state_id' => $exam_subject_locked_state
                 ]);
+                if ($examSchedule->closed_at == null) {
+                    $examSchedule->update([
+                        'closed_at' => Carbon::now()
+                    ]);
+                }
             } else {
                 foreach ($exam_subjects as $exam_subject) {
                     $exam_subject_score_ids = $exam_subject->examSubjectScores->pluck('id')->toArray();
@@ -321,6 +326,12 @@ class ExamScheduleController extends Controller
                 ExamSubjectScore::whereIn('id', $exam_subject_score_ids)->update([
                     'exam_subject_state_id' => $exam_subject_locked_state
                 ]);
+
+                if ($examSchedule->closed_at == null) {
+                    $examSchedule->update([
+                        'closed_at' => Carbon::now()
+                    ]);
+                }
             }
         }
 
