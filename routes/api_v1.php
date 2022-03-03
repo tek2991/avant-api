@@ -44,6 +44,7 @@ use App\Http\Controllers\API\v1\SMS\StudentBySectionStandard;
 use App\Http\Controllers\API\v1\Attributes\LanguageController;
 use App\Http\Controllers\API\v1\Attributes\ReligionController;
 use App\Http\Controllers\API\v1\Chart\DirectorChartController;
+use App\Http\Controllers\API\v1\Exam\DownloadResultController;
 use App\Http\Controllers\API\v1\Exam\EvaluateAnswerController;
 use App\Http\Controllers\API\v1\Appeal\ResolveAppealController;
 use App\Http\Controllers\API\v1\Exam\ExamAnswerStateController;
@@ -283,6 +284,7 @@ Route::get('fee-invoice-print/{fee_invoice}', [FeeInvoiceController::class, 'pri
 Route::get('fee-invoice-receipt/{fee_invoice}', [FeeInvoiceController::class, 'printReceipt']);
 
 Route::get('admit-card-print/{exam}', [AdmitCardController::class, 'print']);
+Route::get('download-result-standard', [DownloadResultController::class, 'standard']);
 
 Route::get('bill-fee-export/{bill_fee}', [ExportController::class, 'billFee']);
 Route::get('sms-report', [SmsRecordController::class, 'index']);
