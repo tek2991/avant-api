@@ -4,6 +4,7 @@ use App\Http\Controllers\API\v1\SMS\SendSms;
 use App\Http\Controllers\Auth\ApiLoginController;
 use App\Http\Controllers\API\v1\Fee\FeeController;
 use App\Http\Controllers\Auth\ApiLogoutController;
+use App\Http\Controllers\API\v1\Exam\ExamStandards;
 use App\Http\Controllers\API\v1\Bill\BillController;
 use App\Http\Controllers\API\v1\Exam\ExamController;
 use App\Http\Controllers\API\v1\User\UserController;
@@ -266,6 +267,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::put('evaluate-answer/{exam_answer}', [EvaluateAnswerController::class, 'update']);
     Route::put('exam-subject-score/{exam_subject_score}', [ExamSubjectScoreController::class, 'update']);
+
+    Route::get('exam-standard', [ExamStandards::class, 'index']);
 
     Route::post('tiny_mce_img_upload', [TinyMceImageUploadController::class, 'store']);
     
