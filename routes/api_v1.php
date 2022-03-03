@@ -268,7 +268,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('evaluate-answer/{exam_answer}', [EvaluateAnswerController::class, 'update']);
     Route::put('exam-subject-score/{exam_subject_score}', [ExamSubjectScoreController::class, 'update']);
 
-    Route::get('exam-standard', [ExamStandards::class, 'index']);
+    Route::get('exam-standard/{exam}', [ExamStandards::class, 'index']);
 
     Route::post('tiny_mce_img_upload', [TinyMceImageUploadController::class, 'store']);
     
