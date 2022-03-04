@@ -7,7 +7,7 @@ use App\Models\ExamQuestion;
 use Illuminate\Database\Seeder;
 use App\Models\ExamSubjectScore;
 
-class ExamScoreUpdateSeeder extends Seeder
+class ExamOnlineScoreUpdateSeeder extends Seeder
 {
     /**
      * Run the database seeds.
