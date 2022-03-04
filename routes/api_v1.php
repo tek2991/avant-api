@@ -285,6 +285,7 @@ Route::get('fee-invoice-receipt/{fee_invoice}', [FeeInvoiceController::class, 'p
 
 Route::get('admit-card-print/{exam}', [AdmitCardController::class, 'print']);
 Route::get('download-result-standard', [DownloadResultController::class, 'standard']);
+Route::get('download-result-student', [DownloadResultController::class, 'student']);
 
 Route::get('bill-fee-export/{bill_fee}', [ExportController::class, 'billFee']);
 Route::get('sms-report', [SmsRecordController::class, 'index']);
