@@ -23,9 +23,36 @@ class ExamScheduleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Exam $exam)
+    public function index(Exam $exam, Request $request)
     {
-        $examSchedules = $exam->examSchedules()->withCount('examSubjects')->orderBy('start')->paginate();
+        $user = Auth::user();
+        if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
+        $this->validate($request, [
+            'segment' => 'nullable|max:255|in:all,upcoming,active,closed',
+        ]);
+
+        $query = $exam->examSchedules();
+
+        if($request->has('segment')){
+            $segment = $request->segment;
+            if($segment === 'upcoming'){
+                $query->whereNull('started_at');
+            }
+            if($segment === 'active'){
+                $query->whereNotNull('started_at')->whereNull('ended_at');
+            }
+            if($segment === 'closed'){
+                $query->whereNotNull('closed_at');
+            }
+        }
+        
+        $examSchedules = $query->withCount('examSubjects')->orderBy('start')->paginate();
         return $examSchedules;
     }
 
@@ -335,9 +362,12 @@ class ExamScheduleController extends Controller
             }
         }
 
+        $data = ExamSchedule::find($examSchedule->id);
+
         return response([
             'header' => 'Success',
-            'message' => 'Exam Schedule Control Updated Successfully.'
+            'message' => 'Exam Schedule Control Updated Successfully.',
+            'data' => $data,
         ], 200);
     }
 }
