@@ -14,7 +14,7 @@ class ExamStandards extends Controller
     public function index(Exam $exam)
     {
         $user = Auth::user();
-        if ($user->hasRole('director') !== true || $user->hasRole('teacher') !== true) {
+        if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
             return response([
                 'header' => 'Forbidden',
                 'message' => 'Please Logout and Login again.'

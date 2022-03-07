@@ -93,14 +93,14 @@ class DownloadResultController extends Controller
 
         $user = $pas->tokenable;
 
-        if ($user->hasRole('director') !== true && $user->id !== $request->user_id) {
+        if ($user->hasRole('student') === true && $user->id !== $request->user_id) {
             return response([
                 'header' => 'Forbidden',
                 'message' => 'Please Logout and Login again'
             ], 401);
         }
 
-        if($user->hasRole('director') === true){
+        if($user->hasRole('director') === true || $user->hasRole('teacher') === true) {
             $user = User::find($request->user_id);
         }
 

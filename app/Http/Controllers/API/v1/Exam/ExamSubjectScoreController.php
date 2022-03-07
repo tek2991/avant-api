@@ -12,15 +12,26 @@ class ExamSubjectScoreController extends Controller
     public function update(ExamSubjectScore $examSubjectScore, Request $request)
     {
         $user = Auth::user();
-        if ($user->hasRole('director') !== true) {
+        if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
             return response([
                 'header' => 'Forbidden',
                 'message' => 'Please Logout and Login again.'
             ], 401);
         }
 
+        if($user->hasRole('teacher') === true) {
+            $subject_ids = $user->teacher->subjects()->pluck('subject_id')->toArray();
+            $subject_id = $examSubjectScore->examSubject->subject_id;
+            if(!in_array($subject_id, $subject_ids)) {
+                return response([
+                    'header' => 'Forbidden',
+                    'message' => 'You are not authorized to access this resource.'
+                ], 403);
+            }
+        }
+
         $this->validate($request, [
-            'marks_secured' => 'required|integer',
+            'marks_secured' => 'required|numeric',
         ]);
 
         
