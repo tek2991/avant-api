@@ -20,15 +20,34 @@ class ExamController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
-        if($user->hasRole('director') === true){
-            $exams = Exam::with('examType')->paginate();
+        $this->validate($request, [
+            'segment' => 'nullable|max:255|in:all,current,previous',
+        ]);
+
+        if ($user->hasRole('director') === true) {
+
+            $current_session = Session::where('is_active',  true)->first();
+
+            $query = Exam::with('examType');
+
+            if ($request->has('segment')) {
+                $segment = $request->segment;
+                if ($segment === 'current') {
+                    $query->where('session_id', $current_session->id);
+                }
+                if ($segment === 'previous') {
+                    $query->where('session_id', '<>', $current_session->id);
+                }
+            }
+
+            $exams = $query->paginate();
             return $exams;
         }
 
-        if($user->hasRole('student') === true){
+        if ($user->hasRole('student') === true) {
             $subject_ids = $user->student->subjects()->pluck('subject_id');
             $exams = Exam::whereHas('subjects', function ($query) use ($subject_ids) {
                 $query->whereIn('subjects.id', $subject_ids);
@@ -52,7 +71,7 @@ class ExamController extends Controller
                 'message' => 'Please Logout and Login again.'
             ], 401);
         }
-        
+
         $this->validate($request, [
             'name' => 'required|string',
             'description' => 'required|string',
@@ -79,7 +98,7 @@ class ExamController extends Controller
             'created_by' => $user->id,
         ]);
 
-        foreach($request->exam_schedules as $exam_schedule) {
+        foreach ($request->exam_schedules as $exam_schedule) {
             $exam->examSchedules()->create([
                 'start' => $exam_schedule['start'],
                 'end' => $exam_schedule['end'],
