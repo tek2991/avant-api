@@ -54,7 +54,7 @@ class ExamQuestionController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-        if ($user->hasRole('director') !== true || $user->hasRole('teacher') !== true) {
+        if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
             return response([
                 'header' => 'Forbidden',
                 'message' => 'Please Logout and Login again.'
@@ -142,7 +142,7 @@ class ExamQuestionController extends Controller
     public function update(ExamQuestion $examQuestion, Request $request)
     {
         $user = Auth::user();
-        if ($user->hasRole('director') !== true || $user->hasRole('teacher') !== true) {
+        if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
             return response([
                 'header' => 'Forbidden',
                 'message' => 'Please Logout and Login again.'
@@ -229,7 +229,7 @@ class ExamQuestionController extends Controller
     public function destroy(ExamQuestion $examQuestion)
     {
         $user = Auth::user();
-        if ($user->hasRole('director') !== true || $user->hasRole('teacher') !== true) {
+        if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
             return response([
                 'header' => 'Forbidden',
                 'message' => 'Please Logout and Login again.'
