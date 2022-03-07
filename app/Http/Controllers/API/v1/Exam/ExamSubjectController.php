@@ -48,9 +48,18 @@ class ExamSubjectController extends Controller
             $subject_ids = $user->student->subjects->pluck('id')->toArray();
         }
 
+        if ($user->hasRole('teacher')) {
+            $subject_ids = $user->teacher->subjects->pluck('id')->toArray();
+        }
+        
         if ($user->hasRole('director')) {
             return $exam_subjects->paginate();
         }
+
+        if ($user->hasRole('teacher')) {
+            return $exam_subjects->whereIn('subject_id', $subject_ids)->paginate();
+        }
+        
 
         if ($user->hasRole('student')) {
             $segment = $request->segment;
