@@ -50,7 +50,9 @@ class ExamSubjectController extends Controller
 
         if ($user->hasRole('director')) {
             return $exam_subjects->paginate();
-        } else if ($user->hasRole('student')) {
+        }
+
+        if ($user->hasRole('student')) {
             $segment = $request->segment;
             $exam_subject_states = null;
 

@@ -27,7 +27,7 @@ class ExamController extends Controller
             'segment' => 'nullable|max:255|in:all,current,previous',
         ]);
 
-        if ($user->hasRole('director') === true) {
+        if ($user->hasRole('director') === true || $user->hasRole('teacher') === true) {
 
             $current_session = Session::where('is_active',  true)->first();
 
