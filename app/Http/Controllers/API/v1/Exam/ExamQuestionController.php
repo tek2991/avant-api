@@ -228,6 +228,26 @@ class ExamQuestionController extends Controller
 
     public function destroy(ExamQuestion $examQuestion)
     {
+        $user = Auth::user();
+        if ($user->hasRole('director') !== true || $user->hasRole('teacher') !== true) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
+
+        if ($user->hasRole('teacher') == true) {
+            $exam_subject_id = $examQuestion->examSubject->id;
+            $subject_id = ExamSubject::find($exam_subject_id)->subject_id;
+            $subject_ids = $user->teacher->subjects()->pluck('subject_id');
+            if (!in_array($subject_id, $subject_ids->toArray())) {
+                return response([
+                    'header' => 'Forbidden',
+                    'message' => 'You are not authorized to perform this action.'
+                ], 403);
+            }
+        }
+
         try {
             $examQuestion->delete();
             return response([
