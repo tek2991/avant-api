@@ -41,7 +41,7 @@ class ExamQuestionController extends Controller
     public function all(ExamSubject $examSubject)
     {
         $user = Auth::user();
-        if($user->hasRole('director') !== true) {
+        if ($user->hasRole('director') !== true) {
             return response([
                 'header' => 'Forbidden',
                 'message' => 'Please Logout and Login again.'
@@ -53,7 +53,13 @@ class ExamQuestionController extends Controller
 
     public function store(Request $request)
     {
-        $user = auth()->user();
+        $user = Auth::user();
+        if ($user->hasRole('director') !== true || $user->hasRole('teacher') !== true) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
 
         $this->validate($request, [
             'exam_subject_id' => 'required|exists:exam_subject,id',
@@ -68,6 +74,17 @@ class ExamQuestionController extends Controller
             'option_4' => 'requiredIf:exam_question_type_id,1',
             'answer' => 'requiredIf:exam_question_type_id,1',
         ]);
+
+        if ($user->hasRole('teacher') == true) {
+            $subject_id = ExamSubject::find($request->exam_subject_id)->subject_id;
+            $subject_ids = $user->teacher->subjects()->pluck('subject_id');
+            if (!in_array($subject_id, $subject_ids->toArray())) {
+                return response([
+                    'header' => 'Forbidden',
+                    'message' => 'You are not authorized to perform this action.'
+                ], 403);
+            }
+        }
 
         $full_mark = ExamSubject::find($request->exam_subject_id)->full_mark;
         $total_marks = ExamQuestion::where('exam_subject_id', $request->exam_subject_id)->sum('marks');
@@ -124,7 +141,13 @@ class ExamQuestionController extends Controller
 
     public function update(ExamQuestion $examQuestion, Request $request)
     {
-        $user = auth()->user();
+        $user = Auth::user();
+        if ($user->hasRole('director') !== true || $user->hasRole('teacher') !== true) {
+            return response([
+                'header' => 'Forbidden',
+                'message' => 'Please Logout and Login again.'
+            ], 401);
+        }
 
         $this->validate($request, [
             'chapter_id' => 'nullable|exists:chapters,id',
@@ -138,6 +161,17 @@ class ExamQuestionController extends Controller
             'option_4' => 'requiredIf:exam_question_type_id,1',
             'answer' => 'requiredIf:exam_question_type_id,1',
         ]);
+
+        if ($user->hasRole('teacher') == true) {
+            $subject_id = ExamSubject::find($request->exam_subject_id)->subject_id;
+            $subject_ids = $user->teacher->subjects()->pluck('subject_id');
+            if (!in_array($subject_id, $subject_ids->toArray())) {
+                return response([
+                    'header' => 'Forbidden',
+                    'message' => 'You are not authorized to perform this action.'
+                ], 403);
+            }
+        }
 
         $full_mark = ExamSubject::find($examQuestion->exam_subject_id)->full_mark;
         $total_marks = ExamQuestion::where('exam_subject_id', $examQuestion->exam_subject_id)->whereNotIn('id', [$examQuestion->id])->sum('marks');
