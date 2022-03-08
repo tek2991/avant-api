@@ -16,7 +16,7 @@ class ExamOnlineScoreUpdateSeeder extends Seeder
      */
     public function run()
     {
-        $exam_subject_scores = ExamSubjectScore::where('exam_subject_state_id', 2)->get();
+        $exam_subject_scores = ExamSubjectScore::where('exam_subject_state_id', 3)->get();
         foreach($exam_subject_scores as $score){
             $exam_question_ids = ExamQuestion::where('exam_subject_id', $score->exam_subject_id)->pluck('id');
             $total_marks_secured = ExamAnswer::where('user_id', $score->user_id)->whereIn('exam_question_id', $exam_question_ids)->sum('marks_secured');
