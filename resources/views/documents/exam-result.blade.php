@@ -57,6 +57,11 @@
             text-align: left;
         }
 
+        .under-evaluation {
+            background-color: bisque;
+            color: darkred;
+        }
+
     </style>
 </head>
 
@@ -134,10 +139,14 @@
                 $total_obtained_marks = 0;
             @endphp
             @forelse ($exam_subjects as $item)
-                <tr class="data">
+                @php
+                    $is_under_evaluation = $item->examSubjectState->name != 'Locked';
+                @endphp
+                <tr class="data {{ $is_under_evaluation ? 'under-evaluation' : '' }}">
                     <td>{{ $loop->index + 1 }}</td>
                     <td>{{ $item->examSchedule->start->toFormattedDateString() }}</td>
-                    <td>{{ $item->subject->name }}</td>
+                    <td>{{ $item->subject->name }} {{ $is_under_evaluation ? '(Under Evaluation)' : '' }}
+                    </td>
                     <td>({{ $item->pass_mark }}) {{ $item->full_mark }}</td>
                     <td>{{ $exam_subject_scores->has($item->id) ? $exam_subject_scores[$item->id]->marks_secured : 'NA' }}
                     </td>
@@ -151,6 +160,7 @@
                                 echo 'NA';
                             }
                         @endphp
+
                     </td>
                 </tr>
                 @php
@@ -168,7 +178,7 @@
                 <td colspan="3">Summary</td>
                 <td> ({{ $total_pass_marks }}) {{ $total_marks }} </td>
                 <td> {{ $total_obtained_marks }} </td>
-                <td> {{ ($total_obtained_marks / $total_marks) * 100 }}% </td>
+                <td> {{ round(($total_obtained_marks / $total_marks) * 100, 2) }}% </td>
                 <td> {{ $total_obtained_marks >= $total_pass_marks ? 'Pass' : 'Fail' }} </td>
             </tr>
         </table>

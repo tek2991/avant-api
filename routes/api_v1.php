@@ -257,7 +257,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('exam-subject/{exam_subject}', [ExamSubjectController::class, 'update']);
     Route::post('exam-subject', [ExamSubjectController::class, 'store']);
     Route::delete('exam-subject/{exam_subject}', [ExamSubjectController::class, 'destroy']);
-    Route::get('stuent-users-for-exam-subject-all/{exam_subject}', [StudentUsersForExamSubject::class, 'all']);
+    Route::get('student-users-for-exam-subject-all/{exam_subject}', [StudentUsersForExamSubject::class, 'all']);
 
     Route::get('active-exam-subjects-for-student', [ActiveExamSubjectsForStudent::class, 'index']);
 
