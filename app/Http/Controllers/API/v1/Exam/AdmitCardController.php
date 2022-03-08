@@ -28,7 +28,7 @@ class AdmitCardController extends Controller
         $patArray = explode("|", $request->pat);
         $model_id = $patArray[0];
         $token = $patArray[1];
-        $user_id = $patArray[2];
+        $user_id = array_key_exists(2, $patArray) ? $patArray[2] : null;
         $pas = PersonalAccessToken::findOrFail($model_id);
 
         if(!hash_equals($pas->token, hash('sha256', $token))){
