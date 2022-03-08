@@ -11,6 +11,7 @@ use App\Http\Controllers\API\v1\User\UserController;
 use App\Http\Controllers\Auth\ApiRegisterController;
 use App\Http\Controllers\API\v1\Event\EventController;
 use App\Http\Controllers\API\v1\Bill\BillFeeController;
+use App\Http\Controllers\API\v1\Exam\StudentExamResult;
 use App\Http\Controllers\API\v1\User\TeacherController;
 use App\Http\Controllers\API\v1\Appeal\AppealController;
 use App\Http\Controllers\API\v1\Exam\ExamTypeController;
@@ -225,6 +226,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('admit-card/{exam}', [AdmitCardController::class, 'show']);
     Route::get('exam-subject-for-student/{exam}', [ExamSubjectForStudent::class, 'index']);
+    Route::get('student-exam-result', [StudentExamResult::class, 'all']);
 
     Route::get('exam-schedule/{exam}', [ExamScheduleController::class, 'index']);
     Route::get('exam-schedule-all/{exam}', [ExamScheduleController::class, 'all']);

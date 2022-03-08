@@ -93,7 +93,7 @@ class DownloadResultController extends Controller
 
         $user = $pas->tokenable;
 
-        if ($user->hasRole('director') !== true && $user->id !== $request->user_id) {
+        if ($user->hasRole('director') !== true && $user->id != $request->user_id) {
             return response([
                 'header' => 'Forbidden',
                 'message' => 'Please Logout and Login again'
@@ -111,6 +111,8 @@ class DownloadResultController extends Controller
         $exam_subject_ids = $exam_subjects->pluck('id')->toArray();
         $exam_subject_scores = ExamSubjectScore::where('user_id', $user->id)->whereIn('exam_subject_id', $exam_subject_ids)->get()->keyBy('exam_subject_id');
         
+        // dd($exam_subject_scores, $exam_subjects);
+
         $file_name = 'Admit_Card_'. str_replace(" ","_", $exam->name) . '_'. str_replace(" ","_", $exam->session->name) . '_' . str_replace(" ","_", $user->userDetail->name) . '.pdf';
         $pdf = PDF::loadView('documents.exam-result', compact('exam', 'exam_user', 'variables', 'exam_subjects', 'exam_subject_scores'));
         return $pdf->download($file_name);

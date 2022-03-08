@@ -139,15 +139,25 @@
                     <td>{{ $item->examSchedule->start->toFormattedDateString() }}</td>
                     <td>{{ $item->subject->name }}</td>
                     <td>({{ $item->pass_mark }}) {{ $item->full_mark }}</td>
-                    <td>{{ $exam_subject_scores[$item->id]->marks_secured }} </td>
-                    <td>{{ ($exam_subject_scores[$item->id]->marks_secured / $item->full_mark) * 100 }}%</td>
-                    <td> {{ $exam_subject_scores[$item->id]->marks_secured >= $item->pass_mark ? 'Pass' : 'Fail' }}
+                    <td>{{ $exam_subject_scores->has($item->id) ? $exam_subject_scores[$item->id]->marks_secured : 'NA' }}
+                    </td>
+                    <td>{{ $exam_subject_scores->has($item->id)? ($exam_subject_scores[$item->id]->marks_secured / $item->full_mark) * 100: 'NA' }}%
+                    </td>
+                    <td>
+                        @php
+                            if ($exam_subject_scores->has($item->id)) {
+                                echo $exam_subject_scores[$item->id]->marks_secured >= $item->pass_mark ? 'Pass' : 'Fail';
+                            } else {
+                                echo 'NA';
+                            }
+                        @endphp
                     </td>
                 </tr>
                 @php
+                    $calc_marks_obtained = $exam_subject_scores->has($item->id) ? $exam_subject_scores[$item->id]->marks_secured : 0;
                     $total_marks += $item->full_mark;
                     $total_pass_marks += $item->pass_mark;
-                    $total_obtained_marks += $exam_subject_scores[$item->id]->marks_secured;
+                    $total_obtained_marks += $calc_marks_obtained;
                 @endphp
             @empty
                 <tr class="data">
