@@ -53,6 +53,9 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "serve": [
+            "@php artisan serve --host=avant-api.local"
         ]
     },
     "extra": {
