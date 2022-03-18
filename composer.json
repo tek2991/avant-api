@@ -55,7 +55,7 @@
             "@php artisan key:generate --ansi"
         ],
         "serve": [
-            "@php artisan serve --host=avant-api.local"
+            "@php artisan serve --host=localhost --port=8000"
         ]
     },
     "extra": {
