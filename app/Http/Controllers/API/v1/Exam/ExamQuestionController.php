@@ -162,7 +162,7 @@ class ExamQuestionController extends Controller
             'answer' => 'requiredIf:exam_question_type_id,1',
         ]);
 
-        if ($user->hasRole('teacher') == true) {
+        if ($user->hasRole('director') != true && $user->hasRole('teacher') == true) {
             $subject_id = ExamSubject::find($request->exam_subject_id)->subject_id;
             $subject_ids = $user->teacher->subjects()->pluck('subject_id');
             if (!in_array($subject_id, $subject_ids->toArray())) {
