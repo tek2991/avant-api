@@ -8,6 +8,7 @@ use App\Models\ExamQuestion;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ExamQuestionController extends Controller
 {
@@ -73,9 +74,11 @@ class ExamQuestionController extends Controller
             'option_3' => 'requiredIf:exam_question_type_id,1',
             'option_4' => 'requiredIf:exam_question_type_id,1',
             'answer' => 'requiredIf:exam_question_type_id,1',
+            'images' => 'nullable|array',
+            'images.*' => 'nullable|string',
         ]);
 
-        if ($user->hasRole('teacher') == true) {
+        if ($user->hasRole('teacher') == true && $user->hasRole('director') !== true) {
             $subject_id = ExamSubject::find($request->exam_subject_id)->subject_id;
             $subject_ids = $user->teacher->subjects()->pluck('subject_id');
             if (!in_array($subject_id, $subject_ids->toArray())) {
@@ -97,6 +100,11 @@ class ExamQuestionController extends Controller
         }
 
         try {
+            // Move images to storage
+            foreach ($request->images as $image_file_name) {
+                Storage::move('public/tiny_mce_uploaded_imgs/' . $image_file_name, 'public/exam_question_images/' .  $image_file_name);
+            }
+
             $examQuestion = ExamQuestion::create([
                 'exam_subject_id' => $request->exam_subject_id,
                 'chapter_id' => $request->chapter_id,
