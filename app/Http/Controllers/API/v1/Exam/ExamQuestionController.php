@@ -168,6 +168,10 @@ class ExamQuestionController extends Controller
             'option_3' => 'requiredIf:exam_question_type_id,1',
             'option_4' => 'requiredIf:exam_question_type_id,1',
             'answer' => 'requiredIf:exam_question_type_id,1',
+            'orphan_images' => 'nullable|array',
+            'orphan_images.*' => 'nullable|string',
+            'new_images' => 'nullable|array',
+            'new_images.*' => 'nullable|string',
         ]);
 
         if ($user->hasRole('director') != true && $user->hasRole('teacher') == true) {
@@ -192,6 +196,16 @@ class ExamQuestionController extends Controller
         }
 
         try {
+            // Move new images to storage
+            foreach ($request->new_images as $image_file_name) {
+                Storage::move('public/tiny_mce_uploaded_imgs/' . $image_file_name, 'public/exam_question_images/' .  $image_file_name);
+            }
+
+            // Remove orpahn images
+            foreach ($request->orphan_images as $image_file_name) {
+                Storage::delete('public/exam_question_images/' . $image_file_name);
+            }
+
             $examQuestion->update([
                 'chapter_id' => $request->chapter_id,
                 'exam_question_type_id' => $request->exam_question_type_id,
@@ -244,7 +258,7 @@ class ExamQuestionController extends Controller
             ], 401);
         }
 
-        if ($user->hasRole('teacher') == true) {
+        if ($user->hasRole('teacher') == true && $user->hasRole('director') !== true) {
             $exam_subject_id = $examQuestion->examSubject->id;
             $subject_id = ExamSubject::find($exam_subject_id)->subject_id;
             $subject_ids = $user->teacher->subjects()->pluck('subject_id');
@@ -256,7 +270,23 @@ class ExamQuestionController extends Controller
             }
         }
 
+        $description = $examQuestion->description;
+        
+        $orphan_images = [];
+        preg_match('/<img[^>]+src="([^">]+)"/', $description, $matches);
+        if (isset($matches[1])) {
+            $images = explode(',', $matches[1]);
+            foreach ($images as $image) {
+                $image_file_name = basename($image);
+                $orphan_images[] = $image_file_name;
+            }
+        }
+
         try {
+            // Remove orpahn images
+            foreach ($orphan_images as $image_file_name) {
+                Storage::delete('public/exam_question_images/' . $image_file_name);
+            }
             $examQuestion->delete();
             return response([
                 'message' => 'Exam Question Deleted Successfully',
