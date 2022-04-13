@@ -271,11 +271,12 @@ class ExamQuestionController extends Controller
         }
 
         $description = $examQuestion->description;
-        
+
         $orphan_images = [];
         preg_match('/<img[^>]+src="([^">]+)"/', $description, $matches);
-        if (isset($matches[1])) {
-            $images = explode(',', $matches[1]);
+        
+        foreach ($matches as $match) {
+            $images = explode(',', $match);
             foreach ($images as $image) {
                 $image_file_name = basename($image);
                 $orphan_images[] = $image_file_name;
