@@ -12,6 +12,7 @@ use Illuminate\Validation\Rule;
 use App\Models\ExamSubjectScore;
 use App\Models\ExamSubjectState;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class ExamAnswerController extends Controller
 {
@@ -86,7 +87,7 @@ class ExamAnswerController extends Controller
         $exam_subject_active_state_id = ExamSubjectState::where('name', 'Active')->first()->id;
         $exam_subject_score = ExamSubjectScore::where('exam_subject_id', $exam_subject->id)->where('user_id', $user_id)->first();
 
-        if($exam_subject_score->exam_subject_state_id != $exam_subject_active_state_id){
+        if ($exam_subject_score->exam_subject_state_id != $exam_subject_active_state_id) {
             ExamAnswer::insert($insert_data);
             $exam_subject_score->update([
                 'exam_subject_state_id' => $exam_subject_active_state_id,
@@ -111,7 +112,6 @@ class ExamAnswerController extends Controller
      */
     public function show(ExamAnswer $examAnswer)
     {
-        
     }
 
     /**
@@ -143,23 +143,44 @@ class ExamAnswerController extends Controller
                 'integer',
                 'exists:exam_question_options,id',
             ],
+            'orphan_images' => 'nullable|array',
+            'orphan_images.*' => 'nullable|string',
+            'new_images' => 'nullable|array',
+            'new_images.*' => 'nullable|string',
         ]);
 
         $update_data = [
             'exam_answer_state_id' => $request->exam_answer_state_id,
         ];
 
-        if($request->exam_answer_state_id == ExamAnswerState::where('name', 'Answered')->first()->id){
+        if ($request->exam_answer_state_id == ExamAnswerState::where('name', 'Answered')->first()->id) {
             $update_data['description'] = $request->description;
             $update_data['exam_question_option_id'] = $request->exam_question_option_id;
         }
 
-        $examAnswer->update($update_data);
+        try {
+            // Move new images to storage
+            foreach ($request->new_images as $image_file_name) {
+                Storage::move('public/tiny_mce_uploaded_imgs/' . $image_file_name, 'public/exam_answer_images/' .  $image_file_name);
+            }
 
-        return response([
-            'header' => 'Success',
-            'message' => 'Exam Answer Updated!',
-        ], 200);
+            // Remove orpahn images
+            foreach ($request->orphan_images as $image_file_name) {
+                Storage::delete('public/exam_answer_images/' . $image_file_name);
+            }
+
+            $examAnswer->update($update_data);
+
+            return response([
+                'header' => 'Success',
+                'message' => 'Exam Answer Updated!',
+            ], 200);
+        } catch (\Exception $ex) {
+            return response([
+                'message' => 'Something went wrong.',
+                'errors' => $ex->getMessage()
+            ], 500);
+        }
     }
 
     /**
