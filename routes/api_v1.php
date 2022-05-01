@@ -41,6 +41,7 @@ use App\Http\Controllers\API\v1\Exam\ExamScheduleController;
 use App\Http\Controllers\API\v1\Homework\HomeworkController;
 use App\Http\Controllers\API\v1\Chart\StudentChartController;
 use App\Http\Controllers\API\v1\Chart\TeacherChartController;
+use App\Http\Controllers\API\v1\Exam\QuestionPaperController;
 use App\Http\Controllers\API\v1\SMS\StudentBySectionStandard;
 use App\Http\Controllers\API\v1\Attributes\LanguageController;
 use App\Http\Controllers\API\v1\Attributes\ReligionController;
@@ -286,6 +287,7 @@ Route::get('fee-invoice-print/{fee_invoice}', [FeeInvoiceController::class, 'pri
 Route::get('fee-invoice-receipt/{fee_invoice}', [FeeInvoiceController::class, 'printReceipt']);
 
 Route::get('admit-card-print/{exam}', [AdmitCardController::class, 'print']);
+Route::get('question-paper-print/{exam_subject}', [QuestionPaperController::class, 'print']);
 Route::get('download-result-standard', [DownloadResultController::class, 'standard']);
 Route::get('download-result-student', [DownloadResultController::class, 'student']);
 

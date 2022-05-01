@@ -30,9 +30,15 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->exists() ? User::where('email', $request->email)->first() : null;
 
-        if(!$user->hasRole('admin')){
+        if (!$user) {
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
+        }
+
+        if (!$user->hasRole('admin')) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);

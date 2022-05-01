@@ -24,7 +24,7 @@ class ExamQuestion extends Model
     }
 
     public function examQuestionType(){
-        return $this->belongsTo(ExamQuestionType::class);
+        return $this->belongsTo(ExamQuestionType::class, 'exam_question_type_id', 'id');
     }
 
     public function creator(){
