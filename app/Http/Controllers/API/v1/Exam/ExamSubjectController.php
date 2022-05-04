@@ -173,11 +173,11 @@ class ExamSubjectController extends Controller
         }
 
         $this->validate($request, [
-            'exam_id' => 'required|numeric|exists:exams,id',
-            'exam_schedule_id' => 'required|numeric|exists:exam_schedules,id',
-            'full_mark' => 'required|numeric|between:10,200',
-            'pass_mark' => 'required|numeric|between:1,full_mark',
-            'negative_percentage' => 'required|numeric|between:0,400',
+            'exam_id' => 'required|integer|exists:exams,id',
+            'exam_schedule_id' => 'required|integer|exists:exam_schedules,id',
+            'full_mark' => 'required|integer|between:10,200',
+            'pass_mark' => 'required|integer|between:1,full_mark',
+            'negative_percentage' => 'required|integer|between:0,400',
         ]);
 
         $examSubject->update([
