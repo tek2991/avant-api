@@ -176,7 +176,7 @@ class ExamSubjectController extends Controller
             'exam_id' => 'required|integer|exists:exams,id',
             'exam_schedule_id' => 'required|integer|exists:exam_schedules,id',
             'full_mark' => 'required|integer|between:10,200',
-            'pass_mark' => 'required|integer',
+            'pass_mark' => 'required|integer', // between:1,full_mark <- this is not working in live server.
             'negative_percentage' => 'required|integer|between:0,400',
         ]);
 
