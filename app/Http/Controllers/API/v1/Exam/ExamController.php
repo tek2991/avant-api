@@ -82,8 +82,8 @@ class ExamController extends Controller
             'exam_schedules.*.end' => 'required|date|after:exam_schedules.*.start',
             'class_ids' => 'required|array|exists:section_standard,id',
             'full_mark' => 'required|integer|between:10,200',
-            'pass_mark' => 'required|integer|between:1,full_mark',
-            'negative_percentage' => 'required|numeric|between:0,400',
+            'pass_mark' => 'required|integer', // between:1,full_mark <- this is not working in live server.
+            'negative_percentage' => 'required|integer|between:0,400',
         ]);
 
         $session_id = Session::where('is_active', true)->firstOrFail()->id;
