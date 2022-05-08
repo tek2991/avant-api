@@ -180,6 +180,10 @@ return [
         App\Providers\TelescopeServiceProvider::class,
         App\Providers\HorizonServiceProvider::class,
 
+
+        // Laravel MPDF
+        Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class
+
     ],
 
     /*
@@ -233,8 +237,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
-        'PDF' => Barryvdh\DomPDF\Facade::class,
 
+        'PDF' => Meneses\LaravelMpdf\Facades\LaravelMpdf::class,
     ],
 
 ];

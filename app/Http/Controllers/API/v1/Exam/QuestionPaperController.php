@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\API\v1\Exam;
 
 use App\Models\User;
-use Barryvdh\DomPDF\Facade as PDF;
+// use Barryvdh\DomPDF\Facade as PDF;
+use PDF;
 use App\Models\ExamSubject;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -49,7 +50,11 @@ class QuestionPaperController extends Controller
         $file_name = 'Admit_Card_'. str_replace(" ","_", $examSubject->subject->name) . '_'. str_replace(" ","_", $examSubject->exam->name) . '_.pdf';
 
         // return view('documents.question_paper', compact('exam', 'variables', 'examSubject', 'exam_questions'));
+        // $pdf = PDF::loadView('documents.question_paper', compact('exam', 'variables', 'examSubject', 'exam_questions'));
+        // return $pdf->download($file_name);
+        
+        
         $pdf = PDF::loadView('documents.question_paper', compact('exam', 'variables', 'examSubject', 'exam_questions'));
-        return $pdf->download($file_name);
+        return $pdf->stream($file_name);
     }
 }

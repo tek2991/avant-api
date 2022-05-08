@@ -5,10 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>{{ $exam->name }} {{ $exam->session->name }} </title>
     <style>
+        @page {
+            footer: page-footer;
+        }
+
         body {
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: FreeSans, FreeSerif, FreeMono, Arial, Helvetica, sans-serif;
             margin: auto;
             /* width: 29.7cm; */
             /* padding: 1cm; */
@@ -21,6 +26,7 @@
         }
 
         table {
+            font-family: Macondo;
             width: 100%;
             border: 1px solid black;
         }
@@ -55,7 +61,7 @@
 
 <body>
     <div class="a4-container">
-        <table style="border: none; padding: 20px">
+        <table style="border: none; padding: 0 0 0 20px">
             <tr>
                 <th class="school-heading">
                     <span style="font-size: 1.5rem;">{{ $variables['ADDRESS_LINE_1'] }}</span> <br>
@@ -72,10 +78,10 @@
         </table>
         <table style="border: none; border-collapse: collapse;">
             <tr>
-                <th colspan="2" style="padding: 20px; text-align: left">
+                <th colspan="2" style="padding: 0 20px 0 20px; text-align: left">
                     {{ $examSubject->full_mark }} marks
                 </th>
-                <th colspan="2" style="padding: 20px; text-align: right">
+                <th colspan="2" style="padding: 0 20px 0 20px; text-align: right">
                     @php
                         $examSchedule = $examSubject->examSchedule()->exists() ? $examSubject->examSchedule : null;
                         $duration = null;
@@ -89,47 +95,50 @@
                 </th>
             </tr>
         </table>
-        <table style="border: none; margin-top:1rem;">
+        <hr>
+        <table style="border: none; border-collapse: collapse;">
             @foreach ($exam_questions as $question)
-                <tr>
+                <tr style="margin-bottom: 15px">
                     @php
                         $question_type = $question->examQuestionType->name;
                         $description = $question->description;
                     @endphp
-                    <td style="padding: .25rem 1rem 0 1rem ">
-                        <table style="border: none; margin:.5rem 0;">
+                    <td style="padding: .25rem .5rem 0 1rem;">
+                        <table style="border: none; border-collapse: collapse; margin:.75rem 0 0 0;">
                             <tr>
                                 <th style="text-align: left"> Q.{{ $loop->index + 1 }} </th>
                                 <th style="text-align: right"> Marks: {{ $question->marks }} </th>
                             </tr>
                         </table>
-                        <span style="padding-left: 2rem">
+                        <div>
                             @php
                                 $question_description = $question->description;
-                                
                             @endphp
                             {!! $question->description !!}
-                            {{-- {{ $question->description }} --}}
                             @if ($question_type == 'Objective' && $question->examQuestionOptions->count() > 0)
-                            @php
-                                $options = $question->examQuestionOptions;
+                                @php
+                                    $options = $question->examQuestionOptions;
                                 @endphp
-                            <br>
-                            <ul>
-                                @foreach ($options as $option)
-                                <li>
-                                    {{ $option->description }}
-                                </li>
-                                @endforeach
-                            </ul>
+                                <br>
+                                <ul>
+                                    @foreach ($options as $option)
+                                        <li>
+                                            {{ $option->description }}
+                                        </li>
+                                    @endforeach
+                                </ul>
                             @endif
-                        </span>
+                        </div>
                     </td>
                 </tr>
             @endforeach
         </table>
         <h5 style="text-align: center;">** END **</h5>
     </div>
+
+    <htmlpagefooter name="page-footer">
+        <p style="text-align: center; font-size: .75rem; padding:.25rem" >Page: {PAGENO} of {nb}</p>
+    </htmlpagefooter>
 </body>
 
 </html>
