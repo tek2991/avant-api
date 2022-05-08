@@ -55,6 +55,6 @@ class QuestionPaperController extends Controller
         
         
         $pdf = PDF::loadView('documents.question_paper', compact('exam', 'variables', 'examSubject', 'exam_questions'));
-        return $pdf->stream($file_name);
+        return $pdf->download($file_name);
     }
 }
