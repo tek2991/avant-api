@@ -47,7 +47,7 @@ class QuestionPaperController extends Controller
 
         $variables = VariableController::keyPairs();
 
-        $file_name = 'Admit_Card_'. str_replace(" ","_", $examSubject->subject->name) . '_'. str_replace(" ","_", $examSubject->exam->name) . '_.pdf';
+        $file_name = 'Question_Paper_'. str_replace(" ","_", $examSubject->subject->name) . '_'. str_replace(" ","_", $examSubject->exam->name) . '_.pdf';
 
         // return view('documents.question_paper', compact('exam', 'variables', 'examSubject', 'exam_questions'));
         // $pdf = PDF::loadView('documents.question_paper', compact('exam', 'variables', 'examSubject', 'exam_questions'));
