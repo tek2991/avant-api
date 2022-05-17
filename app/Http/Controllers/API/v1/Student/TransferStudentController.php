@@ -48,15 +48,15 @@ class TransferStudentController extends Controller
         ]);
 
         $section_standard_id = SectionStandard::where('section_id', $request->section_id)->where('standard_id', $request->standard_id)->firstOrFail()->id;
-        $students = Student::whereIn('id', $request->student_ids);
+        $students = Student::whereIn('id', $request->student_ids)->get();
 
         $subjects = Standard::find($request->standard_id)->subjects()->get()->modelKeys();
 
-        $students->update([
-            'section_standard_id' => $section_standard_id,
-        ]);
-
+        
         foreach($students as $student){
+            $student->update([
+                'section_standard_id' => $section_standard_id,
+            ]);
             $student->subjects()->sync($subjects);
         }
 
