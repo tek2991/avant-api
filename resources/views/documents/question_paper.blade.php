@@ -68,7 +68,7 @@
                     <span> {{ $exam->name }} {{ $exam->session->name }} </span> <br>
                     <span> {{ $examSubject->subject->name }} </span>
                     <br>
-                    <span> {{ $examSubject->subject->standard->name }} </span>
+                    <span> Class: {{ $examSubject->subject->standard->name }} </span>
                 </th>
                 <th style="text-align: right">
                     {{-- <img src="{{ url('/img/school_logo.png') }}" alt="school_logo" class="logo"> --}}
