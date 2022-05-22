@@ -27,16 +27,23 @@ return [
     'watermark_image_position' => 'P',
     'custom_font_dir'          => base_path('resources/fonts/'), // don't forget the trailing slash!
     'custom_font_data'         => [
-                                    /**
-                                        'examplefont' => [
-                                            'R'  => 'ExampleFont-Regular.ttf',    // regular font
-                                            'B'  => 'ExampleFont-Bold.ttf',       // optional: bold font
-                                            'I'  => 'ExampleFont-Italic.ttf',     // optional: italic font
-                                            'BI' => 'ExampleFont-Bold-Italic.ttf' // optional: bold-italic font
-                                        ]
-                                    */
+                                        /**
+                                            'examplefont' => [
+                                                'R'  => 'ExampleFont-Regular.ttf',    // regular font
+                                                'B'  => 'ExampleFont-Bold.ttf',       // optional: bold font
+                                                'I'  => 'ExampleFont-Italic.ttf',     // optional: italic font
+                                                'BI' => 'ExampleFont-Bold-Italic.ttf' // optional: bold-italic font
+                                            ],
+                                        */
+                                        'NotoSerifBengali' => [
+                                            'R'  => 'NotoSerifBengali-Regular.ttf',    // regular font
+                                            'B'  => 'NotoSerifBengali-Bold.ttf',       // optional: bold font
+                                        ],
+                                        'mocondo' => [
+                                            'R'  => 'Mocondo-Regular.ttf',    // regular font
+                                        ],
                                     ],
-    'auto_language_detection'  => false,
+    'auto_language_detection'  => true,
     'temp_dir'                 => rtrim(sys_get_temp_dir(), DIRECTORY_SEPARATOR),
     'pdfa'                     => false,
     'pdfaauto'                 => false,

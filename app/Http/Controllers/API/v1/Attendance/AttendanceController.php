@@ -86,6 +86,17 @@ class AttendanceController extends Controller
             'created_by' => $user->id,
             'updated_by' => $user->id,
         ]);
+
+        // return Attendance::updateOrCreate([
+        //     'user_id' => $request->user_id,
+        //     'attendance_date' => $request->attendance_date,
+        // ], [
+        //     'section_standard_id' => $sectionStandard->id,
+        //     'session_id' => $session->id,
+        //     'attendance_state_id' => $request->attendance_state_id,
+        //     'created_by' => $user->id,
+        //     'updated_by' => $user->id,
+        // ]);
     }
 
     /**

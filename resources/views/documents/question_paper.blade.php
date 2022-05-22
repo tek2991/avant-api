@@ -13,7 +13,6 @@
         }
 
         body {
-            font-family: FreeSans, FreeSerif, FreeMono, Arial, Helvetica, sans-serif;
             margin: auto;
             /* width: 29.7cm; */
             /* padding: 1cm; */
@@ -26,7 +25,6 @@
         }
 
         table {
-            font-family: Macondo;
             width: 100%;
             border: 1px solid black;
         }
@@ -64,7 +62,8 @@
         <table style="border: none; padding: 0 0 0 20px">
             <tr>
                 <th class="school-heading">
-                    <span style="font-size: 1.5rem;">{{ $variables['ADDRESS_LINE_1'] }}</span> <br>
+                    <span style="font-size: 1.5rem;">{{ $variables['ADDRESS_LINE_1'] }}</span>
+                    <br>
                     <span> {{ $exam->name }} {{ $exam->session->name }} </span> <br>
                     <span> {{ $examSubject->subject->name }} </span>
                     <br>
@@ -96,7 +95,10 @@
             </tr>
         </table>
         <hr>
-        <table style="border: none; border-collapse: collapse;">
+        @php
+            $isAssamese = $examSubject->subject->isAssamese();
+        @endphp
+        <table style="border: none; border-collapse: collapse; font-family: {{ $isAssamese ? 'nikosh' : '' }}">
             @foreach ($exam_questions as $question)
                 <tr style="margin-bottom: 15px">
                     @php
@@ -137,7 +139,7 @@
     </div>
 
     <htmlpagefooter name="page-footer">
-        <p style="text-align: center; font-size: .75rem; padding:.25rem" >Page: {PAGENO} of {nb}</p>
+        <p style="text-align: center; font-size: .75rem; padding:.25rem">Page: {PAGENO} of {nb}</p>
     </htmlpagefooter>
 </body>
 

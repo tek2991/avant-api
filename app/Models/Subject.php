@@ -54,4 +54,11 @@ class Subject extends Model
             'auto_start',
         ])->withTimestamps();
     }
+
+    public function isAssamese(): bool
+    {
+        $str = 'assamese';
+        
+        return strpos(strtolower($this->name), $str) !== false;
+    }
 }
