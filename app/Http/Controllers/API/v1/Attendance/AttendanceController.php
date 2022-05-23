@@ -77,26 +77,26 @@ class AttendanceController extends Controller
 
         $session = Session::where('is_active', true)->firstOrFail();
 
-        return Attendance::Create([
-            'user_id' => $request->user_id,
-            'attendance_date' => $request->attendance_date,
-            'attendance_state_id' => $request->attendance_state_id,
-            'section_standard_id' => $sectionStandard->id,
-            'session_id' => $session->id,
-            'created_by' => $user->id,
-            'updated_by' => $user->id,
-        ]);
-
-        // return Attendance::updateOrCreate([
+        // return Attendance::Create([
         //     'user_id' => $request->user_id,
         //     'attendance_date' => $request->attendance_date,
-        // ], [
+        //     'attendance_state_id' => $request->attendance_state_id,
         //     'section_standard_id' => $sectionStandard->id,
         //     'session_id' => $session->id,
-        //     'attendance_state_id' => $request->attendance_state_id,
         //     'created_by' => $user->id,
         //     'updated_by' => $user->id,
         // ]);
+
+        return Attendance::updateOrCreate([
+            'user_id' => $request->user_id,
+            'attendance_date' => $request->attendance_date,
+        ], [
+            'section_standard_id' => $sectionStandard->id,
+            'session_id' => $session->id,
+            'attendance_state_id' => $request->attendance_state_id,
+            'created_by' => $user->id,
+            'updated_by' => $user->id,
+        ]);
     }
 
     /**
@@ -157,66 +157,66 @@ class AttendanceController extends Controller
      * @param  \App\Models\Attendance  $attendance
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Attendance $attendance)
-    {
-        $user = Auth::user();
-        if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
-            return response([
-                'header' => 'Forbidden',
-                'message' => 'Please Logout and Login again.'
-            ], 401);
-        }
+    // public function update(Request $request, Attendance $attendance)
+    // {
+    //     $user = Auth::user();
+    //     if ($user->hasRole('director') !== true && $user->hasRole('teacher') !== true) {
+    //         return response([
+    //             'header' => 'Forbidden',
+    //             'message' => 'Please Logout and Login again.'
+    //         ], 401);
+    //     }
 
-        $this->validate($request, [
-            'user_id' => 'required|min:1|exists:users,id',
-            'attendance_date' => 'required|date',
-            'attendance_state_id' => 'required|min:1|exists:attendance_states,id',
-        ]);
+    //     $this->validate($request, [
+    //         'user_id' => 'required|min:1|exists:users,id',
+    //         'attendance_date' => 'required|date',
+    //         'attendance_state_id' => 'required|min:1|exists:attendance_states,id',
+    //     ]);
 
-        $student = User::find($request->user_id)->student()->exists() ? User::find($request->user_id)->student : false;
+    //     $student = User::find($request->user_id)->student()->exists() ? User::find($request->user_id)->student : false;
 
-        if ($student == false) {
-            return response([
-                'header' => 'Error',
-                'message' => 'Student not found.'
-            ], 401);
-        }
+    //     if ($student == false) {
+    //         return response([
+    //             'header' => 'Error',
+    //             'message' => 'Student not found.'
+    //         ], 401);
+    //     }
 
-        $sectionStandard = $student->sectionStandard;
+    //     $sectionStandard = $student->sectionStandard;
 
-        $canProceed = false;
+    //     $canProceed = false;
 
         
-        if ($user->hasRole('teacher') === true) {
-            $user->teacher->id === $sectionStandard->teacher_id ? $canProceed = true : false;
-        }
+    //     if ($user->hasRole('teacher') === true) {
+    //         $user->teacher->id === $sectionStandard->teacher_id ? $canProceed = true : false;
+    //     }
         
-        $user->hasRole('director') === true ? $canProceed = true : false;
+    //     $user->hasRole('director') === true ? $canProceed = true : false;
 
-        if ($canProceed == false) {
-            return response([
-                'header' => 'Forbidden',
-                'message' => 'Please Logout and Login again.'
-            ], 401);
-        }
+    //     if ($canProceed == false) {
+    //         return response([
+    //             'header' => 'Forbidden',
+    //             'message' => 'Please Logout and Login again.'
+    //         ], 401);
+    //     }
 
-        $session = Session::where('is_active', true)->firstOrFail();
+    //     $session = Session::where('is_active', true)->firstOrFail();
 
-        $attendance->updateOrCreate(
-            [
-                'user_id' => $request->user_id,
-                'attendance_date' => $request->attendance_date,
-            ],
-            [
-                'attendance_state_id' => $request->attendance_state_id,
-                'section_standard_id' => $sectionStandard->id,
-                'session_id' => $session->id,
-                'updated_by' => $user->id,
-            ]
-        );
+    //     $attendance->updateOrCreate(
+    //         [
+    //             'user_id' => $request->user_id,
+    //             'attendance_date' => $request->attendance_date,
+    //         ],
+    //         [
+    //             'attendance_state_id' => $request->attendance_state_id,
+    //             'section_standard_id' => $sectionStandard->id,
+    //             'session_id' => $session->id,
+    //             'updated_by' => $user->id,
+    //         ]
+    //     );
 
-        return $attendance;
-    }
+    //     return $attendance;
+    // }
 
     /**
      * Remove the specified resource from storage.
