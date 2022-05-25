@@ -122,13 +122,11 @@
                                     $options = $question->examQuestionOptions;
                                 @endphp
                                 <br>
-                                <ul>
+
                                     @foreach ($options as $option)
-                                        <li>
-                                            {{ $option->description }}
-                                        </li>
+                                        ({{ $loop->index + 1 }}) {{ $option->description }} <br>
                                     @endforeach
-                                </ul>
+
                             @endif
                         </div>
                     </td>
