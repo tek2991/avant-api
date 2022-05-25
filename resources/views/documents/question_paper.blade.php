@@ -14,6 +14,7 @@
 
         body {
             margin: auto;
+            font-size: 1.5rem
             /* width: 29.7cm; */
             /* padding: 1cm; */
         }
