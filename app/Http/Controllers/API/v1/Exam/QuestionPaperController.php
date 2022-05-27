@@ -86,6 +86,7 @@ class QuestionPaperController extends Controller
             'fontdata' => $fontData + [
                 'nikosh' => [
                     'R'  => 'Nikosh.ttf',    // regular font
+                    'useOTL' => 0xFF,
                 ],
                 'macondo' => [
                     'R'  => 'Macondo-Regular.ttf',    // regular font
