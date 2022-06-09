@@ -19,7 +19,7 @@ class StudentUsersForExamSubject extends Controller
             ], 401);
         }
 
-        if($user->hasRole('teacher') === true) {
+        if($user->hasRole('teacher') === true && $user->hasRole('director') !== true) {
             $subject_ids = $user->teacher->subjects()->pluck('subject_id')->toArray();
             $subject_id = $examSubject->subject_id;
             if(!in_array($subject_id, $subject_ids)) {
