@@ -152,9 +152,9 @@
             @forelse ($exam_subjects as $item)
                 <tr class="data">
                     <td>{{ $loop->index + 1 }}</td>
-                    <td>{{ $item->examSchedule->start->toFormattedDateString() }}</td>
-                    <td>{{ $item->examSchedule->start->format('H:m') }} to
-                        {{ $item->examSchedule->end->format('H:m') }}</td>
+                    <td>{{ $item->examSchedule ? $item->examSchedule->start->toFormattedDateString() : 'Not Set' }}</td>
+                    <td>{{ $item->examSchedule ? $item->examSchedule->start->format('H:m') : '--:--' }} to
+                        {{ $item->examSchedule ? $item->examSchedule->end->format('H:m') : '--:--' }}</td>
                     <td>{{ $item->subject->name }}</td>
                     <td>({{ $item->pass_mark }}) {{ $item->full_mark }}</td>
                 </tr>
