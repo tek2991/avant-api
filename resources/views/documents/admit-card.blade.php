@@ -153,8 +153,8 @@
                 <tr class="data">
                     <td>{{ $loop->index + 1 }}</td>
                     <td>{{ $item->examSchedule ? $item->examSchedule->start->toFormattedDateString() : 'Not Set' }}</td>
-                    <td>{{ $item->examSchedule ? $item->examSchedule->start->format('H:m') : '--:--' }} to
-                        {{ $item->examSchedule ? $item->examSchedule->end->format('H:m') : '--:--' }}</td>
+                    <td>{{ $item->examSchedule ? $item->examSchedule->start->format('H:i') : '--:--' }} to
+                        {{ $item->examSchedule ? $item->examSchedule->end->format('H:i') : '--:--' }}</td>
                     <td>{{ $item->subject->name }}</td>
                     <td>({{ $item->pass_mark }}) {{ $item->full_mark }}</td>
                 </tr>
