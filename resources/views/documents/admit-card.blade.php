@@ -78,7 +78,7 @@
         </table>
         <table style="border: none; border-collapse: collapse;">
             <tr>
-                <th colspan="2" style="padding: 20px;">
+                <th colspan="2" style="">
                     @if ($exam_user->examUserState->name == 'Provisional')
                         <span style="font-size: 1.3rem; color:Tomato;">Provisional Admit Card</span>
                     @else
@@ -140,7 +140,7 @@
 
         <table style="margin-top: 2rem" class="routine-table">
             <tr>
-                <th colspan="5">Exam Routine</th>
+                <th colspan="6">Exam Routine</th>
             </tr>
             <tr class="heading">
                 <th>SL</th>
@@ -148,6 +148,7 @@
                 <th>Time (HH:MM)</th>
                 <th>Subject</th>
                 <th>Marks (P) F </th>
+                <th>Invigilator</th>
             </tr>
             @forelse ($exam_subjects as $item)
                 <tr class="data">
@@ -157,12 +158,26 @@
                         {{ $item->examSchedule ? $item->examSchedule->end->format('H:i') : '--:--' }}</td>
                     <td>{{ $item->subject->name }}</td>
                     <td>({{ $item->pass_mark }}) {{ $item->full_mark }}</td>
+                    <td>
+                        {{-- Space for signature --}}
+                        &nbsp;
+                    </td>
                 </tr>
             @empty
                 <tr class="data">
-                    <td colspan="5">No Data</td>
+                    <td colspan="6">No Data</td>
                 </tr>
             @endforelse
+        </table>
+        <table style="margin-top: 20px; border: none; border-collapse: collapse;">
+            <tr>
+                <td style="width: 50%; text-align: left; padding-top: 2rem">
+                    <span style="font-weight: bold">Examiner</span>
+                </td>
+                <td style="width: 50%; text-align: right; padding-top: 2rem">
+                    <span style="font-weight: bold">Principal</span>
+                </td>
+            </tr>
         </table>
         <h5 style="text-align: center;">** END **</h5>
     </div>
