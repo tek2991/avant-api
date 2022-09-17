@@ -22,7 +22,13 @@ class ExamSubjectForStudent extends Controller
 
         $student_subject_ids = $user->student->subjects->pluck('id')->toArray();
 
-        $exam_subjects = ExamSubject::where('exam_id', $exam->id)->whereIn('subject_id', $student_subject_ids)->with('subject.standard', 'examSchedule')->orderBy('exam_schedule_id')->get();
+        $exam_subjects = ExamSubject::where('exam_subject.exam_id', $exam->id)
+        ->whereIn('exam_subject.subject_id', $student_subject_ids)
+        ->leftJoin('exam_schedules', 'exam_subject.exam_schedule_id', '=', 'exam_schedules.id')
+        ->select('exam_subject.*', 'exam_schedules.start')
+        ->with('subject.standard', 'examSchedule')
+        ->orderBy('exam_schedules.start')
+        ->get();
 
         return $exam_subjects;
     }
