@@ -23,7 +23,11 @@ class ClassExamResult implements FromCollection, WithMapping, WithHeadings
      */
     public function collection()
     {
-        $query = ExamSubjectScore::whereIn('exam_subject_id', $this->exam_subject_ids);
+        $query = ExamSubjectScore::whereIn('exam_subject_id', $this->exam_subject_ids)
+        // Must have user, which must have student
+        ->whereHas('user', function($q){
+            $q->whereHas('student');
+        });
 
         $query
             ->join('users', 'users.id', '=', 'exam_subject_scores.user_id')
