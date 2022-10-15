@@ -150,7 +150,7 @@
                     <td>({{ $item->pass_mark }}) {{ $item->full_mark }}</td>
                     <td>{{ $exam_subject_scores->has($item->id) ? $exam_subject_scores[$item->id]->marks_secured : 'NA' }}
                     </td>
-                    <td>{{ $exam_subject_scores->has($item->id)? ($exam_subject_scores[$item->id]->marks_secured / $item->full_mark) * 100: 'NA' }}%
+                    <td>{{ $exam_subject_scores->has($item->id)? round(($exam_subject_scores[$item->id]->marks_secured / $item->full_mark)* 100, 2): 'NA' }}%
                     </td>
                     <td>
                         @php
