@@ -169,13 +169,17 @@
                 </tr>
             @endforelse
         </table>
-        <table style="margin-top: 20px; border: none; border-collapse: collapse;">
+        <table style="border: none; border-collapse: collapse;">
             <tr>
-                <td style="width: 50%; text-align: left; padding-top: 2rem">
-                    <span style="font-weight: bold">Examiner</span>
+                <td style="width: 50%; text-align: left;">
+                    <img src="{{ public_path('img/sig_examiner.png') }}" alt="signature" style="width: 80px">
+                    <br>
+                    <span style="font-weight: bold;">Examiner</span>
                 </td>
-                <td style="width: 50%; text-align: right; padding-top: 2rem">
-                    <span style="font-weight: bold">Principal</span>
+                <td style="width: 50%; text-align: right;">
+                    <img src="{{ public_path('img/sig_principal.png') }}" alt="signature" style="width: 80px">
+                    <br>
+                    <span style="font-weight: bold;">Principal</span>
                 </td>
             </tr>
         </table>
