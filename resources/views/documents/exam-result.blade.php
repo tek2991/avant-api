@@ -61,7 +61,6 @@
             background-color: bisque;
             color: darkred;
         }
-
     </style>
 </head>
 
@@ -148,19 +147,32 @@
                     <td>{{ $item->subject->name }} {!! $is_under_evaluation ? '<sup>**</sup>' : '' !!}
                     </td>
                     <td>({{ $item->pass_mark }}) {{ $item->full_mark }}</td>
-                    <td>{{ $exam_subject_scores->has($item->id) ? $exam_subject_scores[$item->id]->marks_secured : 'NA' }}
+                    <td>
+                        @if ($hide_marks)
+                            '--'
+                        @else
+                            {{ $exam_subject_scores->has($item->id) ? $exam_subject_scores[$item->id]->marks_secured : 'NA' }}
+                        @endif
                     </td>
-                    <td>{{ $exam_subject_scores->has($item->id)? round(($exam_subject_scores[$item->id]->marks_secured / $item->full_mark)* 100, 2): 'NA' }}%
+                    <td>
+                        @if ($hide_marks)
+                            '--'
+                        @else
+                            {{ $exam_subject_scores->has($item->id) ? round(($exam_subject_scores[$item->id]->marks_secured / $item->full_mark) * 100, 2) : 'NA' }}%
+                        @endif
                     </td>
                     <td>
                         @php
-                            if ($exam_subject_scores->has($item->id)) {
-                                echo $exam_subject_scores[$item->id]->marks_secured >= $item->pass_mark ? 'Pass' : 'Fail';
+                            if ($hide_marks) {
+                                echo '--';
                             } else {
-                                echo 'NA';
+                                if ($exam_subject_scores->has($item->id)) {
+                                    echo $exam_subject_scores[$item->id]->marks_secured >= $item->pass_mark ? 'Pass' : 'Fail';
+                                } else {
+                                    echo 'NA';
+                                }
                             }
                         @endphp
-
                     </td>
                 </tr>
                 @php

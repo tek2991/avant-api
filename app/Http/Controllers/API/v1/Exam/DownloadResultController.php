@@ -92,9 +92,9 @@ class DownloadResultController extends Controller
         }
 
         $user = $pas->tokenable;
+        $hide_marks = $user->hasRole('student') === true; 
 
         if ($user->hasRole('student') === true && $user->id != $request->user_id) {
-
             return response([
                 'header' => 'Forbidden',
                 'message' => 'Please Logout and Login again'
@@ -115,10 +115,10 @@ class DownloadResultController extends Controller
         // dd($exam_subject_scores, $exam_subjects);
 
         $file_name = 'Admit_Card_'. str_replace(" ","_", $exam->name) . '_'. str_replace(" ","_", $exam->session->name) . '_' . str_replace(" ","_", $user->userDetail->name) . '.pdf';
-        $pdf = PDF::loadView('documents.exam-result', compact('exam', 'exam_user', 'variables', 'exam_subjects', 'exam_subject_scores'));
+        $pdf = PDF::loadView('documents.exam-result', compact('exam', 'exam_user', 'variables', 'exam_subjects', 'exam_subject_scores', 'hide_marks'));
         // return $pdf->stream();
         return $pdf->download($file_name);
 
-        // return view('documents.exam-result', compact('exam', 'exam_user', 'variables', 'exam_subjects', 'exam_subject_scores'));
+        // return view('documents.exam-result', compact('exam', 'exam_user', 'variables', 'exam_subjects', 'exam_subject_scores', 'hide_marks'));
     }
 }
