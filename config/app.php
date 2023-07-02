@@ -239,6 +239,8 @@ return [
 
 
         'PDF' => Meneses\LaravelMpdf\Facades\LaravelMpdf::class,
+
+        'Helper' => App\Helpers\Helper::class,
     ],
 
 ];

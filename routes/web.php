@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Accountant\DashboardController as AccountantDashboardController;
 use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\SpaLoginController;
@@ -30,36 +31,45 @@ Route::get('invoice', function () {
     return $pdf->download('invoice.pdf');
 });
 
+Route::name('accountant.')->prefix('accountant')->middleware(['auth', 'role:accountant'])->group(function () {
+    Route::get('dashboard', [AccountantDashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+    Route::resource('counter-receipts', \App\Http\Controllers\Accountant\CounterReceiptController::class);
+});
 
-Route::get('/import', function () {
-    return view('import');
-})->middleware(['auth'])->name('import');
+Route::middleware(['redirect.if.user.is.accountant'])->group(function () {
 
-Route::get('/tech-demo', function () {
-    return view('tech-demo');
-})->middleware(['auth'])->name('tech-demo');
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->middleware(['auth'])->name('dashboard');
+    
+    Route::get('/import', function () {
+        return view('import');
+    })->middleware(['auth'])->name('import');
+    
+    Route::get('/tech-demo', function () {
+        return view('tech-demo');
+    })->middleware(['auth'])->name('tech-demo');
+    
+    Route::get('/attribute-export', [TemplateExportController::class, 'attributeExport'])->middleware(['auth'])->name('attribute.export');
+    
+    Route::get('/student-import', [StudentImportController::class, 'index'])->middleware(['auth'])->name('import.student');
+    Route::post('/student-import', [StudentImportController::class, 'store'])->middleware(['auth']);
+    Route::get('/student-template', [TemplateExportController::class, 'studentTemplate'])->middleware(['auth'])->name('student.template');
+    
+    Route::get('/teacher-import', [TeacherImportController::class, 'index'])->middleware(['auth'])->name('import.teacher');
+    Route::post('/teacher-import', [TeacherImportController::class, 'store'])->middleware(['auth']);
+    Route::get('/teacher-template', [TemplateExportController::class, 'teacherTemplate'])->middleware(['auth'])->name('teacher.template');
+    
+    Route::get('/tiny-mce-demo', [TinyMceController::class, 'index'])->middleware(['auth'])->name('tiny-mce-demo.index');
+    Route::post('/tiny-mce-image-upload', [TinyMceController::class, 'imageUpload'])->middleware(['auth'])->name('tiny-mce-demo.image-upload');
+    Route::post('/tiny-mce-demo', [TinyMceController::class, 'store'])->middleware(['auth'])->name('tiny-mce-demo.store');
+    
+    Route::get('/phpinfo', function () {
+        return view('phpinfo');
+    })->middleware(['auth'])->name('phpinfo');
+});
 
-Route::get('/attribute-export', [TemplateExportController::class, 'attributeExport'])->middleware(['auth'])->name('attribute.export');
-
-Route::get('/student-import', [StudentImportController::class, 'index'])->middleware(['auth'])->name('import.student');
-Route::post('/student-import', [StudentImportController::class, 'store'])->middleware(['auth']);
-Route::get('/student-template', [TemplateExportController::class, 'studentTemplate'])->middleware(['auth'])->name('student.template');
-
-Route::get('/teacher-import', [TeacherImportController::class, 'index'])->middleware(['auth'])->name('import.teacher');
-Route::post('/teacher-import', [TeacherImportController::class, 'store'])->middleware(['auth']);
-Route::get('/teacher-template', [TemplateExportController::class, 'teacherTemplate'])->middleware(['auth'])->name('teacher.template');
-
-Route::get('/tiny-mce-demo', [TinyMceController::class, 'index'])->middleware(['auth'])->name('tiny-mce-demo.index');
-Route::post('/tiny-mce-image-upload', [TinyMceController::class, 'imageUpload'])->middleware(['auth'])->name('tiny-mce-demo.image-upload');
-Route::post('/tiny-mce-demo', [TinyMceController::class, 'store'])->middleware(['auth'])->name('tiny-mce-demo.store');
-
-Route::get('/phpinfo', function () {
-    return view('phpinfo');
-})->middleware(['auth'])->name('phpinfo');
 
 // Route::prefix('pwa/')->group(function () {
 //     Route::post('register', [SpaRegisterController::class, 'register'])->name('register');
