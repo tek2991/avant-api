@@ -38,7 +38,7 @@ class AuthenticatedSessionController extends Controller
             ]);
         }
 
-        if (!$user->hasRole('admin')) {
+        if (!$user->hasAnyRole('admin', 'accountant')) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
