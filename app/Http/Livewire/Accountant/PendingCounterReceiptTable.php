@@ -4,12 +4,13 @@ namespace App\Http\Livewire\Accountant;
 
 use App\Models\CounterReceipt;
 use Illuminate\Support\Carbon;
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Rules\{Rule, RuleActions};
 use PowerComponents\LivewirePowerGrid\Traits\ActionButton;
 use PowerComponents\LivewirePowerGrid\{Button, Column, Exportable, Footer, Header, PowerGrid, PowerGridComponent, PowerGridEloquent};
 
-final class CounterReceiptTable extends PowerGridComponent
+final class PendingCounterReceiptTable extends PowerGridComponent
 {
     use ActionButton;
 
@@ -54,6 +55,7 @@ final class CounterReceiptTable extends PowerGridComponent
     public function datasource(): Builder
     {
         return CounterReceipt::query()
+            ->where('completed', false)
             ->with(['student.user.userDetail', 'standard', 'createdBy', 'counterReceiptItems']);
     }
 

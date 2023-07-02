@@ -37,7 +37,7 @@
                             {{ __('Counter Receipts') }}
                         </x-nav-link>
 
-                        <x-nav-link :href="route('accountant.counter-receipts.create')"
+                        <x-nav-link :href="route('accountant.counter-receipts.create')" class="font-bold"
                             :active="request()->routeIs('accountant.counter-receipts.create')">
                             {{ __('Issue Receipt') }}
                         </x-nav-link>

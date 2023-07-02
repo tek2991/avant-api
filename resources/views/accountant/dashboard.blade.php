@@ -5,7 +5,10 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        Accountant Dashboard
+    <div class="my-12 bg-white shadow-lg rounded-lg p-4">
+        <div>
+            <h2 class="text-lg font-bold my-6">Pending Receipts</h2>
+        </div>
+        @livewire('accountant.pending-counter-receipt-table')
     </div>
 </x-app-layout>
