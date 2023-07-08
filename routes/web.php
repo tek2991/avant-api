@@ -33,7 +33,7 @@ Route::get('invoice', function () {
 
 Route::name('accountant.')->prefix('accountant')->middleware(['auth', 'role:accountant'])->group(function () {
     Route::get('dashboard', [AccountantDashboardController::class, 'index'])->name('dashboard');
-
+    Route::get('counter_receipts/report', [\App\Http\Controllers\Accountant\CounterReceiptController::class, 'report'])->name('counter-receipts.report');
     Route::resource('counter-receipts', \App\Http\Controllers\Accountant\CounterReceiptController::class);
 });
 

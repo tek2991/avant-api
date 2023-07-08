@@ -95,4 +95,9 @@ class CounterReceiptController extends Controller
     {
         //
     }
+
+    public function report()
+    {
+        return view('accountant.counter-receipts.report');
+    }
 }
