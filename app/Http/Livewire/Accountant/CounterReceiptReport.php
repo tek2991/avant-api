@@ -35,11 +35,13 @@ class CounterReceiptReport extends Component
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
         ]);
+        
 
         if ($this->start_date == $this->end_date) {
             $this->counter_receipts = \App\Models\CounterReceipt::whereDate('created_at', $this->start_date)->with('standard', 'student.user.userDetail')->get();
         } else {
-            $this->counter_receipts = \App\Models\CounterReceipt::where('created_at', '>=', $this->start_date)->where('created_at', '<=', $this->end_date)->with('standard', 'student.user.userDetail')->get();
+            $end_date = date('Y-m-d', strtotime($this->end_date . ' +1 day'));
+            $this->counter_receipts = \App\Models\CounterReceipt::where('created_at', '>=', $this->start_date)->where('created_at', '<=', $end_date)->with('standard', 'student.user.userDetail')->get();
         }
     }
 
