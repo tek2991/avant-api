@@ -36,18 +36,17 @@ class CounterReceiptReport extends Component
             'end_date' => 'required|date|after_or_equal:start_date',
         ]);
 
-        if($this->start_date == $this->end_date)
-        {
+        if ($this->start_date == $this->end_date) {
             $this->counter_receipts = \App\Models\CounterReceipt::whereDate('created_at', $this->start_date)->with('standard', 'student.user.userDetail')->get();
-        }else{
-            $this->counter_receipts = \App\Models\CounterReceipt::whereBetween('created_at', [$this->start_date, $this->end_date])->with('standard', 'student.user.userDetail')->get();
+        } else {
+            $this->counter_receipts = \App\Models\CounterReceipt::where('created_at', '>=', $this->start_date)->where('created_at', '<=', $this->end_date)->with('standard', 'student.user.userDetail')->get();
         }
     }
 
     // when the date range is changed
     public function updated($field)
     {
-        if($field == 'start_date' || $field == 'end_date')
+        if ($field == 'start_date' || $field == 'end_date')
             $this->generateReport();
     }
 
