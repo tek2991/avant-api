@@ -1,3 +1,7 @@
-require('./bootstrap');
+require("./bootstrap");
 
-require('alpinejs');
+require("alpinejs");
+
+import { jsPDF } from "jspdf";
+
+window.jsPDF = jsPDF;
