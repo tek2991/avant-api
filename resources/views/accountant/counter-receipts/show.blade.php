@@ -200,6 +200,13 @@
                             {{ Helper::convertToInrInWords($counterReceipt->totalAmount()) }} Only
                         </p>
                     </div>
+                    @if ($counterReceipt->remarks != null)
+                        <div class="mt-3">
+                            <p class="text-xs">
+                                Remarks: {{ $counterReceipt->remarks }}
+                            </p>
+                        </div>
+                    @endif
                 </div>
                 <p class="pt-3" style="font-size: 11px;">
                     Print date: {{ now()->format('d-m-Y') }}
