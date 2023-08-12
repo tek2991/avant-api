@@ -5,13 +5,22 @@
         </h2>
     </x-slot>
 
-    <div>
+    <div class="flex justify-end gap-6">
         {{-- Print button --}}
         <div class="flex justify-end">
             <button type="button"
                 class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                onclick="printDiv()">
-                Print
+                onclick="printDiv('printarea')">
+                Print Full Size
+            </button>
+        </div>
+
+        {{-- Print Button 2 --}}
+        <div class="flex justify-end">
+            <button type="button"
+                class="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-blue-500 border border-transparent rounded-md hover:bg-blue-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                onclick="printDiv('printareasmall')">
+                Print Receipt 
             </button>
         </div>
     </div>
@@ -138,65 +147,61 @@
         </p>
     </div>
 
-    {{-- Preint area 2 for 58mm thermal paper --}}
-    <div id="printarea2" class="hidden">
+    {{-- Preint area printareasmall for 58mm thermal paper --}}
+    <div id="printareasmall" class="hidden">
         {{-- School logo & name --}}
-        <div class="p-4">
+        <div class="p-0.5">
             <div class="">
-                <img src="{{ url('/img/school_logo.png') }}" alt="school_logo" class="h-20 mx-auto">
+                <img src="{{ url('/img/school_logo.png') }}" alt="school_logo" class="mx-auto h-24">
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-12">
-                <div class="sm:col-start-3 sm:col-span-8 text-center">
-                    <span class="font-bold">{{ $variables['ADDRESS_LINE_1'] }}</span> <br>
-                    {{ $variables['ADDRESS_LINE_2'] }}
-                    {{ $variables['ADDRESS_LINE_3'] }}<br>
-                    School Reg. ID: {{ $variables['SCHOOL_REG_ID'] }}
+                <div class="sm:col-start-3 sm:col-span-8 text-center text-xs font-semibold leading-none">
+                    <div>{{ $variables['ADDRESS_LINE_1'] }}</div>
+                    <div class="pt-2">
+                        Reg. ID: {{ $variables['SCHOOL_REG_ID'] }}
+                    </div>
                 </div>
             </div>
 
-            <div class="flex flex-col">
-                <div class="flex justify-between">
+            <div class="">
+                <div class="flex justify-between mt-4">
                     <div class="flex flex-col">
-                        <div class="flex flex-col">
-                            <p class="text-sm font-bold">Receipt No: {{ $counterReceipt->receipt_no }}</p>
-                            <p class="text-sm font-bold">Date: {{ $counterReceipt->created_at->format('d-m-Y') }}</p>
+                        <p class="text-xs">Receipt No: {{ $counterReceipt->id }}</p>
+                        <p class="text-xs">Rcpt Date: {{ $counterReceipt->created_at->format('d-m-Y') }}</p>
+                        <p class="mt-2 text-xs">Name:
+                            {{ $counterReceipt->student->user->userDetail->name }}
+                        </p>
+                        <div class="flex justify-between">
+                            <p class="text-xs">Class: {{ $counterReceipt->standard->name }}</p>
+                            <p class="text-xs">Roll: {{ $counterReceipt->student->roll_no }}</p>
                         </div>
-                        <div class="flex flex-col">
-                            <p class="text-sm font-bold">Student:
-                                {{ $counterReceipt->student->user->userDetail->name }}
-                            </p>
-                            <p class="text-sm font-bold">Roll: {{ $counterReceipt->student->roll_no }}</p>
-                        </div>
-                    </div>
-                    <div class="flex flex-col">
-                        <p class="text-sm font-bold">Class: {{ $counterReceipt->standard->name }}</p>
-                        <p class="text-sm font-bold">Section: -- </p>
                     </div>
                 </div>
-                <div class="flex flex-col">
-                    <div class="flex flex-col">
-                        <p class="text-sm font-bold">Items</p>
+                <div>
+                    <div class="mt-2">
+                        <p class="text-xs font-bold">Items</p>
                     </div>
-                    <div class="flex flex-col">
+                    <hr class="border-black">
+                    <div>
                         @foreach ($counterReceipt->counterReceiptItems as $item)
                             <div class="flex justify-between">
-                                <p class="text-sm font-bold">{{ $item->counterReceiptItemType->name }}</p>
-                                <p class="text-sm font-bold">{{ $item->amount_in_cents / 100 }}</p>
+                                <p class="text-xs">{{ $item->counterReceiptItemType->name }}</p>
+                                <p class="text-xs">₹ {{ $item->amount_in_cents / 100 }}/-</p>
                             </div>
+                            <hr class="border-black">
                         @endforeach
                     </div>
                     <div class="flex justify-between">
-                        <p class="text-sm font-bold">Total</p>
-                        <p class="text-sm font-bold">₹ {{ $counterReceipt->totalAmount() }}/-</p>
+                        <p class="text-xs font-semibold">Total</p>
+                        <p class="text-xs font-semibold">₹ {{ $counterReceipt->totalAmount() }}/-</p>
                     </div>
-                    <div class="flex justify-between">
-                        <p class="text-sm font-bold">Total (in words)</p>
-                        <p class="text-sm font-bold">
-                            {{ Helper::convertToInrInWords($counterReceipt->totalAmount()) }}
+                    <div class="mt-3">
+                        <p class="text-xs font-semibold uppercase">
+                            {{ Helper::convertToInrInWords($counterReceipt->totalAmount()) }} Only
                         </p>
                     </div>
                 </div>
-                <p class="text-sm pt-3">
+                <p class="pt-3" style="font-size: 11px;">
                     Print date: {{ now()->format('d-m-Y') }}
                 </p>
             </div>
@@ -207,8 +212,8 @@
 
 
     <script>
-        function printDiv() {
-            var printContents = document.getElementById("printarea2").innerHTML;
+        function printDiv(div_id) {
+            var printContents = document.getElementById(div_id).innerHTML;
             var originalContents = document.body.innerHTML;
             document.body.innerHTML = printContents;
             window.print();
