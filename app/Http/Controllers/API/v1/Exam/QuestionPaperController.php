@@ -96,7 +96,9 @@ class QuestionPaperController extends Controller
             'default_font' => 'FreeSans',
         ]);
 
-        $html = View::make('documents.question_paper', compact('exam', 'variables', 'examSubject', 'exam_questions'))->render();
+        $view = false;
+
+        $html = View::make('documents.question_paper', compact('exam', 'variables', 'examSubject', 'exam_questions', 'false'))->render();
 
         $mpdf->WriteHTML($html);
 
