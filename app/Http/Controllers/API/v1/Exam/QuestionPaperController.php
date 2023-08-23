@@ -98,7 +98,7 @@ class QuestionPaperController extends Controller
 
         $view = false;
 
-        $html = View::make('documents.question_paper', compact('exam', 'variables', 'examSubject', 'exam_questions', 'false'))->render();
+        $html = View::make('documents.question_paper', compact('exam', 'variables', 'examSubject', 'exam_questions', 'view'))->render();
 
         $mpdf->WriteHTML($html);
 
