@@ -15,8 +15,8 @@
         body {
             margin: auto;
             font-size: 1.5rem
-            /* width: 29.7cm; */
-            /* padding: 1cm; */
+                /* width: 29.7cm; */
+                /* padding: 1cm; */
         }
 
         .a4-container {
@@ -54,7 +54,6 @@
             color: #384353;
             text-align: left;
         }
-
     </style>
 </head>
 
@@ -71,8 +70,12 @@
                     <span> Class: {{ $examSubject->subject->standard->name }} </span>
                 </th>
                 <th style="text-align: right">
-                    {{-- <img src="{{ url('/img/school_logo.png') }}" alt="school_logo" class="logo"> --}}
-                    <img src="{{ public_path('img/school_logo.png') }}" alt="school_logo" class="logo">
+                    {{-- Check if $view exists --}}
+                    @if ($view)
+                        <img src="{{ url('/img/school_logo.png') }}" alt="school_logo" class="logo">
+                    @else
+                        <img src="{{ public_path('img/school_logo.png') }}" alt="school_logo" class="logo">
+                    @endif
                 </th>
             </tr>
         </table>
@@ -124,10 +127,10 @@
                                 @endphp
                                 <br>
 
-                                    @foreach ($options as $option)
-                                        ({{ $loop->index + 1 }}) {{ $option->description }} <br>
-                                    @endforeach
-
+                                @foreach ($options as $option)
+                                    ({{ $loop->index + 1 }})
+                                    {{ $option->description }} <br>
+                                @endforeach
                             @endif
                         </div>
                     </td>
