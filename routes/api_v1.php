@@ -288,6 +288,7 @@ Route::get('fee-invoice-receipt/{fee_invoice}', [FeeInvoiceController::class, 'p
 
 Route::get('admit-card-print/{exam}', [AdmitCardController::class, 'print']);
 Route::get('question-paper-print/{exam_subject}', [QuestionPaperController::class, 'print']);
+Route::get('question-paper-view/{exam_subject}', [QuestionPaperController::class, 'view']);
 Route::get('download-result-standard', [DownloadResultController::class, 'standard']);
 Route::get('download-result-student', [DownloadResultController::class, 'student']);
 
