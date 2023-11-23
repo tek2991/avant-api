@@ -18,7 +18,7 @@ class CreateSubjectsTable extends Migration
             $table->string('name');
             $table->foreignId('subject_group_id')->constrained('subject_groups');
             $table->foreignId('standard_id')->constrained();
-            $table->boolean('is_mandatory')->default('true');
+            $table->boolean('is_mandatory')->default(true);
             $table->timestamps();
         });
     }
