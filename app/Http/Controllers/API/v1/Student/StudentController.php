@@ -30,13 +30,19 @@ class StudentController extends Controller
 
         return User::role('student')
             ->whereHas('userDetail', function ($query) use ($request) {
-                $query->where('name', 'ILIKE', '%' . $request->search_string . '%');
+                // $query->where('name', 'ILIKE', '%' . $request->search_string . '%'); // For PostgreSQL
+                $query->where('name', 'LIKE', '%' . $request->search_string . '%'); // For MySQL
             })
             ->whereHas('student', function ($query) use ($standard_id, $section_id) {
+                // $query->whereHas('sectionStandard', function ($query) use ($standard_id, $section_id) {
+                //     $query->where('standard_id', 'ILIKE', $standard_id)
+                //         ->where('section_id', 'ILIKE', $section_id);
+                // }); // For PostgreSQL
+
                 $query->whereHas('sectionStandard', function ($query) use ($standard_id, $section_id) {
-                    $query->where('standard_id', 'ILIKE', $standard_id)
-                        ->where('section_id', 'ILIKE', $section_id);
-                });
+                    $query->where('standard_id', 'LIKE', $standard_id)
+                        ->where('section_id', 'LIKE', $section_id);
+                }); // For MySQL
             })
             ->select('users.*')->whereHas('student')
             ->join('students', 'students.user_id', '=', 'users.id')
