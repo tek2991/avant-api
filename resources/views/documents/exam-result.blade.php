@@ -194,8 +194,28 @@
                 <td> {{ $total_obtained_marks >= $total_pass_marks ? 'Pass' : 'Fail' }} </td>
             </tr>
         </table>
-        <h6 style=""> <sup>**</sup>Subject Under Evaluation</h6>
-        <h5 style="text-align: center;">** END **</h5>
+
+
+
+
+
+
+        <table style="border: none; border-collapse: collapse;">
+            <tr>
+                <td style="width: 50%; text-align: left;">
+                    <img src="{{ public_path('img/sig_examiner.png') }}" alt="signature" style="width: 80px">
+                    <br>
+                    <span style="font-weight: bold;">Examiner</span>
+                </td>
+                <td style="width: 50%; text-align: right;">
+                    <img src="{{ public_path('img/sig_principal.png') }}" alt="signature" style="width: 80px">
+                    <br>
+                    <span style="font-weight: bold;">Principal</span>
+                </td>
+            </tr>
+        </table>
+        {{-- <h6 style=""> <sup>**</sup>Subject Under Evaluation</h6> --}}
+        {{-- <h5 style="text-align: center;">** END **</h5> --}}
     </div>
 </body>
 
