@@ -150,15 +150,20 @@
                 <th>Marks (P) F </th>
                 <th>Invigilator</th>
             </tr>
+            @php
+                $sl = 1;
+            @endphp
             @forelse ($exam_subjects as $item)
             {{-- If it has archived in name then skip, case insensitive --}}
                 @php
                     if (stripos($item->subject->name, 'archived') !== false) {
                         continue;
                     }
+
+                    $sl++;
                 @endphp
                 <tr class="data">
-                    <td>{{ $loop->index + 1 }}</td>
+                    <td>{{ $sl }}</td>
                     <td>{{ $item->examSchedule ? $item->examSchedule->start->toFormattedDateString() : 'Not Set' }}</td>
                     <td>{{ $item->examSchedule ? $item->examSchedule->start->format('H:i') : '--:--' }} to
                         {{ $item->examSchedule ? $item->examSchedule->end->format('H:i') : '--:--' }}</td>
