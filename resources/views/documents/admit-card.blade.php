@@ -132,7 +132,7 @@
                 <td style="width: 25% padding: 0;  text-align: right; border: 1px solid black">
                     {{-- <img src="{{ $exam_user->user->profilePicture ? url('storage/' . $exam_user->user->profilePicture->url) : url('/img/profile.png') }}"
                         alt="seba_logo" style="max-width: 150px"> --}}
-                    <img src="{{ $exam_user->user->profilePicture ? public_path('storage/' . $exam_user->user->profilePicture->url) : public_path('img/logo.png') }}"
+                    <img src="{{ $exam_user->user->profilePicture ? public_path('storage/' . $exam_user->user->profilePicture->url) : public_path('img/profile.png') }}"
                         style="max-width: 150px; max-height: 200px" />
                 </td>
             </tr>
@@ -159,8 +159,6 @@
                     if (stripos($item->subject->name, 'archived') !== false) {
                         continue;
                     }
-
-                    $sl++;
                 @endphp
                 <tr class="data">
                     <td>{{ $sl }}</td>
@@ -174,6 +172,9 @@
                         &nbsp;
                     </td>
                 </tr>
+                @php
+                    $sl++;
+                @endphp
             @empty
                 <tr class="data">
                     <td colspan="6">No Data</td>
