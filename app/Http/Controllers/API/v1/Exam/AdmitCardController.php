@@ -72,7 +72,7 @@ class AdmitCardController extends Controller
 
         $variables = VariableController::keyPairs();
         $exam_subjects = ExamSubjectForStudent::index($exam, $user);
-        $file_name = 'Admit_Card_' . str_replace(" ", "_", $exam->name) . '_' . str_replace(" ", "_", $exam->session->name) . '_' . str_replace(" ", "_", $user->userDetail->name) . '.pdf';
+        $file_name = 'Admit_Card_' . str_replace(" ", "_", $exam->name) . '_' . str_replace(" ", "_", $exam->session->name) . '_' . $user->student->sectionStandard->standard->name . '_' . str_replace(" ", "_", $user->userDetail->name) . '.pdf';
 
         $pdf = PDF::loadView('documents.admit-card', compact('exam', 'exam_user', 'variables', 'exam_subjects'));
         return $pdf->download($file_name);
