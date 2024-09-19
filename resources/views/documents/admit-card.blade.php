@@ -154,9 +154,12 @@
                 $sl = 1;
             @endphp
             @forelse ($exam_subjects as $item)
-            {{-- If it has archived in name then skip, case insensitive --}}
                 @php
                     if (stripos($item->subject->name, 'archived') !== false) {
+                        continue;
+                    }
+
+                    if(!$item->examSchedule){
                         continue;
                     }
                 @endphp
