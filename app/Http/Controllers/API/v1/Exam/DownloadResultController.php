@@ -114,7 +114,7 @@ class DownloadResultController extends Controller
         
         // dd($exam_subject_scores, $exam_subjects);
 
-        $file_name = 'Admit_Card_'. str_replace(" ","_", $exam->name) . '_'. str_replace(" ","_", $exam->session->name) . '_' . str_replace(" ","_", $user->userDetail->name) . '.pdf';
+        $file_name = 'Admit_Card_'. str_replace(" ","_", $exam->name) . '_'. str_replace(" ","_", $exam->session->name) . '_' . $user->student->sectionStandard->standard->name . '_' . str_replace(" ","_", $user->userDetail->name) . '.pdf';
         $pdf = PDF::loadView('documents.exam-result', compact('exam', 'exam_user', 'variables', 'exam_subjects', 'exam_subject_scores', 'hide_marks'));
         // return $pdf->stream();
         return $pdf->download($file_name);
