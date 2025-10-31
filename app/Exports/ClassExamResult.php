@@ -41,6 +41,7 @@ class ClassExamResult implements FromCollection, WithMapping, WithHeadings
                 'user.student:id,user_id,section_standard_id,roll_no',
                 'user.student.sectionStandard.section',
                 'user.student.sectionStandard.standard',
+                'user.profilePicture:id,imageable_id,imageable_type,url',
                 'examSubject:id,subject_id,full_mark,pass_mark,negative_percentage',
                 'examSubject.subject:id,name',
             )
@@ -67,6 +68,8 @@ class ClassExamResult implements FromCollection, WithMapping, WithHeadings
             $score->user->student->roll_no,
             $score->marks_secured,
             $score->examSubject->pass_mark <= $score->marks_secured ? 'Pass' : 'Fail',
+            $score->user->id,
+            optional($score->user->profilePicture)->url ?? null,
         ];
     }
 
@@ -87,6 +90,8 @@ class ClassExamResult implements FromCollection, WithMapping, WithHeadings
             'Roll No',
             'Marks Secured',
             'Result',
+            'user_id',
+            'profile_photo_url',
         ];
     }
 }
