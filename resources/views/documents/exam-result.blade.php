@@ -121,7 +121,7 @@
 
         <table style="margin-top: 2rem" class="routine-table">
             <tr>
-                <th colspan="7">Exam Result</th>
+                <th colspan="6">Exam Result</th>
             </tr>
             <tr class="heading">
                 <th>SL</th>
@@ -187,7 +187,7 @@
                 </tr>
             @endforelse
             <tr class="data" style="font-weight: bold">
-                <td colspan="3">Summary</td>
+                <td colspan="2">Summary</td>
                 <td> ({{ $total_pass_marks }}) {{ $total_marks }} </td>
                 <td> {{ $total_obtained_marks }} </td>
                 <td> {{ round(($total_obtained_marks / $total_marks) * 100, 2) }}% </td>
