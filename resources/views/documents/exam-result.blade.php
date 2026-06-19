@@ -125,7 +125,7 @@
             </tr>
             <tr class="heading">
                 <th>SL</th>
-                <th>Date</th>
+                {{-- <th>Date</th> --}}
                 <th>Subject</th>
                 <th>Marks (P) F</th>
                 <th>Marks</th>
@@ -143,7 +143,7 @@
                 @endphp
                 <tr class="data {{ $is_under_evaluation ? 'under-evaluation' : '' }}">
                     <td>{{ $loop->index + 1 }}</td>
-                    <td>{{ $item->examSchedule ? $item->examSchedule->start->toFormattedDateString() : 'NA' }}</td>
+                    {{-- <td>{{ $item->examSchedule ? $item->examSchedule->start->toFormattedDateString() : 'NA' }}</td> --}}
                     <td>{{ $item->subject->name }} {!! $is_under_evaluation ? '<sup>**</sup>' : '' !!}
                     </td>
                     <td>({{ $item->pass_mark }}) {{ $item->full_mark }}</td>
